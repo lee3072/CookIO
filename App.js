@@ -20,17 +20,6 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const Stack = createStackNavigator();
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} >
-        <Stack.Screen name="Sign In" component={SignInPage}/>
-        <Stack.Screen name="Sign Up" component={SignUpPage}/>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
 let customFonts = {
   'Rokkitt': require('./assets/fonts/rokkitt/Rokkitt-Regular.ttf'),
   'Merriweather': require('./assets/fonts/merriweather/Merriweather-Regular.otf'),
@@ -39,8 +28,7 @@ var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 if (Platform.OS === 'web') {screenHeight = 720; screenWidth = 405;}
 
-// Page Section Start
-class SignInPage extends React.Component {
+export default class App extends React.Component {
   state = {
     fontsLoaded: false,
   };
@@ -53,6 +41,24 @@ class SignInPage extends React.Component {
   }
   render() {
     if (this.state.fontsLoaded) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{headerShown: false}} >
+            <Stack.Screen name="SignInPage" component={SignInPage}/>
+            <Stack.Screen name="SignUpPage" component={SignUpPage}/>
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    } else {
+      return <AppLoading />
+    }
+  }
+}
+
+
+
+// Page Section Start
+const SignInPage = ({ navigation }) => {
       return (<View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.purpose}>Sign In For</Text>
@@ -66,64 +72,45 @@ class SignInPage extends React.Component {
           <Text style={styles.questionLabel}>Password:</Text>
           <TextInput style={styles.questionTextInput}></TextInput>
         </View>
-        {/* <View style={styles.submitButton}>
-          <Button title="Sign In" titleStyle={styles.submitButtonTitle} buttonStyle={[{backgroundColor: '#000'}]}></Button>
-        </View> */}
+        <TouchableOpacity style={styles.submitButton}>
+          <Text style={styles.submitButtonTitle}>Sign In</Text>
+        </TouchableOpacity>
         <View style={styles.changeMod}>
           <Text style={styles.changeModLabel}>Don't have a Account?</Text>
-          <TouchableOpacity >
+          <TouchableOpacity onPress={() => navigation.navigate('SignUpPage')}>
             <Text style={styles.changeModButton}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>)
-    } else {
-      return <AppLoading />
-    }
+   
   }
   
-}
 
-class SignUpPage extends React.Component {
-  state = {
-    fontsLoaded: false,
-  };
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
-  componentDidMount() {
-    this._loadFontsAsync();
-  }
-  render() {
-    if (this.state.fontsLoaded) {
-      return (<View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.purpose}>Sign Up For</Text>
-          <Text style={styles.appName}>Cook I/O</Text>
-        </View>
-        <View style={[styles.question,styles.emailAddress]}>
-          <Text style={styles.questionLabel}>Email Address:</Text>
-          <TextInput style={styles.questionTextInput}></TextInput>
-        </View>
-        <View style={[styles.question,styles.password]}>
-          <Text style={styles.questionLabel}>Password:</Text>
-          <TextInput style={styles.questionTextInput}></TextInput>
-        </View>
-        <View style={styles.submitButton}>
-          <Button title="Sign Up" titleStyle={styles.submitButtonTitle} buttonStyle={[{backgroundColor: '#000'}]}></Button>
-        </View>
-        <View style={styles.changeMod}>
-          <Text style={styles.changeModLabel}>Already have a Account?</Text>
-          <TouchableOpacity>
-            <Text style={styles.changeModButton}>Sign In</Text>
-          </TouchableOpacity>
-        </View>
-      </View>)
-    } else {
-      return <AppLoading />
-    }
-  }
-  
+
+const SignUpPage = ({ navigation }) => {
+  return (<View style={styles.container}>
+    <View style={styles.header}>
+      <Text style={styles.purpose}>Sign Up For</Text>
+      <Text style={styles.appName}>Cook I/O</Text>
+    </View>
+    <View style={[styles.question,styles.emailAddress]}>
+      <Text style={styles.questionLabel}>Email Address:</Text>
+      <TextInput style={styles.questionTextInput}></TextInput>
+    </View>
+    <View style={[styles.question,styles.password]}>
+      <Text style={styles.questionLabel}>Password:</Text>
+      <TextInput style={styles.questionTextInput}></TextInput>
+    </View>
+    <TouchableOpacity style={styles.submitButton}>
+      <Text style={styles.submitButtonTitle}>Sign Up</Text>
+    </TouchableOpacity>
+    <View style={styles.changeMod}>
+      <Text style={styles.changeModLabel}>Already have a Account?</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('SignInPage')}>
+        <Text style={styles.changeModButton}>Sign In</Text>
+      </TouchableOpacity>
+    </View>
+  </View>)
 }
 
 
@@ -225,6 +212,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 36/360*screenWidth,
     lineHeight: 41/720*screenHeight*1.125,
+    color:'#fff',
   },
   changeMod: {
     position: 'absolute',
