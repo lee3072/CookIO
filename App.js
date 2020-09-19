@@ -59,6 +59,8 @@ export default class App extends React.Component {
 
 // Page Section Start
 const SignInPage = ({ navigation }) => {
+      const [emailAddress,setEmailAddress] = useState('');
+      const [password,setPassword] = useState('');
       return (<View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.purpose}>Sign In For</Text>
@@ -66,11 +68,11 @@ const SignInPage = ({ navigation }) => {
         </View>
         <View style={[styles.question,styles.emailAddress]}>
           <Text style={styles.questionLabel}>Email Address:</Text>
-          <TextInput style={styles.questionTextInput}></TextInput>
+          <TextInput style={styles.questionTextInput} placeholder=' e.g. aaa@email.com' onChangeText={(e) => setEmailAddress(e)}></TextInput>
         </View>
         <View style={[styles.question,styles.password]}>
           <Text style={styles.questionLabel}>Password:</Text>
-          <TextInput style={styles.questionTextInput}></TextInput>
+          <TextInput style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
         </View>
         <TouchableOpacity style={styles.submitButton}>
           <Text style={styles.submitButtonTitle}>Sign In</Text>
@@ -88,6 +90,8 @@ const SignInPage = ({ navigation }) => {
 
 
 const SignUpPage = ({ navigation }) => {
+  const [emailAddress,setEmailAddress] = useState('');
+  const [password,setPassword] = useState('');
   return (<View style={styles.container}>
     <View style={styles.header}>
       <Text style={styles.purpose}>Sign Up For</Text>
@@ -95,11 +99,11 @@ const SignUpPage = ({ navigation }) => {
     </View>
     <View style={[styles.question,styles.emailAddress]}>
       <Text style={styles.questionLabel}>Email Address:</Text>
-      <TextInput style={styles.questionTextInput}></TextInput>
+      <TextInput style={styles.questionTextInput} placeholder=' e.g. aaa@email.com' onChangeText={(e) => setEmailAddress(e)}></TextInput>
     </View>
     <View style={[styles.question,styles.password]}>
       <Text style={styles.questionLabel}>Password:</Text>
-      <TextInput style={styles.questionTextInput}></TextInput>
+      <TextInput style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
     </View>
     <TouchableOpacity style={styles.submitButton}>
       <Text style={styles.submitButtonTitle}>Sign Up</Text>
@@ -258,8 +262,7 @@ const styles = StyleSheet.create({
 
 
 // const [page, setPage] = useState('SignUp');
-//   const [emailAddress,setEmailAddress] = useState('');
-//   const [password,setPassword] = useState('');
+
 //   const [errorMessage, setErrorMessage] = useState('');
 //   const submitButtonHandler = () => {
 //     firebase.auth().createUserWithEmailAndPassword(emailAddress,password)
