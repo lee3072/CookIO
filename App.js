@@ -16,8 +16,9 @@ var firebaseConfig = {
   messagingSenderId: "244962151899",
   appId: "1:244962151899:web:46d43e6bdf48777df1ebfe"
 };
-
+if (!firebase.apps.length) {
 firebase.initializeApp(firebaseConfig);
+}
 const Stack = createStackNavigator();
 
 let customFonts = {
@@ -66,13 +67,14 @@ const SignInPage = ({ navigation }) => {
           <Text style={styles.purpose}>Sign In For</Text>
           <Text style={styles.appName}>Cook I/O</Text>
         </View>
+        <Text style={styles.warning}>Warning Message: Example this is an warning message</Text>
         <View style={[styles.question,styles.emailAddress]}>
           <Text style={styles.questionLabel}>Email Address:</Text>
           <TextInput style={styles.questionTextInput} placeholder=' e.g. aaa@email.com' onChangeText={(e) => setEmailAddress(e)}></TextInput>
         </View>
         <View style={[styles.question,styles.password]}>
           <Text style={styles.questionLabel}>Password:</Text>
-          <TextInput style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
+          <TextInput secureTextEntry={true} style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
         </View>
         <TouchableOpacity style={styles.submitButton}>
           <Text style={styles.submitButtonTitle}>Sign In</Text>
@@ -103,7 +105,7 @@ const SignUpPage = ({ navigation }) => {
     </View>
     <View style={[styles.question,styles.password]}>
       <Text style={styles.questionLabel}>Password:</Text>
-      <TextInput style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
+      <TextInput secureTextEntry={true} style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
     </View>
     <TouchableOpacity style={styles.submitButton}>
       <Text style={styles.submitButtonTitle}>Sign Up</Text>
@@ -165,6 +167,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     // backgroundColor: '#888',
+  },
+  warning: {
+    position: 'absolute',
+    left: 21/360*screenWidth,
+    top: 145/720*screenHeight*1.125,
+    color: 'red',
+    fontFamily: 'Rokkitt',
+    fontWeight: 'bold',
+    fontSize: 18/360*screenWidth,
   },
   question: {
     position: 'absolute',
