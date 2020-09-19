@@ -77,8 +77,8 @@ const SignInPage = ({ navigation }) => {
         </TouchableOpacity>
         <View style={styles.changeMod}>
           <Text style={styles.changeModLabel}>Don't have a Account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUpPage')}>
-            <Text style={styles.changeModButton}>Sign Up</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUpPage')} style={styles.changeModButton}>
+            <Text style={styles.changeModButtonWrapper}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>)
@@ -106,8 +106,8 @@ const SignUpPage = ({ navigation }) => {
     </TouchableOpacity>
     <View style={styles.changeMod}>
       <Text style={styles.changeModLabel}>Already have a Account?</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('SignInPage')}>
-        <Text style={styles.changeModButton}>Sign In</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('SignInPage')} style={styles.changeModButton}>
+        <Text style={styles.changeModButtonWrapper}>Sign In</Text>
       </TouchableOpacity>
     </View>
   </View>)
@@ -241,17 +241,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 207/360*screenWidth,
     height: 26/720*screenHeight*1.125,
-    left: 223/360*screenWidth,
+    left: 224/360*screenWidth,
     top: 0/720*screenHeight*1.125,
     display: 'flex',
-    alignItems: 'center',
-    textAlign: 'left',
+    alignItems: 'flex-start',
+  },
+  changeModButtonWrapper: {
     fontFamily: 'Rokkitt',
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 20/360*screenWidth,
     lineHeight: 23/720*screenHeight*1.125,
-  },
+  }
 });
 
 
