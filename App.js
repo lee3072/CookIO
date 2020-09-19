@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
     width: 318/360*screenWidth,
     height: 48/720*screenHeight*1.125,
     backgroundColor: '#888',
+    fontSize: 16/360*screenWidth,
   },
   submitButton: {
     position: 'absolute',
