@@ -2,7 +2,7 @@
 // user does not contain array for following users/topics, saved other user's posts, up/down voted posts, posted comments
 // those will be added when by arrayUnion() when new posts are created or user followed new users/topics or saved other user's posts
 // or up/down voted posts or posted comments on other posts
-
+ 
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
 import { YellowBox, Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity } from 'react-native';
