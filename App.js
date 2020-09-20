@@ -5,7 +5,7 @@
 
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity } from 'react-native';
+import { YellowBox, Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
@@ -42,6 +42,7 @@ export default class App extends React.Component {
     this.setState({ fontsLoaded: true });
   }
   componentDidMount() {
+    YellowBox.ignoreWarnings(['Setting a timer for a long'])
     this._loadFontsAsync();
   }
   render() {
@@ -52,6 +53,7 @@ export default class App extends React.Component {
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="Temp" component={TempPage}/>
+            <Stack.Screen name="createProfilePage" component={createProfilePage}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
@@ -68,8 +70,8 @@ export default class App extends React.Component {
 const TempPage = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate('SignInPage')} style={styles.submitButton}>
-        <Text style={styles.submitButtonTitle}>Back to Sign In</Text>
+      <TouchableOpacity onPress={() => {navigation.navigate('SignInPage'); firebase.auth().signOut()}} style={styles.submitButton}>
+        <Text style={styles.submitButtonTitle}>Log Out</Text>
       </TouchableOpacity>
     </View>)
 }
@@ -146,7 +148,7 @@ const SignUpPage = ({ navigation }) => {
         setWarning('')
         setEmailAddress('')
         setPassword('')
-        navigation.navigate("Temp")
+        navigation.navigate("createProfilePage")
         let db = firebase.firestore()
         db.collection("Comments").add({
           date: Date(),
@@ -242,6 +244,54 @@ const SignUpPage = ({ navigation }) => {
   </View>)
 }
 
+const createProfilePage = ({ navigation }) => {
+  const [userName, setUserName] = useState('');
+  const [topicsOfInterest, setTopicsOfInterest] = useState('');
+  const [warning,setWarning] = useState('')
+  const submit = () => {
+    let db = firebase.firestore()
+    if (userName !== ''){
+      db.collection("Usernames").doc("Unique").get().then(doc => {
+        if (!doc.get("UserNames").includes(userName)){
+          db.collection("Users").doc(firebase.auth().currentUser.uid.toString()).update({
+            userName: userName,
+            topicsOfInterest: topicsOfInterest,
+          })
+          db.collection("Usernames").doc("Unique").update({
+            UserNames: firebase.firestore.FieldValue.arrayUnion(userName)           
+          })
+          setUserName('')
+          setTopicsOfInterest('')
+          setWarning('')
+          navigation.navigate('Temp')
+        } else {
+          setWarning('Username is already occupied')
+        }
+      })
+    }
+    else {
+      setWarning('Username cannot be empty!')
+    }
+  }
+  return (<View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={[styles.purpose,{width: 340/360*screenWidth}]}>For New User</Text>
+        <Text style={[styles.appName,{width: 300/360*screenWidth}]}>Create Profile</Text>
+      </View>
+      <Text style={styles.warning}>{warning}</Text>
+      <View style={[styles.question,styles.emailAddress]}>
+        <Text style={styles.questionLabel}>Username:</Text>
+        <TextInput style={styles.questionTextInput} value={userName} placeholder='require unique username' onChangeText={(e) => setUserName(e)}></TextInput>
+      </View>
+      <View style={[styles.question,styles.password]}>
+        <Text style={[styles.questionLabel,{width: 300/360*screenWidth}]}>Topics Of Interest:</Text>
+        <TextInput style={styles.questionTextInput} value={topicsOfInterest} placeholder='tell what are you interested in' onChangeText={(e) => setTopicsOfInterest(e)}></TextInput>
+      </View>
+      <TouchableOpacity onPress={submit} style={styles.submitButton}>
+        <Text style={styles.submitButtonTitle}>Submit</Text>
+      </TouchableOpacity>
+    </View>)
+}
 
 // Style Section Start
 const styles = StyleSheet.create({
