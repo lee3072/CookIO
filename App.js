@@ -1,7 +1,11 @@
+// firebase.firestore().collection().doc().update().arrayUnion() create the array if there is no array or addes element to it if it exist 
+// user does not contain array for following users/topics, saved other user's posts, up/down voted posts, posted comments
+// those will be added when by arrayUnion() when new posts are created or user followed new users/topics or saved other user's posts
+// or up/down voted posts or posted comments on other posts
+
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
 import { Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity } from 'react-native';
-// import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
@@ -47,6 +51,7 @@ export default class App extends React.Component {
           <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
+            <Stack.Screen name="Temp" component={TempPage}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
@@ -59,60 +64,178 @@ export default class App extends React.Component {
 
 
 // Page Section Start
+
+const TempPage = ({navigation}) => {
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('SignInPage')} style={styles.submitButton}>
+        <Text style={styles.submitButtonTitle}>Back to Sign In</Text>
+      </TouchableOpacity>
+    </View>)
+}
+
 const SignInPage = ({ navigation }) => {
-      const [emailAddress,setEmailAddress] = useState('');
-      const [password,setPassword] = useState('');
-      return (<View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.purpose}>Sign In For</Text>
-          <Text style={styles.appName}>Cook I/O</Text>
-        </View>
-        <Text style={styles.warning}>Warning Message: Example this is an warning message</Text>
-        <View style={[styles.question,styles.emailAddress]}>
-          <Text style={styles.questionLabel}>Email Address:</Text>
-          <TextInput style={styles.questionTextInput} placeholder=' e.g. aaa@email.com' onChangeText={(e) => setEmailAddress(e)}></TextInput>
-        </View>
-        <View style={[styles.question,styles.password]}>
-          <Text style={styles.questionLabel}>Password:</Text>
-          <TextInput secureTextEntry={true} style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
-        </View>
-        <TouchableOpacity style={styles.submitButton}>
-          <Text style={styles.submitButtonTitle}>Sign In</Text>
-        </TouchableOpacity>
-        <View style={styles.changeMod}>
-          <Text style={styles.changeModLabel}>Don't have a Account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUpPage')} style={styles.changeModButton}>
-            <Text style={styles.changeModButtonWrapper}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>)
-   
+  const [emailAddress,setEmailAddress] = useState('');
+  const [password,setPassword] = useState('');
+  const [warning,setWarning] = useState('')
+  const signInWithEmail = () => {
+    console.log("email: "+emailAddress+"; pass: "+password)
+    firebase.auth().signInWithEmailAndPassword(emailAddress.trim(),password)
+    .then(user => {
+      if (user) {
+        setWarning('')
+        setEmailAddress('')
+        setPassword('')
+        navigation.navigate("Temp")
+      }
+    })
+    .catch(error => {
+      console.log(error.message)
+      if (error.code == 'auth/weak-password') {
+        setWarning('Weak Password')
+      } else {
+        setWarning(error.message)
+      }
+    })
   }
+  const changeMod = () => {
+    setWarning('')
+    setEmailAddress('')
+    setPassword('')
+    navigation.navigate('SignUpPage')
+  }
+  return (<View style={styles.container}>
+    <View style={styles.header}>
+      <Text style={styles.purpose}>Sign In For</Text>
+      <Text style={styles.appName}>Cook I/O</Text>
+    </View>
+  <Text style={styles.warning}>{warning}</Text>
+    <View style={[styles.question,styles.emailAddress]}>
+      <Text style={styles.questionLabel}>Email Address:</Text>
+      <TextInput style={styles.questionTextInput} value={emailAddress} placeholder=' e.g. aaa@email.com' onChangeText={(e) => setEmailAddress(e)}></TextInput>
+    </View>
+    <View style={[styles.question,styles.password]}>
+      <Text style={styles.questionLabel}>Password:</Text>
+      <TextInput secureTextEntry={true} value={password} style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
+    </View>
+    <TouchableOpacity onPress={signInWithEmail} style={styles.submitButton}>
+      <Text style={styles.submitButtonTitle}>Sign In</Text>
+    </TouchableOpacity>
+    <View style={styles.changeMod}>
+      <Text style={styles.changeModLabel}>Don't have a Account?</Text>
+      <TouchableOpacity onPress={changeMod} style={styles.changeModButton}>
+        <Text style={styles.changeModButtonWrapper}>Sign Up</Text>
+      </TouchableOpacity>
+    </View>
+  </View>)
+}
   
 
 
 const SignUpPage = ({ navigation }) => {
   const [emailAddress,setEmailAddress] = useState('');
+  // const [userName, setUserName] = useState('');
+  // const [topicsOfInterest, setTopicsOfInterest] = useState('');
   const [password,setPassword] = useState('');
+  const [warning,setWarning] = useState('')
+  const signUpWithEmail = () => {
+    console.log("email: "+emailAddress+"; pass: "+password)
+    firebase.auth().createUserWithEmailAndPassword(emailAddress.trim(),password)
+    .then(user => {
+      if (user) {
+        setWarning('')
+        setEmailAddress('')
+        setPassword('')
+        navigation.navigate("Temp")
+        let db = firebase.firestore()
+        db.collection("Comments").add({
+          date: Date(),
+          content: "Welcome Comment",
+          commentedUser: "User/"+firebase.auth().currentUser.uid.toString(),
+        }).then(welcomeComment => {
+          db.collection("Posts").add({
+            postedUser: emailAddress,
+            image: null,
+            content: "Welcome Content",
+            PostedDate: Date(),
+            tag: "Tags/"+"welcomeTag",
+            comments: ["Comments/"+welcomeComment.id.toString()],
+          }).then(welcomePost => {
+            db.collection("Tags").doc("welcomeTag").update({
+              postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
+            }).catch( error => {
+              db.collection("Tags").doc("welcomeTag").set({
+                postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
+              })
+            })
+            db.collection("Comments").doc(welcomeComment.id.toString()).update({
+              belongedPost: "Posts/"+welcomePost.id
+            })
+            db.collection("Users")
+            .doc(firebase.auth().currentUser.uid.toString()).set({
+              userEmail: emailAddress,
+              userIcon: null,
+              userName: "",
+              topicsOfInterest: "",
+              postedPosts: ["Posts/"+welcomePost.id],
+              numberOfFollowers: 0,
+            })
+            
+
+            
+          })
+          // db.collection("Tags").add({
+          //   topic: "welcomeTag",
+          // }).then(welcomeTag => {
+            
+          // })
+        
+        
+          // db.collection("Users")
+          // .doc(firebase.auth().currentUser.uid.toString())
+          // .update({
+          //   postedPosts: firebase.firestore.FieldValue.arrayUnion("Test")
+          // }) // arrayUnion() create the array if there is no array or addes element to it if it exist 
+        })
+       
+      }
+    })
+    .catch(error => {
+      console.log(error.message)
+      if (error.code == 'auth/weak-password') {
+        setWarning('Weak Password')
+      } else {
+        setWarning(error.message)
+      }
+    })
+  }
+  const changeMod = () => {
+    setWarning('')
+    setEmailAddress('')
+    setPassword('')
+    navigation.navigate('SignInPage')
+  }
+
   return (<View style={styles.container}>
     <View style={styles.header}>
       <Text style={styles.purpose}>Sign Up For</Text>
       <Text style={styles.appName}>Cook I/O</Text>
     </View>
+    <Text style={styles.warning}>{warning}</Text>
     <View style={[styles.question,styles.emailAddress]}>
       <Text style={styles.questionLabel}>Email Address:</Text>
-      <TextInput style={styles.questionTextInput} placeholder=' e.g. aaa@email.com' onChangeText={(e) => setEmailAddress(e)}></TextInput>
+      <TextInput style={styles.questionTextInput} value={emailAddress} placeholder=' e.g. aaa@email.com' onChangeText={(e) => setEmailAddress(e)}></TextInput>
     </View>
     <View style={[styles.question,styles.password]}>
       <Text style={styles.questionLabel}>Password:</Text>
-      <TextInput secureTextEntry={true} style={styles.questionTextInput} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
+      <TextInput secureTextEntry={true} style={styles.questionTextInput} value={password} placeholder=' require longer than 6 character' onChangeText={(e) => setPassword(e)}></TextInput>
     </View>
-    <TouchableOpacity style={styles.submitButton}>
+    <TouchableOpacity onPress={signUpWithEmail} style={styles.submitButton}>
       <Text style={styles.submitButtonTitle}>Sign Up</Text>
     </TouchableOpacity>
     <View style={styles.changeMod}>
       <Text style={styles.changeModLabel}>Already have a Account?</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('SignInPage')} style={styles.changeModButton}>
+      <TouchableOpacity onPress={changeMod} style={styles.changeModButton}>
         <Text style={styles.changeModButtonWrapper}>Sign In</Text>
       </TouchableOpacity>
     </View>
