@@ -442,5 +442,4 @@ const styles = StyleSheet.create({
     fontSize: 20/360*screenWidth,
     lineHeight: 23/720*screenHeight*1.125,
   }
-//             style={styles.basic_input}
 });
