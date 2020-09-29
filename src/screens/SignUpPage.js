@@ -9,8 +9,6 @@ import styles from './auth_styles';
 
 const SignUpPage = ({ navigation }) => {
     const [emailAddress,setEmailAddress] = useState('');
-    // const [userName, setUserName] = useState('');
-    // const [topicsOfInterest, setTopicsOfInterest] = useState('');
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
     const signUpWithEmail = () => {
@@ -26,7 +24,7 @@ const SignUpPage = ({ navigation }) => {
           db.collection("Comments").add({
             date: Date(),
             content: "Welcome Comment",
-            commentedUser: "User/"+firebase.auth().currentUser.uid.toString(),
+            commentedUser: "Users/"+firebase.auth().currentUser.uid.toString(),
           }).then(welcomeComment => {
             db.collection("Posts").add({
               postedUser: emailAddress,
