@@ -10,19 +10,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import * as firebase from "firebase";
-var firebaseConfig = {
-  apiKey: "AIzaSyC1vzo3Uk66RrEtkxRaUKzln93sppXtPGs",
-  authDomain: "cookio-b4eaa.firebaseapp.com",
-  databaseURL: "https://cookio-b4eaa.firebaseio.com",
-  projectId: "cookio-b4eaa",
-  storageBucket: "cookio-b4eaa.appspot.com",
-  messagingSenderId: "244962151899",
-  appId: "1:244962151899:web:46d43e6bdf48777df1ebfe"
-};
-if (!firebase.apps.length) {
-firebase.initializeApp(firebaseConfig);
-}
+import firebase from './firebases_setup'
+// import * as firebase from "firebase";
+// var firebaseConfig = {
+//   apiKey: "AIzaSyC1vzo3Uk66RrEtkxRaUKzln93sppXtPGs",
+//   authDomain: "cookio-b4eaa.firebaseapp.com",
+//   databaseURL: "https://cookio-b4eaa.firebaseio.com",
+//   projectId: "cookio-b4eaa",
+//   storageBucket: "cookio-b4eaa.appspot.com",
+//   messagingSenderId: "244962151899",
+//   appId: "1:244962151899:web:46d43e6bdf48777df1ebfe"
+// };
+// if (!firebase.apps.length) {
+// firebase.initializeApp(firebaseConfig);
+// }
 const Stack = createStackNavigator();
 var textScale = 1;
 
@@ -291,63 +292,6 @@ const createProfilePage = ({ navigation }) => {
     </View>)
 }
 
-const editPostPage = ({navigation}) => {
-  const [title, setTitle] = useState('');
-  const [tages, setTages] = useState('');
-  const [texts, setContent] = useState('');
-  const [imgs, setImgs] = useState('');
-  //const [warning, setWarning] = useState('');
-  const post = () => {
-    let db = firebase.firestore()
-    //check if has empty title
-    const postRef = db.collection("Posts").doc();
-    postRef.set({
-      PostedDate: Date(),
-      postedUser: firebase.auth().currentUser.uid.toString(),
-      Title: title,
-      tag: tages,
-      content:  texts,
-      image: imgs,
-      
-    })
-  }
-  return (<View style={editPostStyle.container}>
-            <View style={editPostStyle.title}>
-              <Text style={[editPostStyle.title]}>creat psot</Text>
-            </View>
-            {/* <Text style={editPostStyle.warning}>{warning}</Text> */}
-            <View style={[editPostStyle.setTitle]}>
-              <Text style={editPostStyle.setTitle.title}>Title:</Text>
-              <TextInput style={editPostStyle.setTitle.texts} value={title} placeholder='Enter the name of the post' onChangeText={(e) => setTitle(e)}></TextInput>
-            </View>
-            <View style={[editPostStyle.setTages]}>
-              <Text style={editPostStyle.setTitle.title}>Tages:</Text>
-              <TextInput style={editPostStyle.setTitle.texts} value={tages} placeholder='#tage1 #tage2 ...' onChangeText={(e) => setTages(e)}></TextInput>
-            </View>
-            <View style={[editPostStyle.setContant]}>
-              <Text style={editPostStyle.setContant.title}>Content:</Text>
-              <TextInput style={editPostStyle.setContant.texts} value={texts} placeholder='say something..' onChangeText={(e) => setContent(e)}></TextInput>
-            </View>
-            
-            <View style={[editPostStyle.setURL]}>
-              <Text style={editPostStyle.setURL.title}>Images URLs:</Text>
-              <TextInput style={editPostStyle.setURL.texts} value={imgs} placeholder='url1 url2 ...' onChangeText={(e) => setImgs(e)}></TextInput>
-            </View>
-            
-            <TouchableOpacity onPress={post} style={editPostStyle.postButton}>
-              <Text style={editPostStyle.postButton.title}>Post</Text>
-            </TouchableOpacity>
-          </View>)
-}
-
-const viewPostPage = ({navigation}) => {
-
-}
-
-const feedPage = ({navigation}) => {
-
-}
-
 // Style Section Start
 const styles = StyleSheet.create({
   container: {
@@ -500,151 +444,3 @@ const styles = StyleSheet.create({
 
 });
 
-const editPostStyle = StyleSheet.create({
-  // fontFamily: 'Rokkitt',
-  width: screenWidth,
-  height: screenHeight,
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    flexWrap: 'nowrap',
-    padding: 5,
-    backgroundColor: '#999',
-    width: screenWidth,
-    height: screenHeight,
-  },
-
-  //title of the post page
-  title: {
-    flex: 1,
-    height: 100,
-    fontFamily: 'Rokkitt',
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    textAlign: 'auto',
-    fontsize: 100 * textScale
-  },
-
-  subTitle: {
-    
-    flex: 1,
-    height: 100,
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    textAlign: 'auto',
-    fontsize: 10 * textScale
-  },
-
-  //enter the title container
-  setTitle: {
-    flex: 1,
-    title: {
-    },
-    texts:{
-      flex: 1,
-      height: 80,
-      borderColor: 'gray',
-      borderWidth: 1,
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      textAlign: 'auto',
-      fontsize: 10 * textScale
-    }
-  },
-
-  //tage field
-  setTages: {
-    flex: 1,
-    title: {
-      flex: 1,
-      height: 100,
-      fontStyle: 'normal',
-      fontWeight: 'bold',
-      textAlign: 'auto',
-      fontsize: 10 * textScale
-    },
-    texts:{
-      flex: 1,
-      height: 100,
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      textAlign: 'auto',
-      fontsize: 10 * textScale
-    }
-  },
-
-  //contant field
-  setContant: {
-    flex: 5,
-    title: {
-      flex: 1,
-      height: 100,
-      fontStyle: 'normal',
-      fontWeight: 'bold',
-      textAlign: 'auto',
-      fontsize: 10 * textScale
-    },
-    texts:{
-      flex: 7,
-      height: 100,
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      textAlign: 'auto',
-      fontsize: 10 * textScale
-    }
-  },
-
-  //image, urls field
-  setURL: {
-    flex: 1,
-    title: {
-      flex: 1,
-      height: 100,
-      fontStyle: 'normal',
-      fontWeight: 'bold',
-      textAlign: 'auto',
-      fontsize: 10 * textScale
-    },
-    texts:{
-      flex: 1,
-      height: 100,
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      textAlign: 'auto',
-      fontsize: 10 * textScale
-    }
-  },
-
-  //warning
-  warning: {
-    position: 'absolute',
-    flex: 1,
-    color: 'red',
-    fontFamily: 'Rokkitt',
-    fontWeight: 'bold',
-    fontSize: 18/360*screenWidth,
-  },
-
-  //post button
-  postButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignSelf: 'center',
-    title: {
-      fontStyle: 'bold',
-      fontWeight: '600',
-      // fontSize: 36/360*screenWidth,
-      // lineHeight: 41/720*screenHeight*1.125,
-      color:'#fff',
-    },
-    button: {
-      backgroundColor: '#000',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 20,
-    }
-  }
-
-});
