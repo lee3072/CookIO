@@ -10,7 +10,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import * as firebase from "firebase";
+//import * as firebase from "firebase";
+import 'firebase/firestore';
+
+import ProfilePage from './src/screens/ProfilePage';
+import firebase from './firebase_setup';
+/*
 var firebaseConfig = {
   apiKey: "AIzaSyC1vzo3Uk66RrEtkxRaUKzln93sppXtPGs",
   authDomain: "cookio-b4eaa.firebaseapp.com",
@@ -23,6 +28,7 @@ var firebaseConfig = {
 if (!firebase.apps.length) {
 firebase.initializeApp(firebaseConfig);
 }
+*/
 const Stack = createStackNavigator();
 
 let customFonts = {
@@ -54,6 +60,7 @@ export default class App extends React.Component {
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="Temp" component={TempPage}/>
             <Stack.Screen name="createProfilePage" component={createProfilePage}/>
+            <Stack.Screen name="ProfilePage" component={ProfilePage}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
@@ -88,7 +95,7 @@ const SignInPage = ({ navigation }) => {
         setWarning('')
         setEmailAddress('')
         setPassword('')
-        navigation.navigate("Temp")
+        navigation.navigate("ProfilePage")
       }
     })
     .catch(error => {
@@ -263,7 +270,7 @@ const createProfilePage = ({ navigation }) => {
           setUserName('')
           setTopicsOfInterest('')
           setWarning('')
-          navigation.navigate('Temp')
+          navigation.navigate('ProfilePage')
         } else {
           setWarning('Username is already occupied')
         }
@@ -292,6 +299,21 @@ const createProfilePage = ({ navigation }) => {
       </TouchableOpacity>
     </View>)
 }
+
+/*
+const ProfilePage = ({ navigation }) => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+      <Text>Hello, world!</Text>
+    </View>
+  );
+};
+*/
 
 // Style Section Start
 const styles = StyleSheet.create({
