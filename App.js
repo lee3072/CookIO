@@ -10,20 +10,26 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import firebase from './firebases_setup'
-// import * as firebase from "firebase";
-// var firebaseConfig = {
-//   apiKey: "AIzaSyC1vzo3Uk66RrEtkxRaUKzln93sppXtPGs",
-//   authDomain: "cookio-b4eaa.firebaseapp.com",
-//   databaseURL: "https://cookio-b4eaa.firebaseio.com",
-//   projectId: "cookio-b4eaa",
-//   storageBucket: "cookio-b4eaa.appspot.com",
-//   messagingSenderId: "244962151899",
-//   appId: "1:244962151899:web:46d43e6bdf48777df1ebfe"
-// };
-// if (!firebase.apps.length) {
-// firebase.initializeApp(firebaseConfig);
-// }
+//import * as firebase from "firebase";
+import 'firebase/firestore';
+
+import ProfilePage from './src/screens/ProfilePage';
+import EditPostPage from './src/screens/EditPost'
+import firebase from './firebase_setup';
+/*
+var firebaseConfig = {
+  apiKey: "AIzaSyC1vzo3Uk66RrEtkxRaUKzln93sppXtPGs",
+  authDomain: "cookio-b4eaa.firebaseapp.com",
+  databaseURL: "https://cookio-b4eaa.firebaseio.com",
+  projectId: "cookio-b4eaa",
+  storageBucket: "cookio-b4eaa.appspot.com",
+  messagingSenderId: "244962151899",
+  appId: "1:244962151899:web:46d43e6bdf48777df1ebfe"
+};
+if (!firebase.apps.length) {
+firebase.initializeApp(firebaseConfig);
+}
+*/
 const Stack = createStackNavigator();
 var textScale = 1;
 
@@ -56,7 +62,8 @@ export default class App extends React.Component {
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="Temp" component={TempPage}/>
             <Stack.Screen name="createProfilePage" component={createProfilePage}/>
-            <Stack.Screen name="editPost" component={editPostPage}/>
+            <Stack.Screen name="ProfilePage" component={ProfilePage}/>
+            <Stack.Screen name="EditPostPage" component={EditPostPage}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
@@ -88,8 +95,7 @@ const SignInPage = ({ navigation }) => {
         setWarning('')
         setEmailAddress('')
         setPassword('')
-        //navigation.navigate("Temp")
-        navigation.navigate("editPost");
+        navigation.navigate("EditPostPage")
       }
     })
     .catch(error => {
@@ -262,7 +268,7 @@ const createProfilePage = ({ navigation }) => {
           setUserName('')
           setTopicsOfInterest('')
           setWarning('')
-          navigation.navigate('Temp')
+          navigation.navigate('ProfilePage')
         } else {
           setWarning('Username is already occupied')
         }
