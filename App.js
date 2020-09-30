@@ -16,7 +16,7 @@ import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
-import EditPostPage from './src/screens/EditPost';
+import EditPostPage from './src/screens/EditPostPage';
 import firebase from './firebase_setup';
 
 
