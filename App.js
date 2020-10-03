@@ -14,6 +14,8 @@ import * as Font from 'expo-font';
 import 'firebase/firestore';
 
 import ProfilePage from './src/screens/ProfilePage';
+import EditProfilePage from './src/screens/EditProfilePage';
+import ChangePasswordPage from './src/screens/ChangePasswordPage';
 import firebase from './firebase_setup';
 /*
 var firebaseConfig = {
@@ -61,6 +63,8 @@ export default class App extends React.Component {
             <Stack.Screen name="Temp" component={TempPage}/>
             <Stack.Screen name="createProfilePage" component={createProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
+            <Stack.Screen name="EditProfilePage" component={EditProfilePage}/>
+            <Stack.Screen name="ChangePasswordPage" component={ChangePasswordPage}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
