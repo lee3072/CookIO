@@ -160,6 +160,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20/360*screenWidth,
         lineHeight: 23/720*screenHeight*1.125,
-    }
+    },
 });
 export default styles;

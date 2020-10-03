@@ -90,8 +90,18 @@ class ProfilePage extends React.Component {
                 title="Change Profile"
                 onPress={() => this.props.navigation.navigate('EditProfilePage')}
             />
+            <Button
+                title="Make Post"
+                onPress={() => this.props.navigation.navigate('MakePostPage')}
+            />
+            <Button
+                title="Logout"
+                onPress={() => {
+                        firebase.auth().signOut()
+                        this.props.navigation.navigate('SignInPage')
+                    }}
+            />
             </View>
-
         );
     }
 }
