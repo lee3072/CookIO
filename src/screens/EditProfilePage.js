@@ -29,7 +29,7 @@ class EditProfilePage extends React.Component {
 
     //Change email function
     onChangeEmailPress = () => {
-
+        /* !!! email information inside the documentation did not change*/
         this.reauthenticate(this.state.currentPassword).then(() => {
             var user = firebase.auth().currentUser;
             user.updateEmail(this.state.newEmail).then(() => {
@@ -53,7 +53,8 @@ class EditProfilePage extends React.Component {
 
     //change username function
     onChangeUsernamePress = () => {
-
+        /* !!! need to check if username is unique or is empty*/
+        /* !!! need to update usernames collection in firestore */
         var user = firebase.auth().currentUser;
         db.collection('Users')
         .doc(user.uid)
