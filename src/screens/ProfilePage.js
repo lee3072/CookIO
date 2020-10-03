@@ -1,38 +1,77 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+//import React, { useState, useEffect } from 'react';
+import { StyleSheet, Button, Text, View } from 'react-native';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import firebase from '../../firebase_setup';
-//import * as firebase from "firebase";
+import 'firebase/firestore';
 
-/*
-var firebaseConfig = {
-    apiKey: "AIzaSyC1vzo3Uk66RrEtkxRaUKzln93sppXtPGs",
-    authDomain: "cookio-b4eaa.firebaseapp.com",
-    databaseURL: "https://cookio-b4eaa.firebaseio.com",
-    projectId: "cookio-b4eaa",
-    storageBucket: "cookio-b4eaa.appspot.com",
-    messagingSenderId: "244962151899",
-    appId: "1:244962151899:web:46d43e6bdf48777df1ebfe"
-};
-
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-*/
-
-
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log(user.email)
-    } else {
-      // No user is signed in.
-      console.log("Not logged-in")
-    }
-  });
-
+var db = firebase.firestore(); //firestore
 
 class ProfilePage extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            uid: '',
+            email: '',
+            username: '',
+            followers: 0,
+            interest: '',
+
+        };
+    }
+
+
+    componentDidMount() {
+        //set state
+        const currentUser = firebase.auth().currentUser;
+
+        if (currentUser) {
+            console.log('Success');
+            this.setState({uid: currentUser.uid})
+            this.setState({email: currentUser.email})
+
+            function getUserName(documentSnapshot) {
+                return documentSnapshot.get('userName');
+            }
+              
+            db.collection('Users')
+            .doc(currentUser.uid)
+            .get()
+            .then(documentSnapshot => getUserName(documentSnapshot))
+            .then(userName => {
+                this.setState({username: userName})
+            });
+
+            function getNFollowers(documentSnapshot) {
+                return documentSnapshot.get('numberOfFollowers');
+            }
+              
+            db.collection('Users')
+            .doc(currentUser.uid)
+            .get()
+            .then(documentSnapshot => getNFollowers(documentSnapshot))
+            .then(nFollowers => {
+                this.setState({followers: nFollowers})
+            });
+
+            function getInterest(documentSnapshot) {
+                return documentSnapshot.get('topicsOfInterest');
+            }
+              
+            db.collection('Users')
+            .doc(currentUser.uid)
+            .get()
+            .then(documentSnapshot => getInterest(documentSnapshot))
+            .then(topicOfInterest => {
+                this.setState({interest: topicOfInterest})
+            });
+    }
+
+    }
 
     render() {
         return (
@@ -42,12 +81,20 @@ class ProfilePage extends React.Component {
                 justifyContent: "center",
                 alignItems: "center"
             }}>
-            <Text>Hello, world!</Text>
+            <Text>Username: {this.state.username}</Text>
+            <Text>Number of Followers: {this.state.followers}</Text>
+            <Text>Topic of Interest: {this.state.interest}</Text>
+            <Text>Welcome!!</Text>
+
+            <Button
+                title="Change Profile"
+                onPress={() => this.props.navigation.navigate('EditProfilePage')}
+            />
             </View>
+
         );
     }
 }
 
-// ...
 
 export default ProfilePage;
