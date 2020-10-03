@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 import firebase from '../../firebase_setup';
-import styles from './auth_styles';
-
 //import * as firebase from "firebase";
 
 /*
@@ -33,36 +31,21 @@ firebase.auth().onAuthStateChanged(function(user) {
   });
 
 
-  const ProfilePage = ({ navigation }) => {
-    
-    //render() {
-        const changeMod = () => {
-            navigation.navigate('EditPost')
-        }
-        return (
-            
-            <View style={styles.changeMod}>
-            <TouchableOpacity onPress={changeMod} style={styles.changeModButton}>
-                <Text style={styles.changeModButtonWrapper}>Make Post</Text>
-            </TouchableOpacity>
-            </View>
+class ProfilePage extends React.Component {
 
-            /*<View
+
+    render() {
+        return (
+            <View
                 style={{
                 lex: 1,
                 justifyContent: "center",
-                alignItems: "center",
-                flexDirection:"row"
+                alignItems: "center"
             }}>
             <Text>Hello, world!</Text>
-            
-            <TouchableOpacity onPress={changeMod} style={styles.changeModButton}>
-            <Text style={styles.changeModButtonWrapper}>Make Post</Text>
-            </TouchableOpacity>
-        </View>*/
-            
+            </View>
         );
-    //}
+    }
 }
 
 // ...

@@ -8,12 +8,12 @@ import { YellowBox} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
-//import * as firebase from "firebase";
 import * as Font from 'expo-font';
+//import * as firebase from "firebase";
+
 
 import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
-import EditPost from './src/screens/EditPost';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
 import firebase from './firebase_setup';
@@ -44,7 +44,6 @@ export default class App extends React.Component {
           <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
-            <Stack.Screen name="EditPost" component={EditPost}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
           </Stack.Navigator>
