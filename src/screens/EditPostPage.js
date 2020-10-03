@@ -2,24 +2,43 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import Header from "../components/CupertinoHeaderWithActionButton";
+import 'firebase/firestore';
+import firebase from '../../firebase_setup';
 
 function EditPostPage({ navigation }) {
   const [title, setTitle] = useState('');
   const [tages, setTages] = useState('');
   const [texts, setContent] = useState('');
-  const [imgs, setImgs] = useState('');
-  const post = () => {
-    let db = firebase.firestore()
-    const postRef = db.collection("Posts").doc();
-    postRef.set({
+  const [imgs, setImgs] = useState(''); 
+  let db = firebase.firestore();
+  const postRef = db.collection("Posts");
+  const currentUserRef = firebase.auth().currentUser.uid.toString();
+  //post as normal link user => post and post => user
+  const post = async () => {
+    const ref = await postRef.add({
       PostedDate: Date(),
-      postedUser: firebase.auth().currentUser.uid.toString(),
+      postedUser: currentUserRef,
       Title: title,
-      tag: tages,
-      content:  texts,
-      image: imgs,
-      
+      Tag: tages.split("#"),
+      Content:  texts,
+      Image: imgs.split(" "),
     })
+    db.collection("Users").doc(currentUserRef).update({
+      postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
+    })    
+  }
+  //post as anonymous only link user => post
+  const anPost = async () => {
+    const ref = await postRef.add({
+      PostedDate: Date(),
+      Title: title,
+      Tag: tages.split("#"),
+      Content:  texts,
+      Image: imgs.split(" "),
+    })
+    db.collection("Users").doc(currentUserRef).update({
+      postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
+    })    
   }
   return (
     <View style={styles.container}>
@@ -29,26 +48,28 @@ function EditPostPage({ navigation }) {
       </View>      
       <View style={styles.group}>
         <Text style={styles.title}>Title:</Text>
-        <TextInput multiline={true} style={styles.titleText} value={title} placeholder='Enter the name of the post' onChangeText={(e) => setTitle(e)}></TextInput>
+        <TextInput multiline={true} maxLength={40} style={styles.titleText} value={title} placeholder='Enter the name of the post' onChangeText={(e) => setTitle(e)}></TextInput>
       </View>
       <View style={styles.group1Stack}>
         <View style={styles.group1}>
           <Text style={styles.tages}>Tages:</Text>
-          <TextInput multiline={true}  style={styles.tagsText} value={tages} placeholder='#tage1 #tage2 ...' onChangeText={(e) => setTages(e)}></TextInput>
+          <TextInput multiline={true} maxLength={40}  style={styles.tagsText} value={tages} placeholder='#tage1 #tage2 ...' onChangeText={(e) => setTages(e)}></TextInput>
         </View>
         <View style={styles.group2}>
           <Text style={styles.content}>Content:</Text>
-          <TextInput multiline={true} textAlign='left' textAlignVertical='top' style={styles.contentText} value={texts} placeholder='say something..' onChangeText={(e) => setContent(e)}></TextInput>
+          <TextInput multiline={true} textAlign='left' maxLength={200} textAlignVertical='top' style={styles.contentText} value={texts} placeholder='say something..' onChangeText={(e) => setContent(e)}></TextInput>
         </View>
       </View>
       <View style={styles.group3}>
         <Text style={styles.images}>Images:</Text>
         <TextInput style={styles.imgText} value={imgs} placeholder='url1 url2 ...' onChangeText={(e) => setImgs(e)}></TextInput>
       </View>
-      <TouchableOpacity style={[styles.buttonContainer]}>
-          <Text style={styles.post}>BUTTON</Text>
+      <TouchableOpacity onPress={post} style={[styles.buttonContainer]}>
+          <Text style={styles.post}>post</Text>
       </TouchableOpacity> 
-
+      <TouchableOpacity onPress={anPost} style={[styles.buttonContainer]}>
+          <Text style={styles.post}>post as anonymous</Text>
+      </TouchableOpacity> 
     </View>
   );
 }
@@ -77,7 +98,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 2,
     minWidth: 88,
-    maxWidth: 120,
+    maxWidth: 200,
     paddingLeft: 16,
     paddingRight: 16
   },
