@@ -9,14 +9,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
 //import * as firebase from "firebase";
+<<<<<<< HEAD
 import * as Font from 'expo-font';
+=======
+
+>>>>>>> post
 
 import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import EditPost from './src/screens/EditPost';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
+import EditPostPage from './src/screens/EditPostPage';
 import firebase from './firebase_setup';
+<<<<<<< HEAD
+=======
+
+>>>>>>> post
 
 let customFonts = {
   'Rokkitt': require('./src/assets/fonts/rokkitt/Rokkitt-Regular.ttf'),
@@ -44,9 +53,15 @@ export default class App extends React.Component {
           <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
+<<<<<<< HEAD
             <Stack.Screen name="EditPost" component={EditPost}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
+=======
+            <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
+            <Stack.Screen name="ProfilePage" component={ProfilePage}/>
+            <Stack.Screen name="EditPostPage" component={EditPostPage}/>
+>>>>>>> post
           </Stack.Navigator>
         </NavigationContainer>
       );
