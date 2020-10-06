@@ -3,27 +3,34 @@ import { StyleSheet, View, Text } from "react-native";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
 
-function PostCard(props) {
+export default class PostCard extends Component {
   // const [title, setTitel] = useState('');
   // let db = firebase.firestore();
   // db.collection("Posts").doc(props.postID).get().then( postRef =>{
   //   setTitel(postRef.get("Title").toString())
   // })
-  return (
-    <View style={[styles.container, props.style]}>
-      {/* <Text style={styles.title}>title</Text> */}
-      <Text style={styles.title}>{props.item}</Text>
-      <Text style={styles.tages3}>tages</Text>
-      <Text style={styles.tages1}>
-        content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
-      </Text>
-      <View style={styles.rectRow}>
-        <View style={styles.rect}></View>
-        <View style={styles.rect1}></View>
-        <View style={styles.rect2}></View>
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    return (
+      <View style={[styles.container, this.props.style]}>
+        {/* <Text style={styles.title}>title</Text> */}
+        <Text style={styles.title}>{this.props.item.id}</Text>
+        <Text style={styles.tages3}>tages</Text>
+        <Text style={styles.tages1}>
+          content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
+        </Text> 
+        <View style={styles.rectRow}>
+          <View style={styles.rect}></View>
+          <View style={styles.rect1}></View>
+          <View style={styles.rect2}></View>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
+  
 }
 
 const styles = StyleSheet.create({
@@ -70,4 +77,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PostCard;
+// export default PostCard;

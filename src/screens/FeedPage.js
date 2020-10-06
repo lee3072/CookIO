@@ -1,6 +1,6 @@
 import { database } from "firebase";
 import React, { Component, useState } from "react";
-import { StyleSheet, View, ScrollView, ActivityIndicator, Text } from "react-native";
+import { StyleSheet, View, ActivityIndicator, Text, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import CupertinoSearchBarBasic from "../components/CupertinoSearchBarBasic";
 import PostCard from "../components/PostCard";
@@ -17,6 +17,7 @@ export default class FeedPage extends React.Component {
       lastVisible: null,
       loading: false,
       refreshing: false,
+      haveMore: true,
     };
   }
 
@@ -50,9 +51,6 @@ export default class FeedPage extends React.Component {
       console.log(postData)
 
       let lastVisible = postData[postData.length - 1].id;
-      console.log('Last Visible ID');
-      console.log(postData.length);
-      console.log(lastVisible);
 
       // set states
       this.setState({
@@ -67,34 +65,41 @@ export default class FeedPage extends React.Component {
 
   //retrieve more data form firebse
   retrieveMore = async () => {
-    try{
-      console.log('Retrieving additional post Data');
-      this.setState({ refreshing: true });
+    if (this.state.haveMore == true) {
+      try{
+        console.log('Retrieving additional post Data');
+        this.setState({ refreshing: true });
 
-      console.log('Last Visible ID');
-      console.log(this.state.lastVisible);
+        let additionalQuery = await firebase.firestore().collection("testPosts")
+          .orderBy('id')
+          .startAfter(this.state.lastVisible)
+          .limit(1);
+    
+        let postSnapshots = await additionalQuery.get();
+        let postData = postSnapshots.docs.map(post => post.data());
+        console.log('post Data');
+        console.log(postData);
+        
+        if(postData.length==0){
+          this.setState({
+            haveMore: false ,
+            refreshing: false,
+          });
+        } else  {
+          let lastVisible = postData[postData.length - 1].id;
+          console.log('Last Visible ID            1');
+          console.log(lastVisible);
+          
+          this.setState({
+            postData: [...this.state.postData, ...postData],
+            lastVisible: lastVisible,
+            refreshing: false,
+          });
+        }
 
-      let additionalQuery = await firebase.firestore().collection("Posts")
-        .orderBy('id')
-        .startAfter(this.state.lastVisible)
-        .limit(1);
-  
-      let postSnapshots = await additionalQuery.get();
-      let postData = postSnapshots.docs.map(post => post.data());
-      console.log('post Data');
-      console.log(postData);
-
-      let lastVisible = postData[postData.length - 1].id;
-  
-
-      this.setState({
-        postData: [...this.state.postData, ...postData],
-        lastVisible: lastVisible,
-        refreshing: true,
-      });
-
-    } catch(error){
-      console.log(error);
+      } catch(error){
+        console.log(error);
+      }
     }
   }
 
@@ -108,16 +113,19 @@ export default class FeedPage extends React.Component {
 
   renderFooter = () => {
     // Check If Loading
-    if (this.state.loading || this.state.refreshing) {
-    // if (this.state.loading) {
-      return (
-        <View style={styles.activityIndicator}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-    else {
-      return null;
+    try {
+      if (this.state.loading || this.state.refreshing) {
+        return (
+          <View style={styles.activityIndicator}>
+            <ActivityIndicator />
+          </View>
+        );
+      }
+      else {
+        return null;
+      }
+    } catch(error) {
+      console.log(error);
     }
   }
 
@@ -132,26 +140,28 @@ export default class FeedPage extends React.Component {
           data={this.state.postData}
           // Element Key
           keyExtractor={(item, index) => String(index)}
-          // renderItem={({ item }) => (
-          //   <PostCard style={styles.postCard}> item={item} </PostCard>
-          // )}
-          renderItem={({ item }) => {
-            return (  
-              <View style={styles.item}>
-                <Text>Item {item.id}</Text>
-              </View>
-            )
-          }}
+          renderItem={({ item }) => (
+            <PostCard style={styles.postCard} item={item}/>
+          )}
           // Header (Title)
-          // ListHeaderComponent={this.renderHeader}
+          ListHeaderComponent={this.renderHeader}
+
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.retrieveMore}
+            />
+          }
+
+
           // Footer (Activity Indicator)
-          ListFooterComponent={this.renderFooter}
+          // ListFooterComponent={this.renderFooter}
           // On End Reached (Takes in a function)
-          onEndReached={this.retrieveMore}
+          // onEndReached={this.retrieveMore}
           // How Close To The End Of List Until Next Data Request Is Made
-          onEndReachedThreshold={20}
+          // onEndReachedThreshold={20}
           // Refreshing (Set To True When End Reached)
-          refreshing={this.state.refreshing}
+          // refreshing={this.state.refreshing}
         />
   
       </View>
