@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     postcontainer: {
         flex: 1,
         flexDirection: 'column',
+
       },
       header: {
         flexDirection: "row",
@@ -177,12 +178,27 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#D8D9DB"
       },
-      titleInput: {
+      /*titleInput: {
         margin: 10,
         padding: 5,
         height: '5%',
         borderWidth: 1,
         backgroundColor: 'white',
+      },*/
+      titleInput: {
+        height: "5%",
+        borderColor: "#000000",
+        borderBottomWidth: 1,
+        marginBottom: 36,
+        margin: 10,
+      },
+      conentInput: {
+        height: "20%",
+        //borderColor: "#000000",
+        borderBottomWidth: 1,
+        marginBottom: 36,
+        margin: 10,
+        backgroundColor: "pink",
       },
       buttonContent: {
         height: '10%',
@@ -244,6 +260,28 @@ const styles = StyleSheet.create({
         height: '30%',
         margin: 20,
         resizeMode: 'contain',
-      }
+      },
+
+
+  inner: {
+    padding: 24,
+    flex: 1,
+    justifyContent: "space-around"
+  },
+  header: {
+    fontSize: 36,
+    marginBottom: 48
+  },
+  textInput: {
+    height: "5%",
+    borderColor: "#000000",
+    borderBottomWidth: 1,
+    marginBottom: 36,
+    margin: 10,
+  },
+  btnContainer: {
+    backgroundColor: "white",
+    marginTop: 12
+  }
 });
 export default styles;

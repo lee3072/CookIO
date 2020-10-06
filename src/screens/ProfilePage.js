@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
@@ -22,16 +21,6 @@ if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 */
-=======
-import React, { Component } from "react";
-import { StyleSheet, Text, View } from 'react-native';
-
-import firebase from '../../firebase_setup';
-
-
-
-import CupertinoHeaderWithActionButton from "../components/CupertinoHeaderWithActionButton";
->>>>>>> post
 
 
 firebase.auth().onAuthStateChanged(function(user) {

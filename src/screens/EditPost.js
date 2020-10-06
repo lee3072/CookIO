@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import * as ImagePicker from 'expo-image-picker';
@@ -12,47 +12,51 @@ const EditPost = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [tags, setTags] = useState("");
-  const [selectImg, setSelectedImg] = useState(null);
+  const [selectImg, setSelectedImg] = useState("");
   const [url, setUrl] = useState("");
-  const [image, setImage] = useState(null);
+  /*const [image, setImage] = useState(null);*/
 
   const changeMod = () => {
     navigation.navigate('ProfilePage')
   }
-  
-  const postButtonHandler = () => {
-    let db = firebase.firestore()
-    if (text !== ''){
-    db.collection("Posts").doc("makepost").get().then(doc => {
-        db.collection("Posts").doc(firebase.auth().currentUser.uid.toString()).update({
-            title: title,
-            text: text,
-            tags: tags,
-            selectImg: selectImg,
-        })
-        
-        setTitle('')
-        setText('')
-        setTags('')
-        setImage('');
-        setSelectedImg(null);
-        navigation.navigate('ProfilePage')
-       
+
+
+
+
+  let db = firebase.firestore();
+  const postRef = db.collection("Posts");
+  const currentUserRef = firebase.auth().currentUser.uid.toString();
+  //post as normal link user => post and post => user
+  const post = async () => {
+    const ref = await postRef.add({
+      PostedDate: Date(),
+      postedUser: currentUserRef,
+      Title: title,
+      Tag: tags.split("#"),
+      Content:  text,
+      selectImg: selectImg.split(" "),
     })
-    }
-    else {
-    setWarning('Username cannot be empty!')
-    }
+    db.collection("Users").doc(currentUserRef).update({
+      postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
+    })    
+  }
+  //post as anonymous only link user => post
+  const anPost = async () => {
+    const ref = await postRef.add({
+      PostedDate: Date(),
+      Title: title,
+      Tag: tags.split("#"),
+      Content:  text,
+      selectImg: selectImg.split(" "),
+    })
+    db.collection("Users").doc(currentUserRef).update({
+      postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
+    })    
+  }
 
 
 
-    uploadPhotoAsync = async uri => {
-      const path = 'photos/${this.uid}/${Date.now()}.jpg'
-      
-    }
-}
 
- 
   openImage = async () => {
     let permission = await ImagePicker.requestCameraRollPermissionsAsync();
 
@@ -72,134 +76,98 @@ const EditPost = ({ navigation }) => {
 
   
   return (
-    <View style={styles.postcontainer}>
-      <StatusBar style="auto" />
+
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.postcontainer}
+    >
       <View style={styles.buttonContent} >
-        <TouchableOpacity onPress={changeMod} style={styles.button}>
-          <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={postButtonHandler} style={styles.button}>
-          <Text style={styles.buttonText}>Post</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={changeMod} style={styles.button}>
+            <Text style={styles.buttonText}>Back</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={post} style={styles.button}>
+            <Text style={styles.buttonText}>Post</Text>
+          </TouchableOpacity>
+        </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
       <View style={styles.inputContent} >
-        <TextInput 
+        <TextInput multiline={true} 
+        maxLength={40} style = {styles.titleInput} value={title} placeholder='Enter the name of the post' onChangeText={(e) => setTitle(e)}></TextInput>
+
+
+        {/*<TextInput 
           style = {styles.titleInput}
           placeholder="Title"
           textAlignVertical={'top'}
           onChangeText={(e) => setTitle(e)}
-          />
-        {
-          selectImg !== null ? (
-            <Image
-            style={styles.image}
-            source={{uri:(selectImg.localUri !== null) ? selectImg.localUri : 'https://www.shutterstock.com/image-photo/yuzu-citron-tea-93229276'}}/>
-          ) : <Text>   Picture uploads here</Text>
-        }
-        <TextInput 
+        />*/}
+        
+        {/*<TextInput 
           style = {styles.postInput}
           placeholder="Type here"
           textAlignVertical={'top'}
           onChangeText={(e) => setText(e)}
-          />
+          />*/}
         <TextInput 
+        multiline={true} 
+        maxLength={10} 
+        textAlignVertical='top' 
+        style={styles.postInput} 
+        value={text} 
+        placeholder='Type Here' 
+        onChangeText={(e) => setText(e)}></TextInput>
+        {/*<TextInput multiline={true} textAlign='left' maxLength={200} textAlignVertical='top' style={styles.postInput} value={text} placeholder='Type Here' onChangeText={(e) => setText(e)}></TextInput>*/}
+
+        <TextInput 
+        multiline={true} 
+        maxLength={40}  style={styles.titleInput} value={tags} placeholder='#tage1 #tage2 ...' onChangeText={(e) => setTags(e)}></TextInput>
+
+        {/*<TextInput 
           style = {styles.titleInput}
           placeholder="Tags"
           textAlignVertical={'top'}
           onChangeText={(e) => setTags(e)}
-        />
+        />*/}
         <TouchableOpacity 
           onPress={openImage}  
           style={styles.button}>
           <Text style={styles.buttonText}>Image</Text>
         </TouchableOpacity>
       </View>
-    </View>  
+        
+        {/*<View style={styles.inputContent} >
+          
+          <TextInput 
+          placeholder='Enter the name of the post' 
+          multiline={true} 
+          maxLength={40} 
+          style = {styles.titleInput} 
+          value={title} 
+          textAlignVertical={'top'} onChangeText={(e) => setTitle(e)}></TextInput>
+          
+          <TextInput 
+          placeholder='Type Here' 
+          multiline={true} 
+          maxLength={40} 
+          style = {styles.basic_input} 
+          value={title} 
+          textAlignVertical='top'
+          onChangeText={(e) => setTitle(e)}></TextInput>
+
+
+
+        </View>*/}
+
+
+
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+
+    
   );
 
 }
 
 
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 32,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#D8D9DB"
-  },
-  titleInput: {
-    margin: 10,
-    padding: 5,
-    height: '5%',
-    borderWidth: 1,
-    backgroundColor: 'white',
-  },
-  buttonContent: {
-    height: '10%',
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  inputContent: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-
-  boldText: {
-    fontWeight: 'bold',
-    fontSize: 22,
-  },
-  lightText: {
-    fontWeight: 'normal',
-    fontSize: 22,
-  },
-  lable_input: {
-    alignItems: 'baseline',
-    padding: 20,
-    backgroundColor: 'lightgray',
-  },
-  basic_input: {
-    borderWidth: 1,
-    borderColor: '#777',
-    padding: 8,
-    margin: 10,
-    width: 200,
-  },
-  buttonText: {
-    fontSize:16,
-    fontWeight:'500',
-    color:'#777',
-    textAlign: 'center',
-  },
-  button: {
-    width: 70,
-    height: 20,
-    backgroundColor:'lightgray',
-    borderRadius: 25,  //makes the end round
-    marginTop: 20,
-    marginLeft: 10,
-    marginRight: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  postInput: {
-    margin: 10,
-    padding: 5,
-    height: '40%',
-    borderWidth: 1,
-    backgroundColor: 'white',
-  },
-  image: {
-    width: '90%',
-    height: '30%',
-    margin: 20,
-    resizeMode: 'contain',
-  }
-});*/
 export default EditPost;
