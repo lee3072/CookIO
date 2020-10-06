@@ -18,7 +18,7 @@ const SignInPage = ({ navigation }) => {
             setWarning('')
             setEmailAddress('')
             setPassword('')
-            navigation.navigate("EditPostPage")
+            navigation.navigate("FeedPage")
         }
         })
         .catch(error => {

@@ -17,6 +17,7 @@ import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
 import EditPostPage from './src/screens/EditPostPage';
+import FeedPage from './src/screens/FeedPage'
 import firebase from './firebase_setup';
 
 
@@ -49,6 +50,7 @@ export default class App extends React.Component {
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
             <Stack.Screen name="EditPostPage" component={EditPostPage}/>
+            <Stack.Screen name="FeedPage" component={FeedPage}/>
           </Stack.Navigator>
         </NavigationContainer>
       );
