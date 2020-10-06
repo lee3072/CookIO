@@ -37,7 +37,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     
     //render() {
         const changeMod = () => {
-            navigation.navigate('EditPost')
+            navigation.navigate('EditPostings')
         }
         return (
             
