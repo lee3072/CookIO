@@ -64,13 +64,6 @@ class PostView extends React.Component {
     }
 
     render() {
-        const upDown = ({ up, down}) => {
-            return (
-            <View style={styles.showTagContainer}>
-                <Text style={{ fontWeight: "500" }}>up vote: {up} down vote: {down}</Text>
-            </View>
-            );
-        }
         
         return (
             <SafeAreaView style={styles.container}>
@@ -94,7 +87,9 @@ class PostView extends React.Component {
                         <Text onPress={this.downVote} style={{padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>Down</Text>
                     </TouchableOpacity>
                 </View>
-                <upDown up={this.state.up} down={this.state.down}/>
+                <View style={styles.showTagContainer}>
+                    <Text style={{ fontWeight: "500" }}>up vote: {this.state.up} down vote: {this.state.down}</Text>
+                </View>
                 <View style={styles.showCommentContainer}>
                     <Text style={{ fontWeight: "500" }}>Comments</Text>
                 </View>
