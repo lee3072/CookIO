@@ -198,7 +198,6 @@ class EditProfilePage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-          <ScrollView>
           <View style={styles.backButton}>
             <Button
                 color= "#ffdb85"
@@ -208,6 +207,8 @@ class EditProfilePage extends React.Component {
                 }}
             />
             </View>
+          <ScrollView>
+          
           <View style={{ margineTop: 60}}>
             <View style = {styles.profileContainer}>
                 <Image
