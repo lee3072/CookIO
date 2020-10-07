@@ -1,6 +1,6 @@
 
 import React, {useState} from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
 import * as Font from 'expo-font';
 import 'firebase/firestore';
 import styles from '../styles/post_styles';
@@ -104,6 +104,8 @@ class PostView extends React.Component {
                 <View style={styles.showCommentContainer}>
                     <Text style={{ fontWeight: "500" }}>Comments</Text>
                 </View>
+                <Button color= "#ffb300"
+                title="Back to Feed Page" onPress={() => this.props.navigation.navigate('FeedPage')} />
             </SafeAreaView>
         );
     }
