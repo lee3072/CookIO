@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import * as Font from 'expo-font';
 import 'firebase/firestore';
-import styles from './auth_styles';
+import styles from '../styles/post_styles';
 import firebase from '../../firebase_setup';
 
 class PostView extends React.Component {

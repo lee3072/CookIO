@@ -8,7 +8,7 @@ import * as Permissions from "expo-permissions";
 import 'firebase/firestore';
 import { Ionicons } from "@expo/vector-icons";
 import { firestore } from 'firebase';
-import styles from './auth_styles';
+import styles from '../styles/post_styles';
 
 
 const EditPost = ({ navigation }) => {

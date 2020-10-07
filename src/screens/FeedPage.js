@@ -146,12 +146,12 @@ class FeedPage extends React.Component {
           // Header (Title)
           ListHeaderComponent={this.renderHeader}
 
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={this.state.refreshing}
-          //     onRefresh={this.retrieveMore}
-          //   />
-          // }
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.retrieveMore}
+            />
+          }
         />
   
       </View>
