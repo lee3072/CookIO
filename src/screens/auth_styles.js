@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
 
 
 
-    
+
     container: {
       flex: 1,
   },
@@ -203,7 +203,37 @@ const styles = StyleSheet.create({
   photo: {
       alignItems: "flex-end",
       marginHorizontal: 32
-  }
+  },
+
+
+  voteContainer: {
+    flexDirection: "row",
+    //justifyContent: "flex-start",
+    //marginTop: 20,
+    //paddingHorizontal: 32,
+    //paddingVertical: 10,
+    //borderBottomWidth: 1,
+    //borderBottomColor: "#D8D9DB"
+},
+showContentContainer: {
+  margin: 20,
+  height: 100,
+  flexDirection: "row",
+  backgroundColor: "grey"
+},
+showTagContainer: {
+  marginLeft: 20,
+  marginRight: 20,
+  marginBottom: 10,
+  flexDirection: "row",
+  backgroundColor: "grey",
+},
+showCommentContainer: {
+  margin: 20,
+  height: 80,
+  flexDirection: "row",
+  backgroundColor: "grey"
+},
 
 
     

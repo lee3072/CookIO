@@ -18,6 +18,7 @@ import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
 import EditPost from './src/screens/EditPost';
 import EditPostings from './src/screens/EditPostings';
+import PostLayout from './src/screens/PostLayout';
 
 import firebase from './firebase_setup';
 
@@ -50,7 +51,7 @@ export default class App extends React.Component {
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
             <Stack.Screen name="EditPost" component={EditPost}/>
-            <Stack.Screen name="EditPostings" component={EditPostings}/>
+            <Stack.Screen name="PostLayout" component={PostLayout}/>
 
           </Stack.Navigator>
         </NavigationContainer>
