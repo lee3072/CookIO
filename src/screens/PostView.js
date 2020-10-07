@@ -19,7 +19,7 @@ class PostView extends React.Component {
             canVote: true,
             postRef: null,
             users: null,
-            post: null,
+            voted: false,
         }
         this.getEverthing();
     }
@@ -35,7 +35,6 @@ class PostView extends React.Component {
             postRef: postRef,
             users: post.get('VotedUser'),
             test: 1, 
-            post: post,
         })
         console.log('PostView');
         console.log(this.state.id);
@@ -46,28 +45,30 @@ class PostView extends React.Component {
     }
 
     upVote = async () => {
-        if(! (this.state.users.includes(this.state.uid))) {
+        if(! (this.state.users.includes(this.state.uid) || this.state.voted)) {
             this.state.postRef.update({
                 VotedUser: firebase.firestore.FieldValue.arrayUnion(this.state.uid),
                 UpVote: this.state.up + 1,
             })
+            console.log(this.state.users);
             this.setState({
                 up: this.state.up+1,
-                users: this.state.post.get('VotedUser'),
+                voted: true,
             })
+            console.log(this.state.users);
             console.log('up voted');
         }
     }
 
     downVote = async () =>{
-        if(! (this.state.users.includes(this.state.uid))) {
+        if(! (this.state.users.includes(this.state.uid) || this.state.voted)) {
             this.state.postRef.update({
                 VotedUser: firebase.firestore.FieldValue.arrayUnion(this.state.uid),
                 DownVote: this.state.down + 1,
             })
             this.setState({
                 down: this.state.down+1,
-                users: this.state.post.get('VotedUser'),
+                voted: true,
             })
             console.log('down voted');
         }
