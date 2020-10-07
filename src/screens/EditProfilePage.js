@@ -25,7 +25,6 @@ class EditProfilePage extends React.Component {
             newInterest: '',
         };
     }
-
     componentDidMount() {
         const currentUser = firebase.auth().currentUser;
 
@@ -177,21 +176,8 @@ class EditProfilePage extends React.Component {
 
     }
 
-    onChangeInterestPress = () => {
-        var user = firebase.auth().currentUser;
 
-        db.collection("Usernames").doc("Unique").get().then(doc => {
-                db.collection('Users')
-                .doc(user.uid)
-                .update({
-                    topicsOfInterest: this.state.newInterest,
-                })
-                .then(() => {
-                    Alert.alert("Your interest was changed");
-                });
-        })
 
-    }
 
   render() {
     return (
