@@ -28,6 +28,39 @@ const EditPost = ({ navigation }) => {
     const uid = firebase.auth().currentUser.uid;
 
     const handlePost = async () => {
+        if (!title.trim()) {
+            alert('Please Enter Title');
+            return;
+        }
+        if (!text.trim()) {
+            alert('Please Enter Cotent');
+            return;
+        }
+
+        const ref = await postRef.add({
+            PostedDate: Date(),
+            postedUser: currentUserRef,
+            Title: title,
+            Tag: tags,
+            Content:  text,
+            image: image,
+          })
+          db.collection("Users").doc(currentUserRef).update({
+            postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
+          }) 
+          navigation.navigate("ProfilePage"); 
+    }
+
+    const handlePostAno = async () => {
+        if (!title.trim()) {
+            alert('Please Enter Title');
+            return;
+        }
+        if (!text.trim()) {
+            alert('Please Enter Cotent');
+            return;
+        }
+
         const ref = await postRef.add({
             PostedDate: Date(),
             postedUser: currentUserRef,
@@ -62,6 +95,9 @@ const EditPost = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity onPress = {handlePost}>
                     <Text style={{ fontWeight: "500" }}>Post</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress = {handlePostAno}>
+                    <Text style={{ fontWeight: "500" }}>PostAno</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.titleContainer}>
