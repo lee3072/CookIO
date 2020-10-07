@@ -140,7 +140,7 @@ const ProfilePage = ({navigation}) => {
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="Make Post"
-                    onPress={() => navigation.navigate('MakePostPage')}
+                    onPress={() => navigation.navigate('EditPost')}
                 />
             </View>
             
