@@ -17,9 +17,7 @@ import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
 import EditPost from './src/screens/EditPost';
-import EditPostings from './src/screens/EditPostings';
 import PostLayout from './src/screens/PostLayout';
-
 import firebase from './firebase_setup';
 
 let customFonts = {
