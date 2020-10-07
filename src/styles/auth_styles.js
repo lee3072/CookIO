@@ -1,6 +1,6 @@
 import { Platform, Dimensions, StyleSheet} from 'react-native';
-var screenWidth = Dimensions.get('window').width;
-var screenHeight = Dimensions.get('window').height;
+var screenWidth = Dimensions.get('screen').width;
+var screenHeight = Dimensions.get('screen').height;
 if (Platform.OS === 'web') {screenHeight = 720; screenWidth = 405;}
 
 // Style Section Start
