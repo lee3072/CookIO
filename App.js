@@ -16,10 +16,9 @@ import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
-import EditPostPage from './src/screens/EditPostPage';
+// import EditPostPage from './src/screens/EditPostPage';
 import FeedPage from './src/screens/FeedPage'
-import firebase from './firebase_setup';
-
+import PowstView from './src/screens/PostView'
 import firebase from './firebase_setup';
 
 let customFonts = {
@@ -50,10 +49,11 @@ export default class App extends React.Component {
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
-            <Stack.Screen name="EditPostPage" component={EditPostPage}/>
+            {/* <Stack.Screen name="EditPostPage" component={EditPostPage}/> */}
             <Stack.Screen name="FeedPage" component={FeedPage}/>
-            <Stack.Screen name="EditPost" component={EditPost}/>
-            <Stack.Screen name="EditPostings" component={EditPostings}/>
+            <Stack.Screen name="PostView" component={PowstView}/>
+            {/* <Stack.Screen name="EditPost" component={EditPost}/> */}
+            {/* <Stack.Screen name="EditPostings" component={EditPostings}/> */}
 
           </Stack.Navigator>
         </NavigationContainer>
