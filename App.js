@@ -16,10 +16,8 @@ import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
-import EditPostPage from './src/screens/EditPostPage';
+import EditPost from './src/screens/EditPost';
 import FeedPage from './src/screens/FeedPage'
-import firebase from './firebase_setup';
-
 import firebase from './firebase_setup';
 
 let customFonts = {
@@ -50,10 +48,8 @@ export default class App extends React.Component {
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
-            <Stack.Screen name="EditPostPage" component={EditPostPage}/>
             <Stack.Screen name="FeedPage" component={FeedPage}/>
             <Stack.Screen name="EditPost" component={EditPost}/>
-            <Stack.Screen name="EditPostings" component={EditPostings}/>
 
           </Stack.Navigator>
         </NavigationContainer>
