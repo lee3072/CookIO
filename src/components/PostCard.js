@@ -1,44 +1,37 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { Component, useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import 'firebase/firestore';
-import PostView from "../screens/PostView";
+import firebase from '../../firebase_setup';
 
+export default class PostCard extends Component {
+  // const [title, setTitel] = useState('');
+  // let db = firebase.firestore();
+  // db.collection("Posts").doc(props.postID).get().then( postRef =>{
+  //   setTitel(postRef.get("Title").toString())
+  // })
+  constructor(props){
+    super(props);
+  }
 
-// class PostCard extends React.Component {
-//   constructor(props){
-//     super(props);
-//   }
-
-//   render(){
-const PostCard = ({ navigation, item }) => {
-  console.log("in post card" + item.id);
-  console.log(item.ID);
-  return (
-    <TouchableOpacity 
-      onPress={() =>
-          navigation.navigate('PostView', {id: item.ID})
-      }
-      style={[styles.container]}
-      >
-
-      <Text style={styles.title}>{item.id}</Text>
-      <Text style={styles.tages3}>tages</Text>
-      <Text style={styles.tages1}>
-        content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
-      </Text> 
-      <View style={styles.rectRow}>
-        <View style={styles.rect}></View>
-        <View style={styles.rect1}></View>
-        <View style={styles.rect2}></View>
+  render(){
+    return (
+      <View style={[styles.container, this.props.style]}>
+        {/* <Text style={styles.title}>title</Text> */}
+        <Text style={styles.title}>{this.props.item.id}</Text>
+        <Text style={styles.tages3}>tages</Text>
+        <Text style={styles.tages1}>
+          content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
+        </Text> 
+        <View style={styles.rectRow}>
+          <View style={styles.rect}></View>
+          <View style={styles.rect1}></View>
+          <View style={styles.rect2}></View>
+        </View>
       </View>
-    </TouchableOpacity>
     );
-}
-
-
-//   }
+  }
   
-// }
+}
 
 const styles = StyleSheet.create({
   container: {},
@@ -84,4 +77,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PostCard;
+// export default PostCard;
