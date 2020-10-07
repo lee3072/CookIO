@@ -1,20 +1,31 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Button, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import Header from "../components/CupertinoHeaderWithActionButton";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from "expo-permissions";
+import styles from './auth_styles';
+
 
 function EditPostPage({ navigation }) {
   const [title, setTitle] = useState('');
   const [tages, setTages] = useState('');
   const [texts, setContent] = useState('');
   const [imgs, setImgs] = useState(''); 
+
+  const changeMod = () => {
+    navigation.navigate('ProfilePage')
+  }
+
   let db = firebase.firestore();
   const postRef = db.collection("Posts");
   const currentUserRef = firebase.auth().currentUser.uid.toString();
+
   //post as normal link user => post and post => user
-  const post = async () => {
+  const post = async (uri) => {
+    
     const ref = await postRef.add({
       PostedDate: Date(),
       postedUser: currentUserRef,
@@ -26,7 +37,9 @@ function EditPostPage({ navigation }) {
     db.collection("Users").doc(currentUserRef).update({
       postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
     })    
+
   }
+
   //post as anonymous only link user => post
   const anPost = async () => {
     const ref = await postRef.add({

@@ -1,28 +1,16 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
-import firebase from '../../firebase_setup';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from "expo-permissions";
-import 'firebase/firestore';
-import styles from './auth_styles';
+
+
+
+
+
+
 
 
 const EditPost = ({ navigation }) => {
-  const [title, setTitle] = useState("");
+
   const [text, setText] = useState("");
-  const [tags, setTags] = useState("");
-  const [selectImg, setSelectedImg] = useState("");
   const [image, setImage] = useState();
-  const [url, setUrl] = useState("");
-  /*const [image, setImage] = useState(null);*/
 
-  const changeMod = () => {
-    navigation.navigate('ProfilePage')
-  }
-
-  let db = firebase.firestore();
-  const postRef = db.collection("Posts");
-  const currentUserRef = firebase.auth().currentUser.uid.toString();
   const uid = firebase.auth().currentUser.uid;
   //post as normal link user => post and post => user
   const post = async (uri) => {
@@ -41,7 +29,6 @@ const EditPost = ({ navigation }) => {
         Tag: tags.split("#"),
         Content:  text,
         image: url,
-        //selectImg: selectImg.split(" "),
       })
       db.collection("Users").doc(currentUserRef).update({
         postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
@@ -54,19 +41,6 @@ const EditPost = ({ navigation }) => {
     }
 
       
-  }
-  //post as anonymous only link user => post
-  const anPost = async () => {
-    const ref = await postRef.add({
-      PostedDate: Date(),
-      Title: title,
-      Tag: tags.split("#"),
-      Content:  text,
-      selectImg: selectImg.split(" "),
-    })
-    db.collection("Users").doc(currentUserRef).update({
-      postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
-    })    
   }
 
   const getPermission = async () => {
@@ -188,47 +162,5 @@ const EditPost = ({ navigation }) => {
 
 }
 
-
-/*
-container: {
-        flex: 1,
-    },
-    header: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 20,
-        paddingHorizontal: 32,
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: "#D8D9DB"
-    },
-    inputContainer: {
-        margin: 20,
-        flexDirection: "row",
-        backgroundColor: "grey"
-
-    },
-    tagContainer: {
-        margin: 20,
-        flexDirection: "row",
-        backgroundColor: "grey",
-    },
-    titleContainer: {
-        margin: 20,
-        flexDirection: "row",
-        borderColor: "#000000",
-        borderBottomWidth: 1,
-    },
-    avatar: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        marginRight: 16
-    },
-    photo: {
-        alignItems: "flex-end",
-        marginHorizontal: 32
-    }
-*/
 
 export default EditPost;
