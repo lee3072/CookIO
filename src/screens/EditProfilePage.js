@@ -113,6 +113,7 @@ class EditProfilePage extends React.Component {
             db.collection('Users').doc(user.uid).update({
                 userIcon: remoteUri,
             });
+            this.setState({currentIcon: result.uri})
         }
 
     }
