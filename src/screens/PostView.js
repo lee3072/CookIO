@@ -19,6 +19,7 @@ class PostView extends React.Component {
             canVote: true,
             postRef: null,
             users: null,
+            post: null,
         }
         this.getEverthing();
     }
@@ -34,6 +35,7 @@ class PostView extends React.Component {
             postRef: postRef,
             users: post.get('VotedUser'),
             test: 1, 
+            post: post,
         })
         console.log('PostView');
         console.log(this.state.id);
@@ -49,6 +51,10 @@ class PostView extends React.Component {
                 VotedUser: firebase.firestore.FieldValue.arrayUnion(this.state.uid),
                 UpVote: this.state.up + 1,
             })
+            this.setState({
+                up: this.state.up+1,
+                users: this.state.post.get('VotedUser'),
+            })
             console.log('up voted');
         }
     }
@@ -57,9 +63,13 @@ class PostView extends React.Component {
         if(! (this.state.users.includes(this.state.uid))) {
             this.state.postRef.update({
                 VotedUser: firebase.firestore.FieldValue.arrayUnion(this.state.uid),
-                DownVote: this.state.up + 1,
+                DownVote: this.state.down + 1,
             })
-            console.log('up voted');
+            this.setState({
+                down: this.state.down+1,
+                users: this.state.post.get('VotedUser'),
+            })
+            console.log('down voted');
         }
     }
 
