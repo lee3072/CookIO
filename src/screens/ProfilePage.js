@@ -26,9 +26,7 @@ class ProfilePage extends React.Component {
         };
     }
 
-
-    componentDidMount() {
-        //set state
+    setupState = () => {
         const currentUser = firebase.auth().currentUser;
 
         if (currentUser) {
@@ -84,21 +82,34 @@ class ProfilePage extends React.Component {
                 this.setState({icon: userIcon})
             });
         }
-
     }
+
+    componentDidMount() {
+        this.setupState()
+    }
+
 
     render() {
         return (
+            
             <View style={styles.container}>
-                <View style={styles.logoutButton}>
-                    <Button
-                        color= "#ffdb85"
-                        title="Logout"
-                        onPress={() => {
-                                firebase.auth().signOut()
-                                this.props.navigation.navigate('SignInPage')
-                            }}
-                    />
+                <View style={styles.rowContainer}>
+                    <View style={styles.refreshButton}>
+                        <Button
+                            color= "#ffdb85"
+                            title="Refresh"
+                            onPress={this.setupState} />
+                    </View>
+                    <View style={styles.logoutButton}>
+                        <Button
+                            color= "#ffdb85"
+                            title="Logout"
+                            onPress={() => {
+                                    firebase.auth().signOut()
+                                    this.props.navigation.navigate('SignInPage')
+                                }}
+                        />
+                    </View>
                 </View>
                 <View style={{ margineTop: 60}}>
                     <View style = {styles.profileContainer}>
@@ -123,7 +134,7 @@ class ProfilePage extends React.Component {
                         <Text>{this.state.followers}</Text>
                     </View>
                     <View style={styles.followerFollowing}>
-                        <Text>Followings</Text>
+                        <Text>Following</Text>
                         <Text>N/A</Text>
                     </View>
                     <Button color= "#ffb300"
@@ -195,6 +206,11 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         flexDirection: "row",
         justifyContent: "flex-end",
+    },
+    refreshButton: {
+        paddingTop: 20,
+        flexDirection: "row",
+        justifyContent: "flex-start",
     },
 
 });
