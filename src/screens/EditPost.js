@@ -1,7 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
-import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from "expo-permissions";
@@ -22,16 +20,12 @@ const EditPost = ({ navigation }) => {
     navigation.navigate('ProfilePage')
   }
 
-
-
-
   let db = firebase.firestore();
   const postRef = db.collection("Posts");
   const currentUserRef = firebase.auth().currentUser.uid.toString();
   const uid = firebase.auth().currentUser.uid;
   //post as normal link user => post and post => user
   const post = async (uri) => {
-
     try {
       const photo = await Firebaase.getBlob(uri)
 
@@ -86,16 +80,8 @@ const EditPost = ({ navigation }) => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync();
 
-      /*let result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.5,
-      });*/
-
       if (!result.cancelled) {
         setImage({localUri:result.uri});
-        //alert("We need permission to access your camera roll.");
 
         return;
       }
@@ -146,8 +132,7 @@ const EditPost = ({ navigation }) => {
     if (picker.cancelled == true) {
       return;
     }
-    //setSelectedImg(picker.uri);
-    //setSelectedImg({localUri:picker.uri});
+
     setImage({localUri:picker.uri});
     console.log(picker);
   }
@@ -174,20 +159,6 @@ const EditPost = ({ navigation }) => {
         <TextInput multiline={true} 
         maxLength={40} style = {styles.titleInput} value={title} placeholder='Enter the name of the post' onChangeText={(e) => setTitle(e)}></TextInput>
 
-
-        {/*<TextInput 
-          style = {styles.titleInput}
-          placeholder="Title"
-          textAlignVertical={'top'}
-          onChangeText={(e) => setTitle(e)}
-        />*/}
-        
-        {/*<TextInput 
-          style = {styles.postInput}
-          placeholder="Type here"
-          textAlignVertical={'top'}
-          onChangeText={(e) => setText(e)}
-          />*/}
         <TextInput 
         multiline={true} 
         maxLength={10} 
@@ -196,65 +167,19 @@ const EditPost = ({ navigation }) => {
         value={text} 
         placeholder='Type Here' 
         onChangeText={(e) => setText(e)}></TextInput>
-        {/*<TextInput multiline={true} textAlign='left' maxLength={200} textAlignVertical='top' style={styles.postInput} value={text} placeholder='Type Here' onChangeText={(e) => setText(e)}></TextInput>*/}
 
         <TextInput 
         multiline={true} 
         maxLength={40}  style={styles.titleInput} value={tags} placeholder='#tage1 #tage2 ...' onChangeText={(e) => setTags(e)}></TextInput>
 
-        {/*<TextInput 
-          style = {styles.titleInput}
-          placeholder="Tags"
-          textAlignVertical={'top'}
-          onChangeText={(e) => setTags(e)}
-        />*/}
-        {/*{image !== null ? (
-            <Image
-            style={styles.image}
-            source={{uri:(image.localUri !== null) ? image.localUri : 'https://www.shutterstock.com/image-photo/yuzu-citron-tea-93229276'}} onChangeText={(e) => setSelectedImg(e)}/>
-          ) : <Text>   Picture uploads here</Text>}*/}
-          {/*<Image
-            style={styles.image}
-            source={{uri:(image.localUri !== null) ? image.localUri : 'https://www.shutterstock.com/image-photo/yuzu-citron-tea-93229276'}} onChangeText={(e) => setSelectedImg(e)}/>
-          ) : <Text>   Picture uploads here</Text>*/}
         <TouchableOpacity 
           onPress={openImage}  
           style={styles.button}>
             {image ? (
               <Image source={{uri: image}}/>
             ): <Text style={styles.buttonText}>Image</Text>} 
-          
-
-
-        </TouchableOpacity>
-        
+        </TouchableOpacity>        
       </View>
-        
-        {/*<View style={styles.inputContent} >
-          
-          <TextInput 
-          placeholder='Enter the name of the post' 
-          multiline={true} 
-          maxLength={40} 
-          style = {styles.titleInput} 
-          value={title} 
-          textAlignVertical={'top'} onChangeText={(e) => setTitle(e)}></TextInput>
-          
-          <TextInput 
-          placeholder='Type Here' 
-          multiline={true} 
-          maxLength={40} 
-          style = {styles.basic_input} 
-          value={title} 
-          textAlignVertical='top'
-          onChangeText={(e) => setTitle(e)}></TextInput>
-
-
-
-        </View>*/}
-
-
-
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
 
