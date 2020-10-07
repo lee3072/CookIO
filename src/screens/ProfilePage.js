@@ -143,7 +143,12 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('EditPost')}
                 />
             </View>
-            
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Feed Page"
+                    onPress={() => navigation.navigate('FeedPage')}
+                />
+            </View>
 
         
         </View>

@@ -1,6 +1,6 @@
 import { database } from "firebase";
 import React, { Component, useState } from "react";
-import { StyleSheet, View, ActivityIndicator, Text, RefreshControl } from "react-native";
+import { StyleSheet, View, ActivityIndicator, Text, RefreshControl, Button } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import CupertinoSearchBarBasic from "../components/CupertinoSearchBarBasic";
 import PostCard from "../components/PostCard";
@@ -132,6 +132,11 @@ class FeedPage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Button color= "#ffb300"
+            title="My Profile"
+            onPress={() => this.props.navigation.navigate('ProfilePage')}
+        />
+
         <CupertinoSearchBarBasic
           style={styles.cupertinoSearchBarBasic}
         ></CupertinoSearchBarBasic>

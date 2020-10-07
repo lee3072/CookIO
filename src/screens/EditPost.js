@@ -28,11 +28,11 @@ const EditPost = ({ navigation }) => {
     const uid = firebase.auth().currentUser.uid;
 
     const handlePost = async () => {
-        if (!title.trim()) {
+        if (title == '') {
             alert('Please Enter Title');
             return;
         }
-        if (!text.trim()) {
+        if (text == '') {
             alert('Please Enter Cotent');
             return;
         }
@@ -52,11 +52,11 @@ const EditPost = ({ navigation }) => {
     }
 
     const handlePostAno = async () => {
-        if (!title.trim()) {
+        if (title == '') {
             alert('Please Enter Title');
             return;
         }
-        if (!text.trim()) {
+        if (text == '') {
             alert('Please Enter Cotent');
             return;
         }
