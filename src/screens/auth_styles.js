@@ -160,6 +160,55 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20/360*screenWidth,
         lineHeight: 23/720*screenHeight*1.125,
-    }
+    },
+
+
+
+    
+    container: {
+      flex: 1,
+  },
+  header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 20,
+      paddingHorizontal: 32,
+      paddingVertical: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: "#D8D9DB"
+  },
+  inputContainer: {
+      margin: 20,
+      flexDirection: "row",
+      backgroundColor: "grey"
+
+  },
+  tagContainer: {
+      margin: 20,
+      flexDirection: "row",
+      backgroundColor: "grey",
+  },
+  titleContainer: {
+      margin: 20,
+      flexDirection: "row",
+      borderColor: "#000000",
+      borderBottomWidth: 1,
+  },
+  avatar: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      marginRight: 16
+  },
+  photo: {
+      alignItems: "flex-end",
+      marginHorizontal: 32
+  }
+
+
+    
+
+
+  
 });
 export default styles;

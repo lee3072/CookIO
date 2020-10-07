@@ -20,6 +20,7 @@ import EditPostPage from './src/screens/EditPostPage';
 import FeedPage from './src/screens/FeedPage'
 import firebase from './firebase_setup';
 
+import firebase from './firebase_setup';
 
 let customFonts = {
   'Rokkitt': require('./src/assets/fonts/rokkitt/Rokkitt-Regular.ttf'),
@@ -51,6 +52,9 @@ export default class App extends React.Component {
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
             <Stack.Screen name="EditPostPage" component={EditPostPage}/>
             <Stack.Screen name="FeedPage" component={FeedPage}/>
+            <Stack.Screen name="EditPost" component={EditPost}/>
+            <Stack.Screen name="EditPostings" component={EditPostings}/>
+
           </Stack.Navigator>
         </NavigationContainer>
       );
@@ -59,4 +63,3 @@ export default class App extends React.Component {
     }
   }
 }
-
