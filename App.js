@@ -20,6 +20,9 @@ import ProfilePage from './src/screens/ProfilePage';
 import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
 import MakePostPage from './src/screens/MakePostPage'
+import EditPost from './src/screens/EditPost';
+import FeedPage from './src/screens/FeedPage'
+import PostView from './src/screens/PostView'
 import firebase from './firebase_setup';
 
 let customFonts = {
@@ -54,6 +57,10 @@ export default class App extends React.Component {
             <Stack.Screen name="EditProfilePage" component={EditProfilePage}/>
             <Stack.Screen name="ChangePasswordPage" component={ChangePasswordPage}/>
             <Stack.Screen name="MakePostPage" component={MakePostPage}/>
+            <Stack.Screen name="FeedPage" component={FeedPage}/>
+            <Stack.Screen name="EditPost" component={EditPost}/>
+            <Stack.Screen name="PostView" component={PostView}/>
+
           </Stack.Navigator>
         </NavigationContainer>
       );
