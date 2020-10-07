@@ -5,6 +5,7 @@
  
 import React, {useState} from 'react';
 import { YellowBox} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
@@ -44,8 +45,8 @@ export default class App extends React.Component {
     if (this.state.fontsLoaded) {
       return (
         <NavigationContainer>
+          <StatusBar style="light"></StatusBar>
           <Stack.Navigator screenOptions={{headerShown: false}} >
-            
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
