@@ -13,6 +13,7 @@ const ProfilePage = ({navigation}) => {
     const [email,setEmail] = useState('');
     const [username,setUsername] = useState('')
     const [followers,setFollowers] = useState('')
+    const [followings,setFollowings] = useState('')
     const [interest,setInterest] = useState('')
     const [icon,setIcon] = useState('')
 
@@ -70,6 +71,18 @@ const ProfilePage = ({navigation}) => {
             .then(userIcon => {
                 setIcon(userIcon)
             });
+
+            function getFollowingUsers(documentSnapshot) {
+                return documentSnapshot.get('followingUsers');
+            }
+                  
+            db.collection('Users')
+            .doc(currentUser.uid)
+            .get()
+            .then(documentSnapshot => getFollowingUsers(documentSnapshot))
+            .then(followingUsers => {
+                setFollowings(followingUsers.length - 1);
+            });
         }
     };
 
@@ -115,8 +128,8 @@ const ProfilePage = ({navigation}) => {
                     <Text>{followers}</Text>
                 </View>
                 <View style={styles.followerFollowing}>
-                    <Text>Followings</Text>
-                    <Text>N/A</Text>
+                    <Text>Following</Text>
+                    <Text>{followings}</Text>
                 </View>
                 <Button color= "#ffb300"
                     title="Change Profile"
