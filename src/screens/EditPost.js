@@ -50,7 +50,7 @@ const EditPost = ({ navigation }) => {
         let result = await ImagePicker.launchImageLibraryAsync();
         if (!result.cancelled) {
             setImage({localUri:result.uri});
-            console.log(image);
+            //console.log(image);
         }
     }
 

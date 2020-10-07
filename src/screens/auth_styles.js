@@ -163,12 +163,10 @@ const styles = StyleSheet.create({
     },
 
 
-
-
     container: {
       flex: 1,
-  },
-  header: {
+    },
+    header: {
       flexDirection: "row",
       justifyContent: "space-between",
       marginTop: 20,
@@ -176,69 +174,55 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       borderBottomWidth: 1,
       borderBottomColor: "#D8D9DB"
-  },
-  inputContainer: {
+    },
+    inputContainer: {
       margin: 20,
       flexDirection: "row",
       backgroundColor: "grey"
-
-  },
-  tagContainer: {
+    },
+    tagContainer: {
       margin: 20,
       flexDirection: "row",
       backgroundColor: "grey",
-  },
-  titleContainer: {
+    },
+    titleContainer: {
       margin: 20,
       flexDirection: "row",
       borderColor: "#000000",
       borderBottomWidth: 1,
-  },
-  avatar: {
+    },
+    avatar: {
       width: 48,
       height: 48,
       borderRadius: 24,
       marginRight: 16
-  },
-  photo: {
+    },
+    photo: {
       alignItems: "flex-end",
       marginHorizontal: 32
-  },
-
-
-  voteContainer: {
-    flexDirection: "row",
-    //justifyContent: "flex-start",
-    //marginTop: 20,
-    //paddingHorizontal: 32,
-    //paddingVertical: 10,
-    //borderBottomWidth: 1,
-    //borderBottomColor: "#D8D9DB"
-},
-showContentContainer: {
-  margin: 20,
-  height: 100,
-  flexDirection: "row",
-  backgroundColor: "grey"
-},
-showTagContainer: {
-  marginLeft: 20,
-  marginRight: 20,
-  marginBottom: 10,
-  flexDirection: "row",
-  backgroundColor: "grey",
-},
-showCommentContainer: {
-  margin: 20,
-  height: 80,
-  flexDirection: "row",
-  backgroundColor: "grey"
-},
-
-
-    
-
-
+    },
+    voteContainer: {
+      flexDirection: "row",
+    },
+    showContentContainer: {
+      margin: 20,
+      height: 100,
+      flexDirection: "row",
+      backgroundColor: "grey"
+    },
+    showTagContainer: {
+      marginLeft: 20,
+      marginRight: 20,
+      marginBottom: 10,
+      flexDirection: "row",
+      backgroundColor: "grey",
+    },
+    showCommentContainer: {
+      margin: 20,
+      height: 80,
+      flexDirection: "row",
+      backgroundColor: "grey"
+    },
   
 });
 export default styles;

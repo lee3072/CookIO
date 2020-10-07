@@ -6,7 +6,7 @@ import 'firebase/firestore';
 import styles from './auth_styles';
 
 
-const PostLayout = ({ navigation }) => {
+const PostLayout = () => {
 
     return (
         <SafeAreaView style={styles.container}>
