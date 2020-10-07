@@ -209,7 +209,7 @@ class EditProfilePage extends React.Component {
             </View>
           <ScrollView>
           
-          <View style={{ margineTop: 60}}>
+          <View style={{ margineTop: 20}}>
             <View style = {styles.profileContainer}>
                 <Image
                     style={styles.icon}
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
 
     profileContainer: {
         alignItems: "center",
-        marginTop: 50,
+        marginTop: 20,
     }, 
     photoButton: {
         padding: 10,
