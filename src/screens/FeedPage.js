@@ -7,7 +7,7 @@ import PostCard from "../components/PostCard";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
 
-export default class FeedPage extends React.Component {
+class FeedPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -141,27 +141,17 @@ export default class FeedPage extends React.Component {
           // Element Key
           keyExtractor={(item, index) => String(index)}
           renderItem={({ item }) => (
-            <PostCard style={styles.postCard} item={item}/>
+            <PostCard style={styles.postCard} item={item} navigation={this.props.navigation}/>
           )}
           // Header (Title)
           ListHeaderComponent={this.renderHeader}
 
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.retrieveMore}
-            />
-          }
-
-
-          // Footer (Activity Indicator)
-          // ListFooterComponent={this.renderFooter}
-          // On End Reached (Takes in a function)
-          // onEndReached={this.retrieveMore}
-          // How Close To The End Of List Until Next Data Request Is Made
-          // onEndReachedThreshold={20}
-          // Refreshing (Set To True When End Reached)
-          // refreshing={this.state.refreshing}
+          // refreshControl={
+          //   <RefreshControl
+          //     refreshing={this.state.refreshing}
+          //     onRefresh={this.retrieveMore}
+          //   />
+          // }
         />
   
       </View>
@@ -211,4 +201,4 @@ const styles = StyleSheet.create({
   }
 });
 
-// export default FeedPage;
+export default FeedPage;
