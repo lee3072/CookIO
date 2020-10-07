@@ -1,13 +1,10 @@
-// import React from 'react';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Button, Image, Text, View } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import firebase from '../../firebase_setup';
 import 'firebase/firestore';
-//import styles from '../styles/auth_styles';
 
 var db = firebase.firestore(); //firestore
 
