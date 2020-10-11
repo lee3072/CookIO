@@ -1,44 +1,30 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import 'firebase/firestore';
-import PostView from "../screens/PostView";
 
-
-// class PostCard extends React.Component {
-//   constructor(props){
-//     super(props);
-//   }
-
-//   render(){
 const PostCard = ({ navigation, item }) => {
   console.log("in post card " + item.ID);
-  console.log(item.ID);
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={() =>
-          navigation.navigate('PostView', {id: item.ID})
+        navigation.navigate('PostView', { id: item.ID })
       }
       style={[styles.container]}
-      >
+    >
 
       <Text style={styles.title}>{item.Title}</Text>
       <Text style={styles.tages3}>tages</Text>
       <Text style={styles.tages1}>
         content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
-      </Text> 
+      </Text>
       <View style={styles.rectRow}>
         <View style={styles.rect}></View>
         <View style={styles.rect1}></View>
         <View style={styles.rect2}></View>
       </View>
     </TouchableOpacity>
-    );
+  );
 }
-
-
-//   }
-  
-// }
 
 const styles = StyleSheet.create({
   container: {},
