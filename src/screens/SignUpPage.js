@@ -3,7 +3,7 @@ import { YellowBox, Platform, Dimension, StyleSheet, Text, View, TextInput, Dime
 import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import 'firebase/firestore';
-import styles from './auth_styles';
+import styles from '../styles/auth_styles';
 
 
 
@@ -52,6 +52,8 @@ const SignUpPage = ({ navigation }) => {
                 topicsOfInterest: "",
                 postedPosts: ["Posts/"+welcomePost.id],
                 numberOfFollowers: 0,
+                followingUsers: ["Users/"+firebase.auth().currentUser.uid.toString()],
+                postedComments: ["Comments/"+welcomeComment.id.toString()]
               })
               
   

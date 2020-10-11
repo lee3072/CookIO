@@ -40,32 +40,100 @@ class ChangePasswordPage extends React.Component {
         }).catch((error) => {
             Alert.alert(error.message);
         });
-
-        /*
-        var user = firebase.auth().currentUser;
-        user.updatePassword(this.state.newPassword).then(() => {
-            Alert.alert("Password was changed");
-        }).catch((error) => {
-            Alert.alert(error.message);
-        });
-        */
     }
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <TextInput value={this.state.currentPassword}
-        placeholder="Current Password" autoCapitalize="none" secureTextEntry={true}
-        onChangeText={(text) => {this.setState({currentPassword: text}) }}
-        />
-        <TextInput value={this.state.newPassword}
-        placeholder="New Password" autoCapitalize="none" secureTextEntry={true}
-        onChangeText={(text) => {this.setState({newPassword: text}) }}
-        />
-        <Button title="Change Password" onPress={this.onChangePasswordPress} />
-      </View>
+        <View style={styles.container}>
+            <View style={styles.backButton}>
+                <Button
+                    color= "#ffdb85"
+                    title="back"
+                    onPress={() => {
+                        this.props.navigation.navigate('EditProfilePage')
+                    }}
+                />
+            </View>
+            <View style={{ marginTop: 30}}>
+                <Text style={styles.titleStyle}>Change Password</Text>
+                <View
+                    style={{
+                        borderBottomColor: '#bdbdbd',
+                        borderBottomWidth: 1,
+                        paddingVertical: 5,
+                        marginVertical: 15,
+                        marginBottom: 20,
+                    }}
+                />
+                <View>
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.textStyle}>Current Password:</Text>
+                        <TextInput style={styles.subInputContainer} value={this.state.currentPassword}
+                            placeholder="Current Password" autoCapitalize="none" secureTextEntry={true}
+                            onChangeText={(text) => {this.setState({currentPassword: text}) }}
+                        />
+                    </View>
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.textStyle}>New Password:</Text>
+                        <TextInput style={styles.subInputContainer} value={this.state.newPassword}
+                            placeholder="New Password" autoCapitalize="none" secureTextEntry={true}
+                            onChangeText={(text) => {this.setState({newPassword: text}) }}
+                        />
+                    </View>
+                    <View style={styles.buttonStyle}>
+                        <Button color= "#ffb300"
+                        title="Change Password" onPress={this.onChangePasswordPress} />
+                    </View>
+                </View>
+            </View>
+        </View>
+      
     )
   }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //alignItems: "center",
+        padding: 13,
+    },
+    profileContainer: {
+        alignItems: "center",
+        marginTop: 50,
+    }, 
+    rowContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingBottom: 15,
+    },
+    textStyle: {
+        color: "#363636",
+        paddingTop: 10,
+        fontSize: 15,
+    },
+    titleStyle: {
+        color: "#363636",
+        paddingVertical: 0,
+        fontSize: 22,
+    },
+    backButton: {
+        paddingTop: 20,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+    },
+    subInputContainer: {
+        borderBottomWidth: 1,
+        borderColor: 'gray',
+        marginTop: 10,
+        paddingLeft: 5,
+        fontSize: 15,
+        width: 250,
+    },
+    buttonStyle: {
+        paddingVertical: 25,
+    }
+});
 
 export default ChangePasswordPage;

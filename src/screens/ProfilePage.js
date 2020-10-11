@@ -1,7 +1,5 @@
-import React from 'react';
-//import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Text, View } from 'react-native';
-
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Button, Image, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -10,30 +8,22 @@ import 'firebase/firestore';
 
 var db = firebase.firestore(); //firestore
 
-class ProfilePage extends React.Component {
+const ProfilePage = ({navigation}) => {
+    const [uid,setUid] = useState('');
+    const [email,setEmail] = useState('');
+    const [username,setUsername] = useState('')
+    const [followers,setFollowers] = useState('')
+    const [followings,setFollowings] = useState('')
+    const [interest,setInterest] = useState('')
+    const [icon,setIcon] = useState('')
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            uid: '',
-            email: '',
-            username: '',
-            followers: 0,
-            interest: '',
-
-        };
-    }
-
-
-    componentDidMount() {
-        //set state
+    const updateData = () => {
         const currentUser = firebase.auth().currentUser;
 
         if (currentUser) {
             console.log('Success');
-            this.setState({uid: currentUser.uid})
-            this.setState({email: currentUser.email})
-
+            setUid(currentUser.uid)
+            setEmail(currentUser.email)
             function getUserName(documentSnapshot) {
                 return documentSnapshot.get('userName');
             }
@@ -43,7 +33,7 @@ class ProfilePage extends React.Component {
             .get()
             .then(documentSnapshot => getUserName(documentSnapshot))
             .then(userName => {
-                this.setState({username: userName})
+                setUsername(userName)
             });
 
             function getNFollowers(documentSnapshot) {
@@ -55,7 +45,7 @@ class ProfilePage extends React.Component {
             .get()
             .then(documentSnapshot => getNFollowers(documentSnapshot))
             .then(nFollowers => {
-                this.setState({followers: nFollowers})
+                setFollowers(nFollowers)
             });
 
             function getInterest(documentSnapshot) {
@@ -67,34 +57,161 @@ class ProfilePage extends React.Component {
             .get()
             .then(documentSnapshot => getInterest(documentSnapshot))
             .then(topicOfInterest => {
-                this.setState({interest: topicOfInterest})
+                setInterest(topicOfInterest)
             });
-    }
 
-    }
+            function getIcon(documentSnapshot) {
+                return documentSnapshot.get('userIcon');
+            }
+              
+            db.collection('Users')
+            .doc(currentUser.uid)
+            .get()
+            .then(documentSnapshot => getIcon(documentSnapshot))
+            .then(userIcon => {
+                setIcon(userIcon)
+            });
 
-    render() {
-        return (
-            <View
-                style={{
-                lex: 1,
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
-            <Text>Username: {this.state.username}</Text>
-            <Text>Number of Followers: {this.state.followers}</Text>
-            <Text>Topic of Interest: {this.state.interest}</Text>
-            <Text>Welcome!!</Text>
+            function getFollowingUsers(documentSnapshot) {
+                return documentSnapshot.get('followingUsers');
+            }
+                  
+            db.collection('Users')
+            .doc(currentUser.uid)
+            .get()
+            .then(documentSnapshot => getFollowingUsers(documentSnapshot))
+            .then(followingUsers => {
+                setFollowings(followingUsers.length - 1);
+            });
+        }
+    };
 
-            <Button
-                title="Change Profile"
-                onPress={() => this.props.navigation.navigate('EditProfilePage')}
-            />
+    useEffect(() => {
+        const cleanup = navigation.addListener('focus', () => {
+            updateData()
+        });
+        return cleanup;
+    }, [navigation]);
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.logoutButton}>
+                <Button
+                    color= "#ffdb85"
+                    title="Logout"
+                    onPress={() => {
+                            firebase.auth().signOut()
+                            navigation.navigate('SignInPage')
+                        }}
+                />
+            </View>
+            <View style={{ margineTop: 60}}>
+                <View style = {styles.profileContainer}>
+                    
+                    <Image
+                        style={styles.icon}
+                        source={
+                            icon
+                                ? { uri: icon }
+                                : require("../assets/temp_icon.jpg")}/>
+                    <Text style={styles.username}>{username}</Text>
+                </View>
+                <View style={styles.interestBox}>
+                    <Text style={styles.interestedIn}>Interested in..</Text>
+                    <Text style={styles.interest}>{interest}</Text>
+                </View>
             </View>
 
-        );
-    }
+            <View style={styles.rowContainer}>
+                <View style={styles.followerFollowing}>
+                    <Text>Follower</Text>
+                    <Text>{followers}</Text>
+                </View>
+                <View style={styles.followerFollowing}>
+                    <Text>Following</Text>
+                    <Text>{followings}</Text>
+                </View>
+                <Button color= "#ffb300"
+                    title="Change Profile"
+                    onPress={() => navigation.navigate('EditProfilePage')}
+                />
+            </View>
+            
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Make Post"
+                    onPress={() => navigation.navigate('EditPost')}
+                />
+            </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Feed Page"
+                    onPress={() => navigation.navigate('FeedPage')}
+                />
+            </View>
+
+        
+        </View>
+    );
+    
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        //alignItems: "center",
+        padding: 13,
+    },
+    profileContainer: {
+        alignItems: "center",
+        marginTop: 10,
+    }, 
+    icon: {
+        width: 146,
+        height: 146,
+        borderRadius: 68,
+    },
+    username: {
+        fontSize: 30,
+        //color: "#363636",
+        fontWeight: "bold",
+        paddingVertical: 10,
+    },
+    interestBox: {
+        alignItems: "center",
+    },
+    interest: {
+        fontSize: 15,
+        color: "#636363",
+        //marginLeft: 15,
+    },
+    interestedIn: {
+        fontSize: 18,
+        color: "#636363",
+    },
+    rowContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    buttonMiddle: {
+        paddingHorizontal: 10,
+    },
+    followerFollowing: {
+        padding: 20,
+        alignItems: "center",
+    },
+    logoutButton: {
+        paddingTop: 20,
+        flexDirection: "row",
+        justifyContent: "flex-end",
+    },
+    refreshButton: {
+        paddingTop: 20,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+    },
+
+});
 
 export default ProfilePage;

@@ -1,6 +1,6 @@
 import { Platform, Dimensions, StyleSheet} from 'react-native';
-var screenWidth = Dimensions.get('window').width;
-var screenHeight = Dimensions.get('window').height;
+var screenWidth = Dimensions.get('screen').width;
+var screenHeight = Dimensions.get('screen').height;
 if (Platform.OS === 'web') {screenHeight = 720; screenWidth = 405;}
 
 // Style Section Start
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         left: 0,
         top: 0,
         // backgroundColor: '#fff',
-        backgroundColor: '#999',
+        // backgroundColor: '#999',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -99,7 +99,11 @@ const styles = StyleSheet.create({
         top: 46/720*screenHeight*1.125,
         width: 318/360*screenWidth,
         height: 48/720*screenHeight*1.125,
-        backgroundColor: '#888',
+        // backgroundColor: '#888',
+        borderColor: 'black',
+        borderWidth: 1,
+        // color: 'green',
+        borderRadius: 19,
         fontSize: 16/360*screenWidth,
     },
     submitButton: {
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
         height: 66/720*screenHeight*1.125,
         left: 78/360*screenWidth,
         top: 474/720*screenHeight*1.125,
-        backgroundColor: '#000',
+        backgroundColor: '#ffb300',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 20,
@@ -160,6 +164,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20/360*screenWidth,
         lineHeight: 23/720*screenHeight*1.125,
-    }
+    },
 });
 export default styles;

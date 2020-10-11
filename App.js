@@ -5,6 +5,7 @@
  
 import React, {useState} from 'react';
 import { YellowBox} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
@@ -18,6 +19,10 @@ import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
 import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
+import MakePostPage from './src/screens/MakePostPage'
+import EditPost from './src/screens/EditPost';
+import FeedPage from './src/screens/FeedPage'
+import PostView from './src/screens/PostView'
 import firebase from './firebase_setup';
 
 let customFonts = {
@@ -43,6 +48,7 @@ export default class App extends React.Component {
     if (this.state.fontsLoaded) {
       return (
         <NavigationContainer>
+          <StatusBar style="light"></StatusBar>
           <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
@@ -50,6 +56,11 @@ export default class App extends React.Component {
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
             <Stack.Screen name="EditProfilePage" component={EditProfilePage}/>
             <Stack.Screen name="ChangePasswordPage" component={ChangePasswordPage}/>
+            <Stack.Screen name="MakePostPage" component={MakePostPage}/>
+            <Stack.Screen name="FeedPage" component={FeedPage}/>
+            <Stack.Screen name="EditPost" component={EditPost}/>
+            <Stack.Screen name="PostView" component={PostView}/>
+
           </Stack.Navigator>
         </NavigationContainer>
       );
