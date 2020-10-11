@@ -26,7 +26,7 @@ class PostView extends React.Component {
 
     getEverthing = async () => {
         let db = firebase.firestore();
-        let postRef = db.collection('testPosts').doc(this.state.id);
+        let postRef = db.collection('Posts').doc(this.state.id);
         const post = await postRef.get();
         this.setState({
             title: post.get('Title'),

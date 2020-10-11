@@ -58,7 +58,7 @@ export default class App extends React.Component {
             <Stack.Screen name="ChangePasswordPage" component={ChangePasswordPage}/>
             <Stack.Screen name="MakePostPage" component={MakePostPage}/>
             <Stack.Screen name="FeedPage" component={FeedPage}/>
-            <Stack.Screen name="EditPost" component={EditPost}/>
+            {/* <Stack.Screen name="EditPost" component={EditPost}/> */}
             <Stack.Screen name="PostView" component={PostView}/>
 
           </Stack.Navigator>

@@ -1,122 +1,122 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from "expo-permissions";
 import 'firebase/firestore';
+import { Ionicons } from "@expo/vector-icons";
+import { firestore } from 'firebase';
 import styles from '../styles/post_styles';
 
 
-const MakePostPage = ({ navigation }) => {
-  const [title, setTitle] = useState("");
+const EditPost = ({ navigation }) => {
+  const [image, setImage] = useState("");
   const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
-  const [selectImg, setSelectedImg] = useState(null);
-  const [url, setUrl] = useState("");
-  const [warning, setWarning] = useState("");
-  const [image, setImage] = useState(null);
-
+  
   const changeMod = () => {
-    navigation.navigate('ProfilePage')
-  }
-  
-  const postButtonHandler = () => {
-    let db = firebase.firestore()
-    if (text !== ''){
-    db.collection("Posts").doc("makepost").get().then(doc => {
-        db.collection("Posts").doc(firebase.auth().currentUser.uid.toString()).update({
-            title: title,
-            text: text,
-            tags: tags,
-            selectImg: selectImg,
-        })
-        
-        setTitle('')
-        setText('')
-        setTags('')
-        setImage('');
-        setSelectedImg(null);
-        navigation.navigate('ProfilePage')
-       
-    })
-    }
-    else {
-    setWarning('Username cannot be empty!')
+      navigation.navigate('ProfilePage')
     }
 
+  let db = firebase.firestore();
+  const postRef = db.collection("Posts");
+  const currentUserRef = firebase.auth().currentUser.uid.toString();
+  var ref = null;
 
-
-    uploadPhotoAsync = async uri => {
-      const path = 'photos/${this.uid}/${Date.now()}.jpg'
-      
-    }
-}
-
- 
-  openImage = async () => {
-    let permission = await ImagePicker.requestCameraRollPermissionsAsync();
-
-    if (permission.granted == false) {
+  const initPost = async () => {
+    //see if title is empty
+    if (title == '') {
+      alert('Please Enter Title');
       return;
     }
-
-    let picker = await ImagePicker.launchImageLibraryAsync();
+    //see if the content is empty
+    if (text == '') {
+        alert('Please Enter Cotent');
+        return;
+    }
     
-    if (picker.cancelled == true) {
-      return;
-    }
-    setSelectedImg({localUri:picker.uri});
-    console.log(picker);
+    ref = await postRef.add({
+      ID: "temp",
+      Title: title,
+      Content:  text,
+      Tag: tags.split("#"),
+      Image: image,
+      PostedUser: "anonymous",
+      PostedDate: Date(),
+      DownVote: 0,
+      UpVote: 0,
+      VotedUser: [],
+    })
   }
 
+  const handlePost = async () => {
+    await initPost();
+    ref.update({
+      ID: ref.id.toString(),
+      PostedUser: currentUserRef,
+    })
+    db.collection("Users").doc(currentUserRef).update({
+      postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
+    }) 
+    navigation.navigate("ProfilePage"); 
+  }
 
-  
+  const handlePostAno = async () => {
+    await initPost();
+    ref.update({
+      ID: ref.id.toString(),
+    })
+    db.collection("Users").doc(currentUserRef).update({
+      postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)
+    }) 
+    navigation.navigate("ProfilePage"); 
+  }
+
+  const pickImage = async () => {
+      let permission = await ImagePicker.requestCameraRollPermissionsAsync();
+      if (permission.granted == false) {
+          return;
+      }   
+      let result = await ImagePicker.launchImageLibraryAsync();
+      if (!result.cancelled) {
+          setImage({localUri:result.uri});
+          //console.log(image);
+      }
+  }
+
   return (
-    <View style={styles.postcontainer}>
-      <StatusBar style="auto" />
-      <View style={styles.buttonContent} >
-        <TouchableOpacity onPress={changeMod} style={styles.button}>
-          <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={postButtonHandler} style={styles.button}>
-          <Text style={styles.buttonText}>Post</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputContent} >
-        <TextInput 
-          style = {styles.titleInput}
-          placeholder="Title"
-          textAlignVertical={'top'}
-          onChangeText={(e) => setTitle(e)}
-          />
-        {
-          selectImg !== null ? (
-            <Image
-            style={styles.image}
-            source={{uri:(selectImg.localUri !== null) ? selectImg.localUri : 'https://www.shutterstock.com/image-photo/yuzu-citron-tea-93229276'}}/>
-          ) : <Text>   Picture uploads here</Text>
-        }
-        <TextInput 
-          style = {styles.postInput}
-          placeholder="Type here"
-          textAlignVertical={'top'}
-          onChangeText={(e) => setText(e)}
-          />
-        <TextInput 
-          style = {styles.titleInput}
-          placeholder="Tags"
-          textAlignVertical={'top'}
-          onChangeText={(e) => setTags(e)}
-        />
-        <TouchableOpacity 
-          onPress={openImage}  
-          style={styles.button}>
-          <Text style={styles.buttonText}>Image</Text>
-        </TouchableOpacity>
-      </View>
-    </View>  
+      <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+              <TouchableOpacity onPress={changeMod}>
+                  <Ionicons name="md-arrow-back" size={24} color="#D8D9DB"></Ionicons>
+              </TouchableOpacity>
+              <TouchableOpacity onPress = {handlePost}>
+                  <Text style={{ fontWeight: "500" }}>Post</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress = {handlePostAno}>
+                  <Text style={{ fontWeight: "500" }}>PostAno</Text>
+              </TouchableOpacity>
+          </View>
+          <View style={styles.titleContainer}>
+              <TextInput autoFocus={true} multiline={true} numberOfLines={1} style={{ flex: 1 }} placeholder="Title of the post" onChangeText={title => setTitle(title)} value = {title}></TextInput>
+          </View>
+          <View style={styles.inputContainer}>
+              <TextInput autoFocus={true} multiline={true} numberOfLines={10} style={{ flex: 1 }} placeholder="Want to share something?" textAlignVertical = 'top' onChangeText={text => setText(text)} value = {text}></TextInput>
+          </View>
+          <View style={styles.tagContainer}>
+              <TextInput autoFocus={true} multiline={true} numberOfLines={1} style={{ flex: 1 }} placeholder="#tag1 #tag2.." onChangeText={tags => setTags(tags)} value = {tags}></TextInput>
+          </View>
+          <TouchableOpacity style={styles.photo} onPress={pickImage}>
+              <Ionicons name="md-camera" size={32} color="#D8D9DB"></Ionicons>
+          </TouchableOpacity>
+          <View style={{marginHorizontal: 32, marginTop: 32, height: 150, resizeMode: "contain"}}>
+              <Image source={{uri:image.localUri}} style={{width:"100%", height: "100%"}}></Image>
+          </View>
+      </SafeAreaView>
   );
-
 }
-export default MakePostPage;
+
+export default EditPost;

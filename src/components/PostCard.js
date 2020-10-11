@@ -11,7 +11,7 @@ import PostView from "../screens/PostView";
 
 //   render(){
 const PostCard = ({ navigation, item }) => {
-  console.log("in post card" + item.id);
+  console.log("in post card " + item.ID);
   console.log(item.ID);
   return (
     <TouchableOpacity 
@@ -21,7 +21,7 @@ const PostCard = ({ navigation, item }) => {
       style={[styles.container]}
       >
 
-      <Text style={styles.title}>{item.id}</Text>
+      <Text style={styles.title}>{item.Title}</Text>
       <Text style={styles.tages3}>tages</Text>
       <Text style={styles.tages1}>
         content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...

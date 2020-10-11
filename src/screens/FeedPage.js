@@ -40,8 +40,8 @@ class FeedPage extends React.Component {
       
       // get initial query data
       let initialQuery = await firebase.firestore()
-        .collection("testPosts")
-        .orderBy('id')
+        .collection("Posts")
+        .orderBy('ID')
         .limit(3);
 
       let postSnapshots = await initialQuery.get();
@@ -70,8 +70,8 @@ class FeedPage extends React.Component {
         console.log('Retrieving additional post Data');
         this.setState({ refreshing: true });
 
-        let additionalQuery = await firebase.firestore().collection("testPosts")
-          .orderBy('id')
+        let additionalQuery = await firebase.firestore().collection("Posts")
+          .orderBy('ID')
           .startAfter(this.state.lastVisible)
           .limit(1);
     
