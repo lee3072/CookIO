@@ -52,8 +52,9 @@ const SignUpPage = ({ navigation }) => {
                 topicsOfInterest: "",
                 postedPosts: ["Posts/"+welcomePost.id],
                 numberOfFollowers: 0,
-                followingUsers: ["Users/"+firebase.auth().currentUser.uid.toString()],
-                postedComments: ["Comments/"+welcomeComment.id.toString()]
+                followingUsers: [],
+                followingTags: [],
+                postedComments: ["Comments/"+welcomeComment.id.toString()],
               })
               
   
