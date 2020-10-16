@@ -21,9 +21,16 @@ const SignInPage = ({ navigation }) => {
             setWarning('')
             setEmailAddress('')
             setPassword('')
+            var i = 0
             firebase.database().ref(firebase.auth().currentUser.uid)
-            .limitToLast(20)
-            .on('child_added', snapshot => console.log(snapshot));
+            .endAt()
+            .limitToLast(1)
+            .on('child_added', snapshot => {
+                if (i != 0) {
+                    console.log(snapshot)
+                }
+                i++
+            });
             navigation.navigate("DirectMessageMainPage")
         }
         })

@@ -28,10 +28,17 @@ const CreateProfilePage = ({ navigation }) => {
         setUserName('')
         setTopicsOfInterest('')
         setWarning('')
-
+        
+        var i = 0
         firebase.database().ref(firebase.auth().currentUser.uid)
-        .limitToLast(20)
-        .on('child_added', snapshot => console.log(snapshot));
+        .endAt()
+        .limitToLast(1)
+        .on('child_added', snapshot => {
+            if (i != 0) {
+                console.log(snapshot)
+            }
+            i++
+        });
 
         navigation.navigate('ProfilePage')
         } else {
