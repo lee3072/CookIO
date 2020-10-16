@@ -9,13 +9,14 @@ import 'firebase/firestore';
 import { Ionicons } from "@expo/vector-icons";
 import { firestore } from 'firebase';
 import styles from '../styles/post_styles';
+import { colors } from 'react-native-elements';
 
 
 const EditPost = ({ navigation }) => {
   const [image, setImage] = useState("");
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState("default");
   
   const changeMod = () => {
       navigation.navigate('ProfilePage')
@@ -29,27 +30,43 @@ const EditPost = ({ navigation }) => {
   const initPost = async () => {
     //see if title is empty
     if (title == '') {
-      alert('Please Enter Title');
-      return;
+    alert('Please Enter Title');
+    return;
     }
     //see if the content is empty
     if (text == '') {
-        alert('Please Enter Cotent');
-        return;
+      alert('Please Enter Cotent');
+      return;
     }
-    
+    //create post
     ref = await postRef.add({
       ID: "temp",
       Title: title,
-      Content:  text,
-      Tag: tags.split("#"),
+      Content: text,
+      Tag: tags,
       Image: image,
       PostedUser: "anonymous",
       PostedDate: Date(),
       DownVote: 0,
       UpVote: 0,
       VotedUser: [],
+      CommentsIDs: [],
     })
+    //add post to tag
+    var topicRef = db.collection("Tags").doc(tags);
+    const topicList = await topicRef.get();
+    //if the tags does not exist in the database, add it to the database
+    if(topicList.exists){
+      topicRef.update({
+        ID: tags,
+        date: Date(),
+        list: firebase.firestore.FieldValue.arrayUnion(ref.id)
+      })
+    } else {
+      topicRef = db.collection("Tags").doc(tags).set({
+        list: [ref.id],
+      });
+    }
   }
 
   const handlePost = async () => {
@@ -107,7 +124,7 @@ const EditPost = ({ navigation }) => {
               <TextInput autoFocus={true} multiline={true} numberOfLines={10} style={{ flex: 1 }} placeholder="Want to share something?" textAlignVertical = 'top' onChangeText={text => setText(text)} value = {text}></TextInput>
           </View>
           <View style={styles.tagContainer}>
-              <TextInput autoFocus={true} multiline={true} numberOfLines={1} style={{ flex: 1 }} placeholder="#tag1 #tag2.." onChangeText={tags => setTags(tags)} value = {tags}></TextInput>
+              <TextInput autoFocus={true} multiline={true} numberOfLines={1} style={{ flex: 1 }} placeholder="please enter exicelly one tag or no tag" onChangeText={tags => setTags(tags)} value = {tags}></TextInput>
           </View>
           <TouchableOpacity style={styles.photo} onPress={pickImage}>
               <Ionicons name="md-camera" size={32} color="#D8D9DB"></Ionicons>

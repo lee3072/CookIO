@@ -21,7 +21,8 @@ import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
 import MakePostPage from './src/screens/MakePostPage'
 import EditPost from './src/screens/EditPost';
-import FeedPage from './src/screens/FeedPage'
+import ListTopicPage from './src/screens/ListTopicPage'
+import ListPostPage from './src/screens/ListPostPage'
 import PostView from './src/screens/PostView'
 import firebase from './firebase_setup';
 
@@ -57,7 +58,8 @@ export default class App extends React.Component {
             <Stack.Screen name="EditProfilePage" component={EditProfilePage}/>
             <Stack.Screen name="ChangePasswordPage" component={ChangePasswordPage}/>
             <Stack.Screen name="MakePostPage" component={MakePostPage}/>
-            <Stack.Screen name="FeedPage" component={FeedPage}/>
+            <Stack.Screen name="ListPostPage" component={ListPostPage}/>
+            <Stack.Screen name="ListTopicPage" component={ListTopicPage}/>
             {/* <Stack.Screen name="EditPost" component={EditPost}/> */}
             <Stack.Screen name="PostView" component={PostView}/>
 

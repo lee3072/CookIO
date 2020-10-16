@@ -146,7 +146,7 @@ const ProfilePage = ({navigation}) => {
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="Feed Page"
-                    onPress={() => navigation.navigate('FeedPage')}
+                    onPress={() => navigation.navigate('ListTopicPage')}
                 />
             </View>
 
