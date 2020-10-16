@@ -37,7 +37,7 @@ const SignInPage = ({ navigation }) => {
                 }
                 i++
             });
-            navigation.navigate("DirectMessageMainPage")
+            navigation.navigate("ProfilePage")
         }
         })
         .catch(error => {

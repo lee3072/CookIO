@@ -98,6 +98,13 @@ const ProfilePage = ({navigation}) => {
             <View style={styles.logoutButton}>
                 <Button
                     color= "#ffdb85"
+                    title="Direct Messaging"
+                    onPress={() => {
+                            navigation.navigate('DirectMessageMainPage')
+                        }}
+                />
+                <Button
+                    color= "#ffdb85"
                     title="Logout"
                     onPress={() => {
                             firebase.auth().signOut()
@@ -108,6 +115,8 @@ const ProfilePage = ({navigation}) => {
                         }}
                 />
             </View>
+
+
             <View style={{ margineTop: 60}}>
                 <View style = {styles.profileContainer}>
                     
@@ -204,10 +213,15 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: "center",
     },
+    // DMButton: {
+    //     paddingTop: 20,
+    //     flexDirection: "row",
+    //     justifyContent: "flex-start",
+    // },
     logoutButton: {
         paddingTop: 20,
         flexDirection: "row",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
     },
     refreshButton: {
         paddingTop: 20,

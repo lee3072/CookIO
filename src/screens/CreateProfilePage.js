@@ -40,7 +40,6 @@ const CreateProfilePage = ({ navigation }) => {
                     title: "from: "+snapshot.child("user/_id").val(),
                     body: snapshot.child("text").val(),
                   });
-                //   console.log(snapshot)
             }
             i++
         });
