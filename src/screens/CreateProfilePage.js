@@ -4,7 +4,8 @@ import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import 'firebase/firestore';
 import styles from '../styles/auth_styles';
-
+import {Notifications} from 'expo';
+import * as Permissions from "expo-permissions";
 
 
 const CreateProfilePage = ({ navigation }) => {
@@ -35,7 +36,11 @@ const CreateProfilePage = ({ navigation }) => {
         .limitToLast(1)
         .on('child_added', snapshot => {
             if (i != 0) {
-                console.log(snapshot)
+                Notifications.presentLocalNotificationAsync({
+                    title: "from: "+snapshot.child("user/_id").val(),
+                    body: snapshot.child("text").val(),
+                  });
+                //   console.log(snapshot)
             }
             i++
         });
