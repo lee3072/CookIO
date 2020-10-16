@@ -10,6 +10,9 @@ const SignInPage = ({ navigation }) => {
     const [emailAddress,setEmailAddress] = useState('');
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
+
+
+    
     const signInWithEmail = () => {
         console.log("email: "+emailAddress+"; pass: "+password)
         firebase.auth().signInWithEmailAndPassword(emailAddress.trim(),password)
@@ -18,7 +21,10 @@ const SignInPage = ({ navigation }) => {
             setWarning('')
             setEmailAddress('')
             setPassword('')
-            navigation.navigate("ProfilePage")
+            firebase.database().ref(firebase.auth().currentUser.uid)
+            .limitToLast(20)
+            .on('child_added', snapshot => console.log(snapshot));
+            navigation.navigate("DirectMessageMainPage")
         }
         })
         .catch(error => {

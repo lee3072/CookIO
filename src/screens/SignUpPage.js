@@ -23,6 +23,7 @@ const SignUpPage = ({ navigation }) => {
           let db = firebase.firestore()
           db.collection("Users")
           .doc(firebase.auth().currentUser.uid.toString()).set({
+            id: firebase.auth().currentUser.uid,
             userEmail: emailAddress,
             userIcon: null,
             userName: "",

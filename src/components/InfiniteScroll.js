@@ -10,6 +10,7 @@ var screenHeight = Dimensions.get('screen').height;
 
 //import cards use for render here
 import PostCard from "../components/PostCard";
+import UserCard from "../components/UserCard";
 import { ThemeProvider } from "@react-navigation/native";
 
 class InfiniteScroll extends React.Component {
@@ -47,7 +48,7 @@ class InfiniteScroll extends React.Component {
             let initialQuery = await firebase.firestore()
                 .collection(this.props.collection)
                 .orderBy(this.props.sortBy)
-                .limit(3);
+                .limit(18);
 
             let postSnapshots = await initialQuery.get();
 
@@ -178,7 +179,8 @@ class InfiniteScroll extends React.Component {
         switch (this.props.card) {
             case "PostCard":
                 return (<PostCard style={styles.postCard} item={item} navigation={this.props.navigation} />);
-
+            case "UserCard":
+                return (<UserCard style={styles.userCard} item={item} navigation={this.props.navigation} />);
             default:
                 throw "infinite scroll need a card to render, check if you enterd all parameters";
         }
@@ -250,6 +252,12 @@ const styles = StyleSheet.create({
         width: 360
     },
     postCard: {
+        width: 300,
+        height: 208,
+        marginTop: 39,
+        alignSelf: "center"
+    },
+    userCard: {
         width: 300,
         height: 208,
         marginTop: 39,

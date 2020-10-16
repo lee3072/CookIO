@@ -11,6 +11,8 @@ const CreateProfilePage = ({ navigation }) => {
     const [userName, setUserName] = useState('');
     const [topicsOfInterest, setTopicsOfInterest] = useState('');
     const [warning,setWarning] = useState('')
+
+    
     const submit = () => {
     let db = firebase.firestore()
     if (userName !== ''){
@@ -26,6 +28,11 @@ const CreateProfilePage = ({ navigation }) => {
         setUserName('')
         setTopicsOfInterest('')
         setWarning('')
+
+        firebase.database().ref(firebase.auth().currentUser.uid)
+        .limitToLast(20)
+        .on('child_added', snapshot => console.log(snapshot));
+
         navigation.navigate('ProfilePage')
         } else {
         setWarning('Username is already occupied')

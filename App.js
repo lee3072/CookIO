@@ -12,7 +12,8 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 //import * as firebase from "firebase";
 
-
+import DirectMessageMainPage from './src/screens/DirectMessageMainPage'
+import DirectMessageUserPage from './src/screens/DirectMessageUserPage'
 import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
@@ -52,6 +53,8 @@ export default class App extends React.Component {
           <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
+            <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
+            <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
             <Stack.Screen name="EditProfilePage" component={EditProfilePage}/>

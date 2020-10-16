@@ -101,6 +101,9 @@ const ProfilePage = ({navigation}) => {
                     title="Logout"
                     onPress={() => {
                             firebase.auth().signOut()
+                            firebase.database().ref(firebase.auth().currentUser.uid)
+                            .limitToLast(20)
+                            .off()
                             navigation.navigate('SignInPage')
                         }}
                 />
