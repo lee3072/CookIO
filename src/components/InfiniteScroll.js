@@ -18,12 +18,15 @@ class InfiniteScroll extends React.Component {
         super(props);
 
         this.state = {
-            postData: [],
+            data: [],
             lastVisible: null,
             loading: false,
             refreshing: false,
             fresh: true,
             haveMore: true,
+            list: [],
+            count: 3,
+            limit: 3,
         };
     }
 
@@ -37,6 +40,7 @@ class InfiniteScroll extends React.Component {
         }
         this.onEndReachedCalled = false;
     }
+
     //retrieve initial data
     retrieveData = async () => {
         try {
@@ -45,23 +49,34 @@ class InfiniteScroll extends React.Component {
             this.setState({ loading: true });
 
             // get initial query data
+            // if(this.props.document == 'NULL'){
+            console.log("not a doc");
+            //if retrieving from a collection
             let initialQuery = await firebase.firestore()
                 .collection(this.props.collection)
-                .orderBy(this.props.sortBy)
-                .limit(18);
+                if (this.props.what != null && this.props.contain != null) {
+                    initialQuery = initialQuery
+                        .where(this.props.what, 'in', this.props.contain)
+                        .orderBy(this.props.sortBy)
+                        .limit(this.state.limit);
+                } else {
+                    initialQuery = initialQuery
+                        .orderBy(this.props.sortBy)
+                        .limit(this.state.limit);
+                }
 
             let postSnapshots = await initialQuery.get();
 
-            let postData = postSnapshots.docs.map(post => post.data());
+            let data = postSnapshots.docs.map(post => post.data());
             console.log('post Data');
-            console.log(postData);
+            console.log(data);
 
-            let lastVisible = postData[postData.length - 1].ID;
+            let lastVisible = data[data.length - 1].ID;
             console.log("last visible: " + lastVisible);
 
             // set states
             this.setState({
-                postData: postData,
+                data: data,
                 lastVisible: lastVisible,
                 loading: false,
             });
@@ -69,51 +84,59 @@ class InfiniteScroll extends React.Component {
             console.log(error);
         }
     }
-
     //retrieve more data form firebse
     retrieveMore = async () => {
-        if (this.state.haveMore == true) {
-            try {
-                console.log('Retrieving additional post Data');
-                console.log("last visible: " + this.state.lastVisible);
-                this.setState({ refreshing: true });
+        try {
+            console.log('Retrieving additional post Data');
+            console.log("last visible: " + this.state.lastVisible);
+            this.setState({ refreshing: true });
 
-                let additionalQuery = await firebase.firestore().collection(this.props.collection)
+            let additionalQuery = await firebase.firestore()
+                .collection(this.props.collection)
+            if (this.props.what != null && this.props.contain != null) {
+                additionalQuery = additionalQuery
+                    .where(this.props.what, 'in', this.props.contain)
                     .orderBy(this.props.sortBy)
                     .startAfter(this.state.lastVisible)
-                    .limit(1);
-
-                let postSnapshots = await additionalQuery.get();
-                let postData = postSnapshots.docs.map(post => post.data());
-                console.log('post Data');
-                console.log(postData);
-
-                if (postData.length == 0) {
-                    this.setState({
-                        haveMore: false,
-                        refreshing: false,
-                    });
-                } else {
-                    let lastVisible = postData[postData.length - 1].ID;
-                    console.log('Last Visible ID: '+ lastVisible);
-
-                    this.setState({
-                        postData: [...this.state.postData, ...postData],
-                        lastVisible: lastVisible,
-                        refreshing: false,
-                    });
-                }
-
-            } catch (error) {
-                console.log(error);
+                    .limit(1);  //TODO: change to this.state.limit latter; after all testing
+            } else {
+                additionalQuery = additionalQuery
+                    .orderBy(this.props.sortBy)
+                    .startAfter(this.state.lastVisible)
+                    .limit(1);  //TODO: change to this.state.limit latter; after all testing
             }
+
+
+            let postSnapshots = await additionalQuery.get();
+            let data = postSnapshots.docs.map(post => post.data());
+            console.log('post Data');
+            console.log(data);
+
+            if (data.length == 0) {
+                this.setState({
+                    haveMore: false,
+                    refreshing: false,
+                });
+            } else {
+                let lastVisible = data[data.length - 1].ID;
+                console.log('Last Visible ID: ' + lastVisible);
+
+                this.setState({
+                    data: [...this.state.data, ...data],
+                    lastVisible: lastVisible,
+                    refreshing: false,
+                });
+            }
+
+        } catch (error) {
+            console.log(error);
         }
     }
 
     renderHeader = () => {
         return (
             <View style={styles.header}>
-                <Text style={styles.title}>Items</Text>
+                <Text style={styles.title}>{this.props.title}</Text>
             </View>
         );
     }
@@ -157,7 +180,7 @@ class InfiniteScroll extends React.Component {
         return (
             <View style={styles.bottomfoot}>
                 {
-                    this.state.postData.length != 0 ?
+                    this.state.data.length != 0 ?
                         !this.state.haveMore ? (
                             <Text style={styles.footText}>-congrat, you reached the end-</Text>
                         ) : (
@@ -188,10 +211,22 @@ class InfiniteScroll extends React.Component {
     }
 
     _onEndReached = () => {
-        if (this.state.haveMore && !this.onEndReachedCalled){
+        if (this.state.haveMore && !this.onEndReachedCalled) {
             this.retrieveMore()
         }
         ThemeProvider.onEndReachedCalled = true;
+    }
+
+    showMore = async () => {
+        // if(this.props.document == 'NULL'){
+        this.retrieveMore();
+        // } else {
+        //     this.setState({
+        //         data: this.state.list.slice(0, this.state.count + this.state.limit),
+        //         count: this.state.count + 1,//this.state.limit,
+        //     });
+        // }
+
     }
 
     render() {
@@ -207,7 +242,7 @@ class InfiniteScroll extends React.Component {
                 ></CupertinoSearchBarBasic>
 
                 <FlatList
-                    data={this.state.postData}
+                    data={this.state.data}
                     // Element Key
                     keyExtractor={(item, index) => String(index)}
                     onEndReached={this._onEndReached}
@@ -224,7 +259,7 @@ class InfiniteScroll extends React.Component {
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
-                            onRefresh={this.retrieveMore}
+                            onRefresh={this.showMore}
                         />
                     }
                 />
