@@ -26,7 +26,7 @@ class InfiniteScroll extends React.Component {
             haveMore: true,
             list: [],
             count: 3,
-            limit: 3,
+            limit: 10,
         };
     }
 
