@@ -1,17 +1,23 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Button, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import 'firebase/firestore';
+
 
 const PostCard = ({ navigation, item }) => {
   console.log("in post card " + item.ID);
+  console.log("see userid: " + item.PostedUser);
   return (
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('UserFeedPage', {userid: item.PostedUser })}
+        style={[styles.container]}><Text style={styles.tages3}>{item.PostedUser}</Text>
+    </TouchableOpacity>
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('PostView', { id: item.ID })
       }
       style={[styles.container]}
     >
-
       <Text style={styles.title}>{item.Title}</Text>
       <Text style={styles.tages3}>tages</Text>
       <Text style={styles.tages1}>
@@ -23,6 +29,7 @@ const PostCard = ({ navigation, item }) => {
         <View style={styles.rect2}></View>
       </View>
     </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 

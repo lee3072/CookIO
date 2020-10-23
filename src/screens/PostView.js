@@ -75,9 +75,8 @@ class PostView extends React.Component {
     }
 
     render() {
-        
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={styles.container}>               
                 <View style={styles.titleContainer}>
                     <Text style={{ fontWeight: "500" }}>{this.state.title}</Text>
                 </View>
