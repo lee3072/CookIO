@@ -105,6 +105,10 @@ class PostView extends React.Component {
                 </View>
                 <Button color= "#ffb300"
                 title="Back to Feed Page" onPress={() => this.props.navigation.navigate('FeedPage')} />
+                <Button color= "#ffb300"
+                    title="Edit Post"
+                    onPress={() => this.props.navigation.navigate('MakePostPage')}
+                />
             </SafeAreaView>
         );
     }
