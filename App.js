@@ -21,6 +21,8 @@ import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
 import MakePostPage from './src/screens/MakePostPage'
 import EditPost from './src/screens/EditPost';
+import EditPostPage from './src/screens/EditPostPage';
+
 import FeedPage from './src/screens/FeedPage';
 import PostView from './src/screens/PostView';
 import UserPostView from './src/screens/UserPostView';
@@ -62,7 +64,7 @@ export default class App extends React.Component {
             <Stack.Screen name="FeedPage" component={FeedPage}/>
             <Stack.Screen name="UserPostView" component={UserPostView}/>
             <Stack.Screen name="UserFeedPage" component={UserFeedPage}/>
-            {/* <Stack.Screen name="EditPost" component={EditPost}/> */}
+            <Stack.Screen name="EditPostPage" component={EditPostPage}/> 
             <Stack.Screen name="PostView" component={PostView}/>
 
           </Stack.Navigator>

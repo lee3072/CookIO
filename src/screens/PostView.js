@@ -85,9 +85,9 @@ class PostView extends React.Component {
             return (
                 <Button color= "#ffb300"
                     title="Edit Post"
-                    onPress={() => this.props.navigation.navigate('MakePostPage')}
+                    //onPress={() => this.props.navigation.navigate('MakePostPage')}
 
-                    //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+                    onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
                 />
             );
         } else {
@@ -101,9 +101,12 @@ class PostView extends React.Component {
         let deletebutton;
         if (this.state.uid == this.state.posteduser) {
             console.log("HERE!!!!!!!!!!!!!!!!!!!!");
+            console.log(this.state.id);
             editbutton = <Button color= "#ffb300"
                             title="Edit Post"
-                            //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+                            //id = {this.state.id}
+                            onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+                            //onPress={() => this.props.navigation.navigate('MakePostPage')}
                         />
             deletebutton = <Button 
                             color= "#ffb300"
