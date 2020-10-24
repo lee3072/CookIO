@@ -20,6 +20,7 @@ class PostView extends React.Component {
             postRef: null,
             users: null,
             voted: false,
+            posteduser: '',
         }
         this.getEverthing();
     }
@@ -34,6 +35,7 @@ class PostView extends React.Component {
             down: post.get('DownVote'),
             postRef: postRef,
             users: post.get('VotedUser'),
+            posteduser: post.get('PostedUser'),
             test: 1, 
         })
         console.log('PostView');
@@ -41,6 +43,7 @@ class PostView extends React.Component {
         console.log(this.state.title);
         console.log(this.state.uid);
         console.log(this.state.users);
+        console.log(this.state.posteduser);
         console.log(this.state.users.includes(this.state.uid));
     }
 
@@ -74,7 +77,40 @@ class PostView extends React.Component {
         }
     }
 
+
+    editpostpage = async () => {
+
+        if (this.state.posteduser == this.state.uid) {
+            console.log("HERE!!!!!!!!!");
+            return (
+                <Button color= "#ffb300"
+                    title="Edit Post"
+                    onPress={() => this.props.navigation.navigate('MakePostPage')}
+
+                    //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+                />
+            );
+        } else {
+            return null;
+        }
+    }
+
+
     render() {
+        let editbutton;
+        let deletebutton;
+        if (this.state.uid == this.state.posteduser) {
+            console.log("HERE!!!!!!!!!!!!!!!!!!!!");
+            editbutton = <Button color= "#ffb300"
+                            title="Edit Post"
+                            //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+                        />
+            deletebutton = <Button 
+                            color= "#ffb300"
+                            title="Delete Post"
+                            //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+            /> 
+        }
         return (
             <SafeAreaView style={styles.container}>               
                 <View style={styles.titleContainer}>
@@ -105,10 +141,8 @@ class PostView extends React.Component {
                 </View>
                 <Button color= "#ffb300"
                 title="Back to Feed Page" onPress={() => this.props.navigation.navigate('FeedPage')} />
-                <Button color= "#ffb300"
-                    title="Edit Post"
-                    onPress={() => this.props.navigation.navigate('MakePostPage')}
-                />
+                {editbutton}
+                {deletebutton}
             </SafeAreaView>
         );
     }
