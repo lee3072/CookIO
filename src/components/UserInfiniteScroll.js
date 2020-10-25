@@ -44,7 +44,6 @@ class UserInfiniteScroll extends React.Component {
             this.setState({ loading: true });
 
             // get initial query data
-
             let db = firebase.firestore();
             let userref = db.collection('Posts');
             let getuser = await userref.where('PostedUser', '==', this.props.where).get();
@@ -61,6 +60,11 @@ class UserInfiniteScroll extends React.Component {
                 lastVisible: lastVisible,
                 loading: false,
             });
+            
+            this.setState({haveMore: false});
+
+
+
         } catch (error) {
             console.log(error);
         }
@@ -75,7 +79,7 @@ class UserInfiniteScroll extends React.Component {
                 this.setState({ refreshing: true });
 
                 let db = firebase.firestore();
-                let userref = db.collection('Posts');
+                let userref = db.collection('Posts').startAfter(this.state.lastVisible).limit(1);
                 let getuser = await userref.where('PostedUser', '==', this.props.where).get();
                 let postData = getuser.docs.map(post => post.data());
                 console.log('post Data');
@@ -202,7 +206,7 @@ class UserInfiniteScroll extends React.Component {
                     data={this.state.postData}
                     // Element Key
                     keyExtractor={(item, index) => String(index)}
-                    onEndReached={this._onEndReached}
+                    //onEndReached={this._onEndReached}
                     refreshing={true}
                     renderItem={({ item }) => this.renderCard(item)}
                     // ItemSeparatorComponent={this.ItemSeparatorComponent}
