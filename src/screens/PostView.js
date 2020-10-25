@@ -1,22 +1,21 @@
 
 import React, {useState} from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Button, Alert} from 'react-native';
 import * as Font from 'expo-font';
 import 'firebase/firestore';
 import styles from '../styles/post_styles';
 import firebase from '../../firebase_setup';
 
+var db = firebase.firestore();
 class PostView extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            test: 0,
             id: this.props.route.params.id,
             title: "default title",
             up: 0,
             down: 0,
             uid: firebase.auth().currentUser.uid.toString(),
-            canVote: true,
             postRef: null,
             users: null,
             voted: false,
@@ -26,9 +25,10 @@ class PostView extends React.Component {
     }
 
     getEverthing = async () => {
-        let db = firebase.firestore();
+        //let db = firebase.firestore();
         let postRef = db.collection('Posts').doc(this.state.id);
         const post = await postRef.get();
+        
         this.setState({
             title: post.get('Title'),
             up: post.get('UpVote'),
@@ -77,29 +77,35 @@ class PostView extends React.Component {
         }
     }
 
-
-    editpostpage = async () => {
-
-        if (this.state.posteduser == this.state.uid) {
-            console.log("HERE!!!!!!!!!");
-            return (
-                <Button color= "#ffb300"
-                    title="Edit Post"
-                    //onPress={() => this.props.navigation.navigate('MakePostPage')}
-
-                    onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
-                />
-            );
+    onDeletePress = async () => {
+        console.log("uid delete: " , this.state.uid)
+        console.log("posteduser delete: ", this.state.posteduser);
+        if (this.state.uid == this.state.posteduser) {
+            db.collection("Posts").doc(this.state.id).delete();
+                //Need to delete post id of postedPosts in"Users" firestore 
+                this.props.navigation.navigate('FeedPage');
         } else {
-            return null;
+            Alert.alert("You are not the owner of the Post");
+        }
+    }
+    
+    onEditPress = async () => {
+        console.log("uid edit: " , this.state.uid)
+        console.log("posteduser edit: ", this.state.posteduser);
+        if (this.state.uid == this.state.posteduser) {
+            this.props.navigation.navigate('EditPostPage', {id : this.state.id});
+        }
+        else {
+            Alert.alert("You are not the owner of the Post");
         }
     }
 
 
     render() {
-        let editbutton;
+        /*let editbutton;
         let deletebutton;
         if (this.state.uid == this.state.posteduser) {
+
             console.log("HERE!!!!!!!!!!!!!!!!!!!!");
             console.log(this.state.id);
             editbutton = <Button color= "#ffb300"
@@ -113,7 +119,7 @@ class PostView extends React.Component {
                             title="Delete Post"
                             //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
             /> 
-        }
+        }*/
         return (
             <SafeAreaView style={styles.container}>               
                 <View style={styles.titleContainer}>
@@ -144,8 +150,21 @@ class PostView extends React.Component {
                 </View>
                 <Button color= "#ffb300"
                 title="Back to Feed Page" onPress={() => this.props.navigation.navigate('FeedPage')} />
-                {editbutton}
-                {deletebutton}
+                <Button color= "#ffb300"
+                            title="Edit Post"
+                            //id = {this.state.id}
+                            onPress={this.onEditPress}
+
+                            //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+                            //onPress={() => this.props.navigation.navigate('MakePostPage')}
+                        />
+                <Button 
+                            color= "#ffb300"
+                            title="Delete Post"
+                            onPress={this.onDeletePress}
+                            //onPress={() => this.props.navigation.navigate('EditPostPage', {id : this.state.id})}
+            /> 
+
             </SafeAreaView>
         );
     }
