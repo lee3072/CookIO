@@ -82,8 +82,10 @@ class PostView extends React.Component {
         console.log("posteduser delete: ", this.state.posteduser);
         if (this.state.uid == this.state.posteduser) {
             db.collection("Posts").doc(this.state.id).delete();
-                //Need to delete post id of postedPosts in"Users" firestore 
-                this.props.navigation.navigate('FeedPage');
+            db.collection("Users").doc(this.state.uid).update({
+                "postedPosts": firebase.firestore.FieldValue.arrayRemove(this.state.id)
+            })
+            this.props.navigation.navigate('FeedPage');
         } else {
             Alert.alert("You are not the owner of the Post");
         }
