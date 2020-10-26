@@ -14,6 +14,7 @@ import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 
 import DirectMessageMainPage from './src/screens/DirectMessageMainPage'
+import DirectMessageMainAllUserPage from './src/screens/DirectMessageMainAllUserPage'
 import DirectMessageUserPage from './src/screens/DirectMessageUserPage'
 import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
@@ -70,6 +71,7 @@ export default class App extends React.Component {
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
+            <Stack.Screen name="DirectMessageMainAllUserPage" component={DirectMessageMainAllUserPage}/>
             <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>

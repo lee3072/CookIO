@@ -13,10 +13,10 @@ function getUserName(documentSnapshot) {
           firebase.firestore().collection('Users')
           .doc(firebase.auth().currentUser.uid)
           .get()
-          .then(documentSnapshot => getUserName(documentSnapshot))
-          .then(userName => {
-            navigation.navigate('DirectMessageUserPage', { otheruser: item.id, username: userName, icon: item.userIcon ? item.userIcon : require("../assets/favicon.png") })
-          });
+          .then(doc => {
+            console.log(doc.data().userIcon  == null)
+            navigation.navigate('DirectMessageUserPage', { otheruser: item.id, username: doc.data().userName, icon: doc.data().userIcon != null ? doc.data().userIcon : require("../assets/favicon.png") })
+          })
       }}
       style={[styles.container]}
     >

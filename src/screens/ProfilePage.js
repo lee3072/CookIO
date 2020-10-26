@@ -100,7 +100,9 @@ const ProfilePage = ({navigation}) => {
                     color= "#ffdb85"
                     title="Direct Messaging"
                     onPress={() => {
-                            navigation.navigate('DirectMessageMainPage')
+                            firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                                navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
+                            })
                         }}
                 />
                 <Button
@@ -159,6 +161,16 @@ const ProfilePage = ({navigation}) => {
                 <Button color= "#ffb300"
                     title="Feed Page"
                     onPress={() => navigation.navigate('FeedPage')}
+                />
+            </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="DM All User"
+                    onPress={() => {
+                        firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                            navigation.navigate('DirectMessageMainAllUserPage',{dm: doc.data().dmUsers})
+                        })
+                    }}
                 />
             </View>
 

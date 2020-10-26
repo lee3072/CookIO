@@ -55,6 +55,7 @@ class InfiniteScroll extends React.Component {
             let initialQuery = await firebase.firestore()
                 .collection(this.props.collection)
                 if (this.props.what != null && this.props.contain != null) {
+                    console.log("this.props.contain: "+this.props.contain+"; "+Array.isArray(this.props.contain))
                     initialQuery = initialQuery
                         .where(this.props.what, 'in', this.props.contain)
                         .orderBy(this.props.sortBy)
@@ -232,11 +233,13 @@ class InfiniteScroll extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={{paddingTop: (Platform.OS === 'ios') ? 40: 0}}>
                 <Button color="#ffb300"
                     title="My Profile"
                     onPress={() => this.props.navigation.navigate('ProfilePage')}
                 />
-
+                </View>
+                
                 <CupertinoSearchBarBasic
                     style={styles.cupertinoSearchBarBasic}
                 ></CupertinoSearchBarBasic>

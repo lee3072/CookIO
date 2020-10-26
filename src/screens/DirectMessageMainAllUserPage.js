@@ -7,16 +7,16 @@ import PostCard from "../components/UserCard";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
 import InfiniteScroll from "../components/InfiniteScroll"
-class DirectMessageMainPage extends React.Component {
+class DirectMessageMainAllUserPage extends React.Component {
     constructor(props){
       super (props);
     }
     render(){
       return (
-        <InfiniteScroll title={'DM page'} navigation={this.props.navigation} collection={"Users"} card={"UserCard"} what={"id"} contain={this.props.route.params.dm} sortBy={"userEmail"}/>
+        <InfiniteScroll title={'DM page'} navigation={this.props.navigation} collection={"Users"} card={"UserCard"} sortBy={"userEmail"}/>
       );
     }
   }
 
 
-export default DirectMessageMainPage;
+export default DirectMessageMainAllUserPage;
