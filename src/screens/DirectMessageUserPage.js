@@ -65,6 +65,14 @@ class DirectMessageUserPage extends React.Component {
       };
     
       append = message => {
+        if (this.state.messages.length == 0) {
+          firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).update({
+            dmUsers: firebase.firestore.FieldValue.arrayUnion(this.props.route.params.otheruser)
+          })
+          firebase.firestore().collection("Users").doc(this.props.route.params.otheruser).update({
+            dmUsers: firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.uid)
+          })
+        }
         this.ref.push(message);
         this.dest_ref.push(message);
       }
