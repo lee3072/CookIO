@@ -60,7 +60,7 @@ class UserInfiniteScroll extends React.Component {
                 lastVisible: lastVisible,
                 loading: false,
             });
-            
+    
             this.setState({haveMore: false});
 
 

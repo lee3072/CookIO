@@ -17,7 +17,6 @@ const EditPostPage = ( props, {navigation} ) => {
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
-  const [postID, setPostID] = useState("");
   
   const changeMod = () => {
       props.navigation.navigate('ProfilePage')
@@ -46,9 +45,18 @@ const EditPostPage = ( props, {navigation} ) => {
     if (tags == '') {
       setTags({tags: props.route.params.post.tags});
     }
-    setPostID({postID: props.route.params.post.id});
-
-    
+    updateRef = await postRef.doc(props.route.params.post.id).update({
+      ID: props.route.params.post.id,
+      Title: title,
+      Content:  text,
+      Tag: tags.split("#"),
+      Image: image,
+      PostedUser: currentUserRef,
+      PostedDate: Date(),
+      DownVote: 0,
+      UpVote: 0,
+      VotedUser: [],
+    })
   }
 
   const handlePost = async () => {
