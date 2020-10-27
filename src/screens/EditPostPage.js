@@ -12,10 +12,10 @@ import styles from '../styles/post_styles';
 
 
 //const EditPost = ({ navigation }) => {
-const EditPostPage = ( props, {navigation} ) => {
-  const [image, setImage] = useState("");
-  const [text, setText] = useState("");
-  const [title, setTitle] = useState("");
+const EditPostPage = ( props ) => {
+  const [image, setImage] = useState(props.route.params.post.image);
+  const [text, setText] = useState(props.route.params.post.content);
+  const [title, setTitle] = useState(props.route.params.post.title);
   const [tags, setTags] = useState("");
   
   const changeMod = () => {
