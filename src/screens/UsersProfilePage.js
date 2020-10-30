@@ -8,9 +8,9 @@ import 'firebase/firestore';
 
 var db = firebase.firestore(); //firestore
 
-const ProfilePage = ({navigation}) => {
-    const [uid,setUid] = useState('');
-    const [email,setEmail] = useState('');
+const UsersProfilePage = ({route, navigation}) => {
+    const { uid } = route.params;
+    const [followingStat,setFollowingStat] = useState('')
     const [username,setUsername] = useState('')
     const [followers,setFollowers] = useState('')
     const [followings,setFollowings] = useState('')
@@ -18,73 +18,73 @@ const ProfilePage = ({navigation}) => {
     const [icon,setIcon] = useState('')
 
     const updateData = () => {
+        function getUserName(documentSnapshot) {
+            return documentSnapshot.get('userName');
+        }
+        db.collection('Users')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => getUserName(documentSnapshot))
+        .then(userName => {
+            setUsername(userName)
+        });
+
+        function getFollowers(documentSnapshot) {
+            return documentSnapshot.get('followers');
+        }
+        
         const currentUser = firebase.auth().currentUser;
 
-        if (currentUser) {
-            console.log('Success');
-            setUid(currentUser.uid)
-            setEmail(currentUser.email)
-
-            function getUserName(documentSnapshot) {
-                return documentSnapshot.get('userName');
+        db.collection('Users')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => getFollowers(documentSnapshot))
+        .then(followers => {
+            setFollowers(followers.length)
+            if (followers.includes(currentUser.uid)) {
+                setFollowingStat('Unfollow')
+            } else {
+                setFollowingStat('Follow')
             }
-              
-            db.collection('Users')
-            .doc(currentUser.uid)
-            .get()
-            .then(documentSnapshot => getUserName(documentSnapshot))
-            .then(userName => {
-                setUsername(userName)
-            });
+        });
 
-            function getNFollowers(documentSnapshot) {
-                return documentSnapshot.get('numberOfFollowers');
-            }
-              
-            db.collection('Users')
-            .doc(currentUser.uid)
-            .get()
-            .then(documentSnapshot => getNFollowers(documentSnapshot))
-            .then(nFollowers => {
-                setFollowers(nFollowers)
-            });
-
-            function getInterest(documentSnapshot) {
-                return documentSnapshot.get('topicsOfInterest');
-            }
-              
-            db.collection('Users')
-            .doc(currentUser.uid)
-            .get()
-            .then(documentSnapshot => getInterest(documentSnapshot))
-            .then(topicOfInterest => {
-                setInterest(topicOfInterest)
-            });
-
-            function getIcon(documentSnapshot) {
-                return documentSnapshot.get('userIcon');
-            }
-              
-            db.collection('Users')
-            .doc(currentUser.uid)
-            .get()
-            .then(documentSnapshot => getIcon(documentSnapshot))
-            .then(userIcon => {
-                setIcon(userIcon)
-            });
-
-            function getFollowingUsers(documentSnapshot) {
-                return documentSnapshot.get('followingUsers');
-            }
-                  
-            db.collection('Users')
-            .doc(currentUser.uid)
-            .get()
-            .then(documentSnapshot => getFollowingUsers(documentSnapshot))
-            .then(followingUsers => {
-                setFollowings(followingUsers.length);
-            });
+        function getInterest(documentSnapshot) {
+            return documentSnapshot.get('topicsOfInterest');
         }
+            
+        db.collection('Users')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => getInterest(documentSnapshot))
+        .then(topicOfInterest => {
+            setInterest(topicOfInterest)
+        });
+
+        function getIcon(documentSnapshot) {
+            return documentSnapshot.get('userIcon');
+        }
+            
+        db.collection('Users')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => getIcon(documentSnapshot))
+        .then(userIcon => {
+            setIcon(userIcon)
+        });
+
+        function getFollowingUsers(documentSnapshot) {
+            return documentSnapshot.get('followingUsers');
+        }
+                
+        db.collection('Users')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => getFollowingUsers(documentSnapshot))
+        .then(followingUsers => {
+            setFollowings(followingUsers.length);
+        });
+
+
     };
 
     useEffect(() => {
@@ -94,15 +94,47 @@ const ProfilePage = ({navigation}) => {
         return cleanup;
     }, [navigation]);
 
+    const onFollowPressed = () => {
+        const currentUser = firebase.auth().currentUser;
+        if(followingStat == 'Follow') {
+            setFollowingStat('Unfollow')
+            db.collection('Users')
+                .doc(uid)
+                .update({
+                    followers: firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+                    numberOfFollowers: firebase.firestore.FieldValue.increment(1),
+                })
+            setFollowers(followers + 1)
+            db.collection('Users')
+                .doc(currentUser.uid)
+                .update({
+                    followingUsers: firebase.firestore.FieldValue.arrayUnion(uid),
+                })
+        } else {
+            setFollowingStat('Follow')
+            db.collection('Users')
+                .doc(uid)
+                .update({
+                    followers: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
+                    numberOfFollowers: firebase.firestore.FieldValue.increment(-1),
+                })
+                setFollowers(followers - 1)
+            db.collection('Users')
+                .doc(currentUser.uid)
+                .update({
+                    followingUsers: firebase.firestore.FieldValue.arrayRemove(uid),
+                })
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.logoutButton}>
                 <Button
                     color= "#ffdb85"
-                    title="Logout"
+                    title="Block"
                     onPress={() => {
-                            firebase.auth().signOut()
-                            navigation.navigate('SignInPage')
+                            console.log('This will be implemented later!')
                         }}
                 />
             </View>
@@ -133,38 +165,19 @@ const ProfilePage = ({navigation}) => {
                     <Text>{followings}</Text>
                 </View>
                 <Button color= "#ffb300"
-                    title="Change Profile"
-                    onPress={() => navigation.navigate('EditProfilePage')}
-                />
-            </View>
-            
-            <View style={styles.buttonMiddle}>
-                <Button color= "#ffb300"
-                    title="See Followings"
-                    onPress={() => navigation.navigate('FollowingPage')}
+                    title={followingStat}
+                    onPress={onFollowPressed}
                 />
             </View>
 
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
-                    title="Make Post"
-                    onPress={() => navigation.navigate('MakePostPage')}
-                />
-            </View>
-            <View style={styles.buttonMiddle}>
-                <Button color= "#ffb300"
                     title="Feed Page"
                     onPress={() => navigation.navigate('FeedPage')}
                 />
-            </View>
-            <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
-                    title="Other Profile Page 1"
-                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'N78GForfcuTflORGKfdCZM69YhQ2'})}
-                />
-                <Button color= "#ffb300"
-                    title="Other Profile Page 2"
-                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'wswsec6LmQZ7khqT1rk60pMvwx33'})}
+                    title="Profile Page"
+                    onPress={() => navigation.navigate('ProfilePage')}
                 />
             </View>
 
@@ -232,4 +245,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ProfilePage;
+export default UsersProfilePage;
