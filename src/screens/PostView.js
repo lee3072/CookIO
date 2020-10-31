@@ -142,7 +142,7 @@ class PostView extends React.Component {
             db.collection("Users").doc(this.state.uid).update({
                 "postedPosts": firebase.firestore.FieldValue.arrayRemove(this.state.id)
             })
-            this.props.navigation.navigate('FeedPage');
+            this.props.navigation.navigate('ListTopicPage');
         } else {
             Alert.alert("You are not the owner of the Post");
         }
