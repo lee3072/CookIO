@@ -23,7 +23,7 @@ import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
 import DeleteAccountPage from './src/screens/DeleteAccountPage';
 import MakePostPage from './src/screens/MakePostPage'
-import EditPost from './src/screens/EditPost';
+// import EditPost from './src/screens/EditPost';
 import ListTopicPage from './src/screens/ListTopicPage'
 import ListPostPage from './src/screens/ListPostPage'
 import PostView from './src/screens/PostView'

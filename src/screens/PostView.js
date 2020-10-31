@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, TextInput, Text, View, Image, TouchableOpacity, Button } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, TextInput, Text, View, Image, TouchableOpacity, Button, Alert } from 'react-native';
 import * as Font from 'expo-font';
 import 'firebase/firestore';
 import styles from '../styles/post_styles';
@@ -32,10 +32,17 @@ class PostView extends React.Component {
             voted: false,
 
             comment: null,
+
+            posteduser: '',
         }
         this.getEverthing();
     }
-
+    componentDidMount() {
+        this.getEverthing();
+    }
+    componentDidUpdate() {
+        this.getEverthing();
+    }
     getEverthing = async () => {
         //let db = firebase.firestore();
         let postRef = db.collection('Posts').doc(this.state.id);
@@ -54,9 +61,11 @@ class PostView extends React.Component {
             tag: post.get('Tag'),
 
             users: post.get('VotedUser'),
+            posteduser: post.get('PostedUser'),
             test: 1,
         })
     }
+
 
     upVote = async () => {
         if (!(this.state.users.includes(this.state.uid) || this.state.voted)) {
@@ -125,6 +134,31 @@ class PostView extends React.Component {
 
     }
 
+    onDeletePress = async () => {
+        console.log("uid delete: " , this.state.uid)
+        console.log("posteduser delete: ", this.state.posteduser);
+        if (this.state.uid == this.state.posteduser) {
+            db.collection("Posts").doc(this.state.id).delete();
+            db.collection("Users").doc(this.state.uid).update({
+                "postedPosts": firebase.firestore.FieldValue.arrayRemove(this.state.id)
+            })
+            this.props.navigation.navigate('FeedPage');
+        } else {
+            Alert.alert("You are not the owner of the Post");
+        }
+    }
+    
+    onEditPress = async () => {
+        if (this.state.uid == this.state.posteduser) {
+            this.props.navigation.navigate('EditPostPage', {post: this.state});
+        }
+        else {
+            Alert.alert("You are not the owner of the Post");
+        }
+    }
+
+
+
     render() {
 
         return (
@@ -163,7 +197,8 @@ class PostView extends React.Component {
                             <Text onPress={this.comment} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>comment</Text>
                         </TouchableOpacity>
                     </View>
-
+                    <Button color= "#ffb300" title="Edit Post" onPress={this.onEditPress}/>
+                    <Button color= "#ffb300" title="Delete Post" onPress={this.onDeletePress}/> 
                     <View style={styles.showCommentContainer}>
                         <InfiniteScroll title={'comment section:'} navigation={this.props.navigation} collection={"Comments"} what={"Under"} contain={[this.state.id]} card={"CommentCard"} sortBy={"ID"}/>
                     </View>

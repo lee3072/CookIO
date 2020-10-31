@@ -61,7 +61,7 @@ const EditPostPage = ( props ) => {
 
   const handlePost = async () => {
     await initPost();
-    props.navigation.navigate("FeedPage");  
+    props.navigation.navigate("ListTopicPage");  
 
   }
 
@@ -70,7 +70,7 @@ const EditPostPage = ( props ) => {
     updateRef.doc(props.route.params.post.id).update({
       PostedUser: "anonymous",
     })
-    props.navigation.navigate("FeedPage");
+    props.navigation.navigate("ListTopicPage");
   }
 
   const pickImage = async () => {
@@ -83,6 +83,28 @@ const EditPostPage = ( props ) => {
           setImage({localUri:result.uri});
       }
   }
+
+  uploadImage = async (uri, filenname) => {
+    return new Promise(async (res, rej) => {
+      const response = await fetch(uri);
+      const file = await response.blob();
+
+      let upload = firebase.storage().ref(filenname).put(file);
+
+      upload.on(
+        "state_changed",
+        snapshot => { },
+        err => {
+          rej(err);
+        },
+        async () => {
+          const url = await upload.snapshot.ref.getDownloadURL();
+          res(url);
+        }
+      );
+    });
+  };
+
 
   return (
       <SafeAreaView style={styles.container}>
