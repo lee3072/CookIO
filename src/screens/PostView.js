@@ -1,25 +1,36 @@
 
-import React, {useState} from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, TextInput, Text, View, Image, TouchableOpacity, Button } from 'react-native';
 import * as Font from 'expo-font';
 import 'firebase/firestore';
 import styles from '../styles/post_styles';
 import firebase from '../../firebase_setup';
+import InfiniteScroll from "../components/InfiniteScroll"
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
 class PostView extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             test: 0,
             id: this.props.route.params.id,
             title: "default title",
             up: 0,
             down: 0,
             uid: firebase.auth().currentUser.uid.toString(),
+
+            content: null,
+            image: null,
+            date: null,
+            postedUser: null,
+            tag: null,
+
             canVote: true,
             postRef: null,
             users: null,
             voted: false,
+
+            comment: null,
         }
         this.getEverthing();
     }
@@ -33,26 +44,27 @@ class PostView extends React.Component {
             up: post.get('UpVote'),
             down: post.get('DownVote'),
             postRef: postRef,
+
+            content: post.get('Content'),
+            image: post.get('Image'),
+            date: post.get('PostedDate'),
+            postedUser: post.get('PostedUser'),
+            tag: post.get('Tag'),
+
             users: post.get('VotedUser'),
-            test: 1, 
+            test: 1,
         })
-        console.log('PostView');
-        console.log(this.state.id);
-        console.log(this.state.title);
-        console.log(this.state.uid);
-        console.log(this.state.users);
-        console.log(this.state.users.includes(this.state.uid));
     }
 
     upVote = async () => {
-        if(! (this.state.users.includes(this.state.uid) || this.state.voted)) {
+        if (!(this.state.users.includes(this.state.uid) || this.state.voted)) {
             this.state.postRef.update({
                 VotedUser: firebase.firestore.FieldValue.arrayUnion(this.state.uid),
                 UpVote: this.state.up + 1,
             })
             console.log(this.state.users);
             this.setState({
-                up: this.state.up+1,
+                up: this.state.up + 1,
                 voted: true,
             })
             console.log(this.state.users);
@@ -60,52 +72,100 @@ class PostView extends React.Component {
         }
     }
 
-    downVote = async () =>{
-        if(! (this.state.users.includes(this.state.uid) || this.state.voted)) {
+    downVote = async () => {
+        if (!(this.state.users.includes(this.state.uid) || this.state.voted)) {
             this.state.postRef.update({
                 VotedUser: firebase.firestore.FieldValue.arrayUnion(this.state.uid),
                 DownVote: this.state.down + 1,
             })
             this.setState({
-                down: this.state.down+1,
+                down: this.state.down + 1,
                 voted: true,
             })
             console.log('down voted');
         }
     }
 
-    render() {
+    savePost = async () => { 
+        let db = firebase.firestore();
+        let userRef = db.collection('Users').doc(this.state.uid);
+        userRef.update({
+            savedPost: firebase.firestore.FieldValue.arrayUnion(this.state.id)
+        })
+        console.log('post saved')
+    }
+
+    comment = async () => {
+        console.log("commenting");
+        let db = firebase.firestore();
+        let comRef = db.collection('Comments');
+        let postRef = db.collection('Posts').doc(this.state.id);
+        let userRef = db.collection('Users').doc(this.state.uid);
         
+        var comment = await comRef.add({
+            ID: "default",
+            Under: postRef.id.toString(),
+            Date: firebase.firestore.FieldValue.serverTimestamp(),
+            By: this.state.uid,
+            Content: this.state.comment,
+        });
+        comment.update({
+            ID: comment.id.toString(),
+        })
+
+        postRef.update({
+            CommentsIDs: firebase.firestore.FieldValue.arrayUnion(comment.id.toString())
+        })
+
+        userRef.update({
+            postedComments: firebase.firestore.FieldValue.arrayUnion(comment.id.toString())
+        })
+
+    }
+
+    render() {
+
         return (
             <SafeAreaView style={styles.container}>
-                <View style={styles.titleContainer}>
-                    <Text style={{ fontWeight: "500" }}>{this.state.title}</Text>
-                </View>
-                <View style={{marginHorizontal: 30, marginTop: 12, height: 150, backgroundColor: "grey", }}>
-                    <Text style={{ fontWeight: "500" }}>Image</Text>
-                </View>
-                <View style={styles.showContentContainer}>
-                        <Text style={{ fontWeight: "500" }}>Content</Text>
-                </View>
-                <View style={styles.showTagContainer}>
-                    <Text style={{ fontWeight: "500" }}>tags</Text>
-                </View>
-                <View style={styles.voteContainer}>
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.titleContainer}>
+                        <Text style={{ fontWeight: "500" }}>{this.state.title}</Text>
+                    </View>
+                    <View style={styles.showTagContainer}>
+                        <Text style={{ fontWeight: "500" }}>{this.state.tag}</Text>
+                    </View>
+                    <View style={styles.voteContainer}>
+                        <TouchableOpacity >
+                            <Text onPress={this.upVote} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>Up</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity >
+                            <Text onPress={this.downVote} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>Down</Text>
+                        </TouchableOpacity>
+                        <Text style={{ fontWeight: "500" }}>up vote: {this.state.up}</Text>
+                        <Text style={{ fontWeight: "500" }}>down vote: {this.state.down}</Text>
+                    </View>
+                    <View style={{ marginHorizontal: 32, marginTop: 32, height: 400, resizeMode: "contain" }}>
+                        <Image source={{ uri: this.state.image }} style={{ width: "100%", height: "100%" }}></Image>
+                    </View>
+                    <View style={styles.showContentContainer}>
+                        <Text style={{ fontWeight: "500" }}>{this.state.content}</Text>
+                    </View>
                     <TouchableOpacity >
-                        <Text onPress={this.upVote} style={{ marginLeft:20, marginRight: 20, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>Up</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity >
-                        <Text onPress={this.downVote} style={{padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>Down</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.showTagContainer}>
-                    <Text style={{ fontWeight: "500" }}>up vote: {this.state.up} down vote: {this.state.down}</Text>
-                </View>
-                <View style={styles.showCommentContainer}>
-                    <Text style={{ fontWeight: "500" }}>Comments</Text>
-                </View>
-                <Button color= "#ffb300"
-                title="Back to Feed Page" onPress={() => this.props.navigation.navigate('FeedPage')} />
+                            <Text onPress={this.savePost} style={{ width: 100, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>save this post</Text>
+                        </TouchableOpacity>
+                    <View style={{flexDirection: "column", flex: 1}}>
+                        <View style={styles.inputContainer}>
+                            <TextInput multiline={true} numberOfLines={10} style={{ flex: 1 }} placeholder="Want to say something?" textAlignVertical='top' onChangeText={text => this.setState({comment: text})} value={this.state.comment}></TextInput>
+                        </View>
+                        <TouchableOpacity>
+                            <Text onPress={this.comment} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>comment</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.showCommentContainer}>
+                        <InfiniteScroll title={'comment section:'} navigation={this.props.navigation} collection={"Comments"} what={"Under"} contain={[this.state.id]} card={"CommentCard"} sortBy={"ID"}/>
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }

@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: "#D8D9DB"
   },
+    scrollView: {
+    // backgroundColor: 'grey',
+    marginHorizontal: 20,
+  },
   inputContainer: {
       margin: 20,
       flexDirection: "row",
@@ -45,6 +49,11 @@ const styles = StyleSheet.create({
   photo: {
       alignItems: "flex-end",
       marginHorizontal: 32
+  },
+  voteContainer: {
+    height: 40,
+    flexDirection: "row",
+    flex: 1
   }
 
 

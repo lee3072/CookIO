@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import 'firebase/firestore';
 
 const PostCard = ({ navigation, item }) => {
-  console.log("in tag card " + item.ID);
+  // console.log("in tag card " + item.ID);
   return (
     <TouchableOpacity
       onPress={() =>
