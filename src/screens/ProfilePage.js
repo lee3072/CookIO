@@ -167,6 +167,12 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'wswsec6LmQZ7khqT1rk60pMvwx33'})}
                 />
             </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="My Posts"
+                    onPress={() => navigation.navigate('UserFeedPage', {userid: uid })}
+                />
+            </View>
 
         
         </View>

@@ -8,6 +8,7 @@ import firebase from '../../firebase_setup';
 import InfiniteScroll from "../components/InfiniteScroll"
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 
+var db = firebase.firestore();
 class PostView extends React.Component {
     constructor(props) {
         super(props);
@@ -36,9 +37,10 @@ class PostView extends React.Component {
     }
 
     getEverthing = async () => {
-        let db = firebase.firestore();
+        //let db = firebase.firestore();
         let postRef = db.collection('Posts').doc(this.state.id);
         const post = await postRef.get();
+        
         this.setState({
             title: post.get('Title'),
             up: post.get('UpVote'),
