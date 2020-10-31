@@ -64,19 +64,19 @@ const EditPostPage = ( props ) => {
     if (topicList.exists) {
       // if exist
       topicRef.update({
-        list: firebase.firestore.FieldValue.arrayUnion(updateRef.ID)
+        list: firebase.firestore.FieldValue.arrayUnion(props.route.params.post.id)
       })
     } else {
       // if does not exist, creat new tag
       topicRef = db.collection("Tags").doc(tags).set({
         ID: tags,
-        list: [updateRef.ID],
+        list: [props.route.params.post.id],
         date: Date(),
       });
     }
 
     if (image != null) {
-      let imgref = await uploadImage(image, `post/${ref.id.toString()}`);
+      let imgref = await uploadImage(image, `post/${props.route.params.post.id.toString()}`);
       ref.update({
         Image: imgref,
       })
