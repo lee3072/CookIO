@@ -30,7 +30,7 @@ class InfiniteScroll extends React.Component {
             haveMore: true,
             list: [],
             count: 3,
-            limit: 1,
+            limit: 10,
         };
     }
 
@@ -264,12 +264,12 @@ class InfiniteScroll extends React.Component {
                     // Header (Title)
                     ListHeaderComponent={this.renderHeader}
 
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.showMore}
-                        />
-                    }
+                    // refreshControl={
+                    //     <RefreshControl
+                    //         refreshing={this.state.refreshing}
+                    //         onRefresh={this.showMore}
+                    //     />
+                    // }
                 />
 
             </View>
