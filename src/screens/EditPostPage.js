@@ -16,7 +16,7 @@ const EditPostPage = ( props ) => {
   const [image, setImage] = useState(props.route.params.post.image);
   const [text, setText] = useState(props.route.params.post.content);
   const [title, setTitle] = useState(props.route.params.post.title);
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState(props.route.params.post.tags);
   
   const changeMod = () => {
       props.navigation.navigate('ProfilePage')
@@ -49,7 +49,7 @@ const EditPostPage = ( props ) => {
       ID: props.route.params.post.id,
       Title: title,
       Content:  text,
-      Tag: tags.split("#"),
+      Tag: tags,
       Image: image,
       PostedUser: currentUserRef,
       PostedDate: Date(),
@@ -57,6 +57,30 @@ const EditPostPage = ( props ) => {
       UpVote: 0,
       VotedUser: [],
     })
+
+    var topicRef = db.collection("Tags").doc(tags);
+    const topicList = await topicRef.get();
+    //if the tags does not exist in the database, add it to the database
+    if (topicList.exists) {
+      // if exist
+      topicRef.update({
+        list: firebase.firestore.FieldValue.arrayUnion(updateRef.ID)
+      })
+    } else {
+      // if does not exist, creat new tag
+      topicRef = db.collection("Tags").doc(tags).set({
+        ID: tags,
+        list: [updateRef.ID],
+        date: Date(),
+      });
+    }
+
+    if (image != null) {
+      let imgref = await uploadImage(image, `post/${ref.id.toString()}`);
+      ref.update({
+        Image: imgref,
+      })
+    }
   }
 
   const handlePost = async () => {
@@ -74,14 +98,14 @@ const EditPostPage = ( props ) => {
   }
 
   const pickImage = async () => {
-      let permission = await ImagePicker.requestCameraRollPermissionsAsync();
-      if (permission.granted == false) {
-          return;
-      }   
-      let result = await ImagePicker.launchImageLibraryAsync();
-      if (!result.cancelled) {
-          setImage({localUri:result.uri});
-      }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
   }
 
   uploadImage = async (uri, filenname) => {
@@ -126,13 +150,13 @@ const EditPostPage = ( props ) => {
               <TextInput autoFocus={true} multiline={true} numberOfLines={10} style={{ flex: 1 }} placeholder="Want to share something?" textAlignVertical = 'top' onChangeText={text => setText(text)} value = {text}></TextInput>
           </View>
           <View style={styles.tagContainer}>
-              <TextInput autoFocus={true} multiline={true} numberOfLines={1} style={{ flex: 1 }} placeholder="#tag1 #tag2.." onChangeText={tags => setTags(tags)} value = {tags}></TextInput>
+          <TextInput autoFocus={true} maxLength={50} multiline={true} numberOfLines={1} style={{ flex: 1 }} placeholder="please enter exicelly one tag or no tag" onChangeText={tags => setTags(tags)} value={tags}></TextInput>
           </View>
           <TouchableOpacity style={styles.photo} onPress={pickImage}>
               <Ionicons name="md-camera" size={32} color="#D8D9DB"></Ionicons>
           </TouchableOpacity>
           <View style={{marginHorizontal: 32, marginTop: 32, height: 150, resizeMode: "contain"}}>
-              <Image source={{uri:image.localUri}} style={{width:"100%", height: "100%"}}></Image>
+          <Image source={{ uri: image }} style={{ width: "100%", height: "100%" }}></Image>
           </View>
       </SafeAreaView>
   );
