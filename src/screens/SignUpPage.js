@@ -21,45 +21,50 @@ const SignUpPage = ({ navigation }) => {
           setPassword('')
           navigation.navigate("CreateProfilePage")
           let db = firebase.firestore()
-          db.collection("Comments").add({
-            date: Date(),
-            content: "Welcome Comment",
-            commentedUser: "Users/"+firebase.auth().currentUser.uid.toString(),
-          }).then(welcomeComment => {
-            db.collection("Posts").add({
-              postedUser: emailAddress,
-              image: null,
-              content: "Welcome Content",
-              PostedDate: Date(),
-              tag: "Tags/"+"welcomeTag",
-              comments: ["Comments/"+welcomeComment.id.toString()],
-            }).then(welcomePost => {
-              db.collection("Tags").doc("welcomeTag").update({
-                postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
-              }).catch( error => {
-                db.collection("Tags").doc("welcomeTag").set({
-                  postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
-                })
-              })
-              db.collection("Comments").doc(welcomeComment.id.toString()).update({
-                belongedPost: "Posts/"+welcomePost.id
-              })
-              db.collection("Users")
-              .doc(firebase.auth().currentUser.uid.toString()).set({
-                userEmail: emailAddress,
-                userIcon: null,
-                userName: "",
-                topicsOfInterest: "",
-                postedPosts: ["Posts/"+welcomePost.id],
-                numberOfFollowers: 0,
-                followingUsers: ["Users/"+firebase.auth().currentUser.uid.toString()],
-                postedComments: ["Comments/"+welcomeComment.id.toString()]
-              })
+          db.collection("Users")
+          .doc(firebase.auth().currentUser.uid.toString()).set({
+            userEmail: emailAddress,
+            userIcon: null,
+            userName: "",
+            topicsOfInterest: "",
+            postedPosts: [],
+            numberOfFollowers: 0,
+            followingUsers: [],
+            followingTags: [],
+            postedComments: [],
+            blockedUsers: [],
+            followers: [],
+          })
+
+          // db.collection("Comments").add({
+          //   date: Date(),
+          //   content: "Welcome Comment",
+          //   commentedUser: "Users/"+firebase.auth().currentUser.uid.toString(),
+          // }).then(welcomeComment => {
+          //   db.collection("Posts").add({
+          //     postedUser: emailAddress,
+          //     image: null,
+          //     content: "Welcome Content",
+          //     PostedDate: Date(),
+          //     tag: "Tags/"+"welcomeTag",
+          //     comments: ["Comments/"+welcomeComment.id.toString()],
+          //   }).then(welcomePost => {
+          //     // db.collection("Tags").doc("welcomeTag").update({
+          //     //   postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
+          //     // }).catch( error => {
+          //     //   db.collection("Tags").doc("welcomeTag").set({
+          //     //     postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
+          //     //   })
+          //     // })
+          //     // db.collection("Comments").doc(welcomeComment.id.toString()).update({
+          //     //   belongedPost: "Posts/"+welcomePost.id
+          //     // })
+              
               
   
               
-            })
-          })
+          //   })
+          // })
          
         }
       })

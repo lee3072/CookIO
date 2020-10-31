@@ -24,6 +24,7 @@ const ProfilePage = ({navigation}) => {
             console.log('Success');
             setUid(currentUser.uid)
             setEmail(currentUser.email)
+
             function getUserName(documentSnapshot) {
                 return documentSnapshot.get('userName');
             }
@@ -81,7 +82,7 @@ const ProfilePage = ({navigation}) => {
             .get()
             .then(documentSnapshot => getFollowingUsers(documentSnapshot))
             .then(followingUsers => {
-                setFollowings(followingUsers.length - 1);
+                setFollowings(followingUsers.length);
             });
         }
     };
@@ -139,6 +140,13 @@ const ProfilePage = ({navigation}) => {
             
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
+                    title="See Followings"
+                    onPress={() => navigation.navigate('FollowingPage')}
+                />
+            </View>
+
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
                     title="Make Post"
                     onPress={() => navigation.navigate('MakePostPage')}
                 />
@@ -147,6 +155,16 @@ const ProfilePage = ({navigation}) => {
                 <Button color= "#ffb300"
                     title="Feed Page"
                     onPress={() => navigation.navigate('ListTopicPage')}
+                />
+            </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Other Profile Page 1"
+                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'N78GForfcuTflORGKfdCZM69YhQ2'})}
+                />
+                <Button color= "#ffb300"
+                    title="Other Profile Page 2"
+                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'wswsec6LmQZ7khqT1rk60pMvwx33'})}
                 />
             </View>
 

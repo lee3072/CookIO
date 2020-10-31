@@ -17,13 +17,17 @@ import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
+import FollowingPage from './src/screens/FollowingPage';
+import FollowingTagPage from './src/screens/FollowingTagPage';
 import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
+import DeleteAccountPage from './src/screens/DeleteAccountPage';
 import MakePostPage from './src/screens/MakePostPage'
 import EditPost from './src/screens/EditPost';
 import ListTopicPage from './src/screens/ListTopicPage'
 import ListPostPage from './src/screens/ListPostPage'
 import PostView from './src/screens/PostView'
+import UsersProfilePage from './src/screens/UsersProfilePage';
 import firebase from './firebase_setup';
 
 let customFonts = {
@@ -55,8 +59,12 @@ export default class App extends React.Component {
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
+            <Stack.Screen name="FollowingPage" component={FollowingPage}/>
+            <Stack.Screen name="FollowingTagPage" component={FollowingTagPage}/>
+            <Stack.Screen name="UsersProfilePage" component={UsersProfilePage}/>
             <Stack.Screen name="EditProfilePage" component={EditProfilePage}/>
             <Stack.Screen name="ChangePasswordPage" component={ChangePasswordPage}/>
+            <Stack.Screen name="DeleteAccountPage" component={DeleteAccountPage}/>
             <Stack.Screen name="MakePostPage" component={MakePostPage}/>
             <Stack.Screen name="ListPostPage" component={ListPostPage}/>
             <Stack.Screen name="ListTopicPage" component={ListTopicPage}/>

@@ -313,7 +313,10 @@ class EditProfilePage extends React.Component {
 
             <Button color= "#ffb300"
                 title="Change Password" onPress={() => this.props.navigation.navigate('ChangePasswordPage')} />
-
+            <View style={styles.buttonStyle}>
+                <Button color= "#ffb300"
+                    title="Delete Account" onPress={() => this.props.navigation.navigate('DeleteAccountPage')} />
+            </View>
         </View>
 
         </ScrollView>
@@ -399,6 +402,9 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         flexDirection: "row",
         justifyContent: "flex-start",
+    },
+    buttonStyle: {
+        marginTop: 5,
     },
 });
 
