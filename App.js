@@ -10,9 +10,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-//import * as firebase from "firebase";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 
-
+import DirectMessageMainPage from './src/screens/DirectMessageMainPage'
+import DirectMessageMainAllUserPage from './src/screens/DirectMessageMainAllUserPage'
+import DirectMessageUserPage from './src/screens/DirectMessageUserPage'
 import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
@@ -47,6 +50,20 @@ export default class App extends React.Component {
   state = {
     fontsLoaded: false,
   };
+
+  async askPermissions () {
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      return false;
+    }
+    return true;
+  };
+
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
@@ -54,6 +71,7 @@ export default class App extends React.Component {
   componentDidMount() {
     YellowBox.ignoreWarnings(['Setting a timer for a long'])
     this._loadFontsAsync();
+    this.askPermissions();
   }
   render() {
     if (this.state.fontsLoaded) {
@@ -63,6 +81,9 @@ export default class App extends React.Component {
           <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
+            <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
+            <Stack.Screen name="DirectMessageMainAllUserPage" component={DirectMessageMainAllUserPage}/>
+            <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
             <Stack.Screen name="FollowingPage" component={FollowingPage}/>

@@ -23,6 +23,7 @@ const SignUpPage = ({ navigation }) => {
           let db = firebase.firestore()
           db.collection("Users")
           .doc(firebase.auth().currentUser.uid.toString()).set({
+            id: firebase.auth().currentUser.uid, // for DM
             userEmail: emailAddress,
             userIcon: null,
             userName: "",
@@ -32,40 +33,11 @@ const SignUpPage = ({ navigation }) => {
             followingUsers: [],
             followingTags: [],
             postedComments: [],
-            blockedUsers: [],
+            blockedUsers: [], // for DM
+            dmUsers: [], // for DM
             followers: [],
           })
-
-          // db.collection("Comments").add({
-          //   date: Date(),
-          //   content: "Welcome Comment",
-          //   commentedUser: "Users/"+firebase.auth().currentUser.uid.toString(),
-          // }).then(welcomeComment => {
-          //   db.collection("Posts").add({
-          //     postedUser: emailAddress,
-          //     image: null,
-          //     content: "Welcome Content",
-          //     PostedDate: Date(),
-          //     tag: "Tags/"+"welcomeTag",
-          //     comments: ["Comments/"+welcomeComment.id.toString()],
-          //   }).then(welcomePost => {
-          //     // db.collection("Tags").doc("welcomeTag").update({
-          //     //   postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
-          //     // }).catch( error => {
-          //     //   db.collection("Tags").doc("welcomeTag").set({
-          //     //     postsInThisTopic: firebase.firestore.FieldValue.arrayUnion("Posts/"+welcomePost.id)
-          //     //   })
-          //     // })
-          //     // db.collection("Comments").doc(welcomeComment.id.toString()).update({
-          //     //   belongedPost: "Posts/"+welcomePost.id
-          //     // })
-              
-              
-  
-              
-          //   })
-          // })
-         
+          firebase.database().ref(firebase.auth().currentUser.uid).push("initialization")
         }
       })
       .catch(error => {

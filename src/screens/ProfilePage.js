@@ -99,13 +99,27 @@ const ProfilePage = ({navigation}) => {
             <View style={styles.logoutButton}>
                 <Button
                     color= "#ffdb85"
+                    title="Direct Messaging"
+                    onPress={() => {
+                            firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                                navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
+                            })
+                        }}
+                />
+                <Button
+                    color= "#ffdb85"
                     title="Logout"
                     onPress={() => {
                             firebase.auth().signOut()
+                            firebase.database().ref(firebase.auth().currentUser.uid)
+                            .limitToLast(20)
+                            .off()
                             navigation.navigate('SignInPage')
                         }}
                 />
             </View>
+
+
             <View style={{ margineTop: 60}}>
                 <View style = {styles.profileContainer}>
                     
@@ -173,6 +187,16 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('UserFeedPage', {userid: uid })}
                 />
             </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="DM All User"
+                    onPress={() => {
+                        firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                            navigation.navigate('DirectMessageMainAllUserPage',{dm: doc.data().dmUsers})
+                        })
+                    }}
+                />
+            </View>
 
         
         </View>
@@ -225,10 +249,15 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: "center",
     },
+    // DMButton: {
+    //     paddingTop: 20,
+    //     flexDirection: "row",
+    //     justifyContent: "flex-start",
+    // },
     logoutButton: {
         paddingTop: 20,
         flexDirection: "row",
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
     },
     refreshButton: {
         paddingTop: 20,

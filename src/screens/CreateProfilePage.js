@@ -4,13 +4,16 @@ import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import 'firebase/firestore';
 import styles from '../styles/auth_styles';
-
+import {Notifications} from 'expo';
+import * as Permissions from "expo-permissions";
 
 
 const CreateProfilePage = ({ navigation }) => {
     const [userName, setUserName] = useState('');
     const [topicsOfInterest, setTopicsOfInterest] = useState('');
     const [warning,setWarning] = useState('')
+
+    
     const submit = () => {
     let db = firebase.firestore()
     if (userName !== ''){
@@ -26,6 +29,21 @@ const CreateProfilePage = ({ navigation }) => {
         setUserName('')
         setTopicsOfInterest('')
         setWarning('')
+        
+        var i = 0
+        firebase.database().ref(firebase.auth().currentUser.uid)
+        .endAt()
+        .limitToLast(1)
+        .on('child_added', snapshot => {
+            if (i != 0) {
+                Notifications.presentLocalNotificationAsync({
+                    title: "from: "+snapshot.child("user/_id").val(),
+                    body: snapshot.child("text").val(),
+                  });
+            }
+            i++
+        });
+
         navigation.navigate('ProfilePage')
         } else {
         setWarning('Username is already occupied')

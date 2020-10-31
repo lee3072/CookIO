@@ -14,6 +14,8 @@ import PostCard from "../components/PostCard";
 import TagCard from "../components/TagCard";
 import CommentCard from "../components/CommentCard";
 
+import UserCard from "../components/UserCard";
+
 
 class InfiniteScroll extends React.Component {
     constructor(props) {
@@ -200,6 +202,8 @@ class InfiniteScroll extends React.Component {
             case "CommentCard":
                 return (<CommentCard style={styles.postCard} item={item} navigation={this.props.navigation} />);
 
+            case "UserCard":
+                return (<UserCard style={styles.userCard} item={item} navigation={this.props.navigation} />);
             default:
                 throw "infinite scroll need a card to render, check if you enterd all parameters";
         }
@@ -213,6 +217,18 @@ class InfiniteScroll extends React.Component {
         ThemeProvider.onEndReachedCalled = true;
     }
 
+    showMore = async () => {
+        // if(this.props.document == 'NULL'){
+        this.retrieveMore();
+        // } else {
+        //     this.setState({
+        //         data: this.state.list.slice(0, this.state.count + this.state.limit),
+        //         count: this.state.count + 1,//this.state.limit,
+        //     });
+        // }
+
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -222,6 +238,14 @@ class InfiniteScroll extends React.Component {
                 /> */}
 
                 {/* <CupertinoSearchBarBasic
+                <View style={{paddingTop: (Platform.OS === 'ios') ? 40: 0}}>
+                <Button color="#ffb300"
+                    title="My Profile"
+                    onPress={() => this.props.navigation.navigate('ProfilePage')}
+                />
+                </View>
+                
+                <CupertinoSearchBarBasic
                     style={styles.cupertinoSearchBarBasic}
                 ></CupertinoSearchBarBasic> */}
 
@@ -243,7 +267,7 @@ class InfiniteScroll extends React.Component {
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
-                            onRefresh={this.retrieveMore}
+                            onRefresh={this.showMore}
                         />
                     }
                 />
@@ -271,6 +295,12 @@ const styles = StyleSheet.create({
         width: 360
     },
     postCard: {
+        width: 300,
+        height: 208,
+        marginTop: 39,
+        alignSelf: "center"
+    },
+    userCard: {
         width: 300,
         height: 208,
         marginTop: 39,

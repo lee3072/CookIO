@@ -4,12 +4,17 @@ import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import 'firebase/firestore';
 import styles from '../styles/auth_styles';
+import {Notifications} from 'expo';
+import * as Permissions from "expo-permissions";
 
 // Page Section Start
 const SignInPage = ({ navigation }) => {
     const [emailAddress,setEmailAddress] = useState('');
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
+
+
+    
     const signInWithEmail = () => {
         console.log("email: "+emailAddress+"; pass: "+password)
         firebase.auth().signInWithEmailAndPassword(emailAddress.trim(),password)
@@ -18,6 +23,20 @@ const SignInPage = ({ navigation }) => {
             setWarning('')
             setEmailAddress('')
             setPassword('')
+            var i = 0
+            firebase.database().ref(firebase.auth().currentUser.uid)
+            .endAt()
+            .limitToLast(1)
+            .on('child_added', snapshot => {
+                if (i != 0) {
+                    Notifications.presentLocalNotificationAsync({
+                        title: "from: "+snapshot.child("user/_id").val(),
+                        body: snapshot.child("text").val(),
+                      });
+                    //   console.log(snapshot)
+                }
+                i++
+            });
             navigation.navigate("ProfilePage")
         }
         })
