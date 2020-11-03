@@ -13,7 +13,10 @@ class DirectMessageMainAllUserPage extends React.Component {
     }
     render(){
       return (
-        <InfiniteScroll title={'DM page'} navigation={this.props.navigation} collection={"Users"} card={"UserCard"} sortBy={"userEmail"}/>
+        
+          <InfiniteScroll title={'DM page'} navigation={this.props.navigation} collection={"Users"} card={"UserCard"} sortBy={"userEmail"}/>
+        
+        
       );
     }
   }

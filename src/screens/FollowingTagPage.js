@@ -49,8 +49,8 @@ const FollowingTagPage = ({navigation}) => {
                 <Text style={styles.title}>Following Tags</Text>
                 <View style={styles.buttonStyle}>
                     <Button color= "#ffb300"
-                        title="Following Tags"
-                        onPress={() => navigation.navigate('FollowingTagPage')}
+                        title="Following Users"
+                        onPress={() => navigation.navigate('FollowingPage')}
                     />
                 </View>
             </View>
