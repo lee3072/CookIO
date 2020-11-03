@@ -16,7 +16,7 @@ const EditPostPage = ( props ) => {
   const [image, setImage] = useState(props.route.params.post.image);
   const [text, setText] = useState(props.route.params.post.content);
   const [title, setTitle] = useState(props.route.params.post.title);
-  const [tags, setTags] = useState(props.route.params.post.tags);
+  const [tags, setTags] = useState(props.route.params.post.tag);
   
   const changeMod = () => {
       props.navigation.navigate('ProfilePage')
@@ -43,7 +43,7 @@ const EditPostPage = ( props ) => {
       setImage({image: props.route.params.post.id});
     }
     if (tags == '') {
-      setTags({tags: props.route.params.post.tags});
+      setTags({tags: props.route.params.post.tag});
     }
     updateRef = await postRef.doc(props.route.params.post.id).update({
       ID: props.route.params.post.id,
@@ -56,6 +56,14 @@ const EditPostPage = ( props ) => {
       DownVote: 0,
       UpVote: 0,
       VotedUser: [],
+    })
+    
+    db.collection("Tags").doc(props.route.params.post.tag).update({
+      list: firebase.firestore.FieldValue.arrayRemove(props.route.params.post.id)
+    })
+
+    db.collection("Tags").doc(props.route.params.post.tag).get().then( doc => {
+      if (doc.data().list.length == 0) db.collection("Tags").doc(props.route.params.post.tag).delete();
     })
 
     var topicRef = db.collection("Tags").doc(tags);
@@ -74,6 +82,8 @@ const EditPostPage = ( props ) => {
         date: Date(),
       });
     }
+
+
 
     if (image != null) {
       let imgref = await uploadImage(image, `post/${props.route.params.post.id.toString()}`);
