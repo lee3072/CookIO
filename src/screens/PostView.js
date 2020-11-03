@@ -104,6 +104,7 @@ class PostView extends React.Component {
             savedPost: firebase.firestore.FieldValue.arrayUnion(this.state.id)
         })
         console.log('post saved')
+        this.props.navigation.navigate('ListTopicPage');
     }
 
     comment = async () => {
