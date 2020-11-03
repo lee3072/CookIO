@@ -124,6 +124,10 @@ class InfiniteScroll extends React.Component {
             }
 
         } catch (error) {
+            this.setState({
+                haveMore: false,
+                refreshing: false,
+            });
             console.log(error);
         }
     }
@@ -264,12 +268,12 @@ class InfiniteScroll extends React.Component {
                     // Header (Title)
                     ListHeaderComponent={this.renderHeader}
 
-                    // refreshControl={
-                    //     <RefreshControl
-                    //         refreshing={this.state.refreshing}
-                    //         onRefresh={this.showMore}
-                    //     />
-                    // }
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.showMore}
+                        />
+                    }
                 />
 
             </View>
