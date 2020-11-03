@@ -39,6 +39,8 @@ import UserPostView from './src/screens/UserPostView';
 import UserFeedPage from './src/screens/UserFeedPage';
 import firebase from './firebase_setup';
 
+console.disableYellowBox = true; //this hides warning from expo
+
 let customFonts = {
   'Rokkitt': require('./src/assets/fonts/rokkitt/Rokkitt-Regular.ttf'),
   'Merriweather': require('./src/assets/fonts/merriweather/Merriweather-Regular.otf'),

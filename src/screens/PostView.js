@@ -163,6 +163,7 @@ class PostView extends React.Component {
 
         return (
             <SafeAreaView style={styles.container}>
+                <Button color="#ffb300" title="Back" onPress={() => this.props.navigation.goBack()}/>
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.titleContainer}>
                         <Text style={{ fontWeight: "500" }}>{this.state.title}</Text>
