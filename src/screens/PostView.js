@@ -200,7 +200,7 @@ class PostView extends React.Component {
                     <Button color= "#ffb300" title="Edit Post" onPress={this.onEditPress}/>
                     <Button color= "#ffb300" title="Delete Post" onPress={this.onDeletePress}/> 
                     <View style={styles.showCommentContainer}>
-                        <InfiniteScroll title={'comment section:'} navigation={this.props.navigation} collection={"Comments"} what={"Under"} contain={[this.state.id]} card={"CommentCard"} sortBy={"ID"}/>
+                        <InfiniteScroll title={'comment section:'} navigation={this.props.navigation} collection={"Comments"} what={"Under"} contain={[this.state.id]} card={"CommentCard"} sortBy={"Date"}/>
                     </View>
                 </ScrollView>
             </SafeAreaView>
