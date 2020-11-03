@@ -187,7 +187,7 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('UserFeedPage', {userid: uid })}
                 />
             </View>
-            <View style={styles.buttonMiddle}>
+            {/* <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="DM All User"
                     onPress={() => {
@@ -196,7 +196,7 @@ const ProfilePage = ({navigation}) => {
                         })
                     }}
                 />
-            </View>
+            </View> */}
 
         
         </View>

@@ -132,7 +132,6 @@ class PostView extends React.Component {
         userRef.update({
             postedComments: firebase.firestore.FieldValue.arrayUnion(comment.id.toString())
         })
-
     }
 
     onDeletePress = async () => {
