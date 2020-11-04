@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Button, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { StyleSheet, Button, View, Text, TouchableOpacity, SafeAreaView, Image } from "react-native";
 import 'firebase/firestore';
 
 
@@ -18,16 +18,19 @@ const PostCard = ({ navigation, item }) => {
       }
       style={[styles.container]}
     >
-      <Text style={styles.title}>{item.Title}</Text>
-      <Text style={styles.tages3}>tages</Text>
-      <Text style={styles.tages1}>
-        content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
-      </Text>
-      <View style={styles.rectRow}>
-        <View style={styles.rect}></View>
-        <View style={styles.rect1}></View>
-        <View style={styles.rect2}></View>
-      </View>
+    <Text style={styles.title}>{item.Title}</Text>
+    <Text style={styles.tages3}>{"tag:"+item.Tag}</Text>
+    <Text style={styles.tages1}>
+      {"content:"+item.Content}
+    </Text>
+    <View style={styles.imageView}>
+    <Image
+      style={styles.icon}
+      source={
+          item.Image
+              ? { uri: item.Image }
+              : require("../assets/temp_icon.jpg")}/>
+    </View>
     </TouchableOpacity>
     </SafeAreaView>
   );
@@ -42,6 +45,19 @@ const styles = StyleSheet.create({
     width: 300,
     fontSize: 25
   },
+  icon: {
+    width: 160,
+    height: 160,
+  },
+  imageView: {
+    paddingTop: -10,
+    padding: 0,
+    marginTop: 0,
+    marginBottom: 40,
+    marginHorizontal: 10,
+    width: 160,
+    height: 160,
+  },
   tages3: {
     fontFamily: "Merriweather",
     color: "#121212",
@@ -54,27 +70,8 @@ const styles = StyleSheet.create({
     color: "#121212",
     height: 60,
     width: 300,
-    fontSize: 15
+    fontSize: 15,
   },
-  rect: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#E6E6E6"
-  },
-  rect1: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#E6E6E6"
-  },
-  rect2: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#E6E6E6"
-  },
-  rectRow: {
-    height: 100,
-    flexDirection: "row"
-  }
 });
 
 export default PostCard;
