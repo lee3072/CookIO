@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform, Alert } from 'react-native';
 import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import * as ImagePicker from 'expo-image-picker';
@@ -46,6 +46,7 @@ const EditPost = ({ navigation }) => {
       Tag: tags,
       Image: image,
       PostedUser: "anonymous",
+      PostedUserName: "anonymous",
       PostedDate: Date(),
       DownVote: 0,
       UpVote: 0,
@@ -70,7 +71,7 @@ const EditPost = ({ navigation }) => {
       });
     }
     //if there is a image attached
-    if (image != null) {
+    if (image != "") {
       let imgref = await uploadImage(image, `post/${ref.id.toString()}`);
       ref.update({
         Image: imgref,
