@@ -182,7 +182,7 @@ class PostView extends React.Component {
                         <Text style={{ fontWeight: "500" }}>down vote: {this.state.down}</Text>
                     </View>
                     <View style={{ marginHorizontal: 32, marginTop: 32, height: 400, resizeMode: "contain" }}>
-                        <Image source={{ uri: this.state.image }} style={{ width: "100%", height: "100%" }}></Image>
+                        <Image source={this.state.image ? {uri: this.state.image} : require("../assets/temp_icon.jpg")} style={{ width: "100%", height: "100%" }}></Image>
                     </View>
                     <View style={styles.showContentContainer}>
                         <Text style={{ fontWeight: "500" }}>{this.state.content}</Text>
@@ -194,8 +194,8 @@ class PostView extends React.Component {
                         <View style={styles.inputContainer}>
                             <TextInput multiline={true} numberOfLines={10} style={{ flex: 1 }} placeholder="Want to say something?" textAlignVertical='top' onChangeText={text => this.setState({comment: text})} value={this.state.comment}></TextInput>
                         </View>
-                        <TouchableOpacity>
-                            <Text onPress={this.comment} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>comment</Text>
+                        <TouchableOpacity onPress={this.comment}>
+                            <Text style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>comment</Text>
                         </TouchableOpacity>
                     </View>
                     <Button color= "#ffb300" title="Edit Post" onPress={this.onEditPress}/>

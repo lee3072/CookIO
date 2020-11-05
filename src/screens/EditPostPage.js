@@ -85,7 +85,7 @@ const EditPostPage = ( props ) => {
 
 
 
-    if (image != null) {
+    if (image != "") {
       let imgref = await uploadImage(image, `post/${props.route.params.post.id.toString()}`);
       postRef.doc(props.route.params.post.id).update({
         Image: imgref,
