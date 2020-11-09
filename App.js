@@ -32,11 +32,11 @@ import ListPostPage from './src/screens/ListPostPage'
 import PostView from './src/screens/PostView'
 import UsersProfilePage from './src/screens/UsersProfilePage';
 import EditPostPage from './src/screens/EditPostPage';
+import GuestViewPage from './src/screens/GuestViewPage';
 
 // import FeedPage from './src/screens/FeedPage';
 // import PostView from './src/screens/PostView';
 import UserPostView from './src/screens/UserPostView';
-import UserFeedPage from './src/screens/UserFeedPage';
 import firebase from './firebase_setup';
 
 console.disableYellowBox = true; //this hides warning from expo
@@ -81,6 +81,7 @@ export default class App extends React.Component {
         <NavigationContainer>
           <StatusBar style="light"></StatusBar>
           <Stack.Navigator screenOptions={{headerShown: false}} >
+            <Stack.Screen name="GuestViewPage" component={GuestViewPage}/>
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
@@ -100,7 +101,6 @@ export default class App extends React.Component {
             {/* <Stack.Screen name="EditPost" component={EditPost}/> */}
             {/* <Stack.Screen name="FeedPage" component={FeedPage}/> */}
             <Stack.Screen name="UserPostView" component={UserPostView}/>
-            <Stack.Screen name="UserFeedPage" component={UserFeedPage}/>
             <Stack.Screen name="EditPostPage" component={EditPostPage}/> 
             <Stack.Screen name="PostView" component={PostView}/>
 
