@@ -17,13 +17,14 @@ const PostCard = ({ navigation, item }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+  },
   title: {
     fontFamily: "Merriweather",
     color: "#121212",
-    height: 28,
+    // height: 28,
     width: 300,
-    fontSize: 25
+    fontSize: 25,
   },
 });
 
