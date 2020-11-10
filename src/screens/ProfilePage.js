@@ -187,6 +187,18 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('UserFeedPage', {userid: uid })}
                 />
             </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Saved Posts"
+                    onPress={() => navigation.navigate('SavedPostPage', {userid: uid })}
+                />
+            </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Following"
+                    onPress={() => navigation.navigate('InterestPostPage', {userid: uid })}
+                />
+            </View>
             {/* <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="DM All User"

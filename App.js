@@ -33,9 +33,11 @@ import PostView from './src/screens/PostView'
 import UsersProfilePage from './src/screens/UsersProfilePage';
 import EditPostPage from './src/screens/EditPostPage';
 import GuestViewPage from './src/screens/GuestViewPage';
-
+import InterestPostPage from './src/screens/InterestPostPage';
+import SavedPostPage from './src/screens/SavedPostPage';
 // import FeedPage from './src/screens/FeedPage';
 // import PostView from './src/screens/PostView';
+import UserFeedPage from './src/screens/UserFeedPage';
 import UserPostView from './src/screens/UserPostView';
 import firebase from './firebase_setup';
 
@@ -102,6 +104,9 @@ export default class App extends React.Component {
             {/* <Stack.Screen name="FeedPage" component={FeedPage}/> */}
             <Stack.Screen name="UserPostView" component={UserPostView}/>
             <Stack.Screen name="EditPostPage" component={EditPostPage}/> 
+            <Stack.Screen name="UserFeedPage" component={UserFeedPage}/>
+            <Stack.Screen name="InterestPostPage" component={InterestPostPage}/>
+            <Stack.Screen name="SavedPostPage" component={SavedPostPage}/>
             <Stack.Screen name="PostView" component={PostView}/>
 
           </Stack.Navigator>
