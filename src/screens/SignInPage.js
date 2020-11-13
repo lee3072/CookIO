@@ -46,7 +46,7 @@ const SignInPage = ({ navigation }) => {
                 .get()
                 .then(function(querySnapshot) {
                     if (querySnapshot.empty) {
-                        setWarning("Email or Username is invalid")
+                        setWarning("Email or Username is Invalid")
                     }
                     querySnapshot.forEach(function(doc) {
                         signInWithAccount(doc.data().userEmail)
@@ -55,7 +55,10 @@ const SignInPage = ({ navigation }) => {
             }
             else if (error.code == 'auth/weak-password') {
                 setWarning('Weak Password')
-            } 
+            }
+            else if (error.code == 'auth/wrong-password') {
+                setWarning('Password is Invalid')
+            }
             else {
                 setWarning(error.message)
             }
