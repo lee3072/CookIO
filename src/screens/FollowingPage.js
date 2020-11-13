@@ -71,9 +71,20 @@ const FollowingPage = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+            <View style={{
+                marginTop: (Platform.OS === 'ios') ? 40 : 20,
+                borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+                marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+                borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+            }}>
+                <Button color="#ffb300"
+                    title="My Profile"
+                    onPress={() => navigation.navigate('ProfilePage')}
+                />
+            </View>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>Following Users</Text>
-                <View style={styles.buttonStyle}>
+                <View style={[styles.buttonStyle,styles.iosButtonSetting]}>
                     <Button color= "#ffb300"
                         title="Following Tags"
                         onPress={() => navigation.navigate('FollowingTagPage')}
@@ -155,7 +166,11 @@ const styles = StyleSheet.create({
         marginTop: 10,
         justifyContent: "flex-end",
     },
-
+    iosButtonSetting: {
+        borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+        marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+        borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+    }
 });
 
 export default FollowingPage;

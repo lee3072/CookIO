@@ -160,10 +160,16 @@ class PostView extends React.Component {
 
 
     render() {
-
         return (
             <SafeAreaView style={styles.container}>
-                <Button color="#ffb300" title="Back" onPress={() => this.props.navigation.goBack()}/>
+                <View style={{
+                    borderTopWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    borderBottomWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+                    borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+                }}>
+                    <Button color="#ffb300" title="Back" onPress={() => this.props.navigation.goBack()}/>
+                </View>
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.titleContainer}>
                         <Text style={{ fontWeight: "500" }}>{this.state.title}</Text>
@@ -198,8 +204,12 @@ class PostView extends React.Component {
                             <Text>comment</Text>
                         </TouchableOpacity>
                     </View>
-                    <Button color= "#ffb300" title="Edit Post" onPress={this.onEditPress}/>
-                    <Button color= "#ffb300" title="Delete Post" onPress={this.onDeletePress}/> 
+                    <View style={styles.iosButtonSetting}>
+                        <Button color= "#ffb300" title="Edit Post" onPress={this.onEditPress}/>
+                    </View>
+                    <View style={styles.iosButtonSetting}>
+                        <Button color= "#ffb300" title="Delete Post" onPress={this.onDeletePress}/> 
+                    </View>
                     <View style={styles.showCommentContainer}>
                         <InfiniteScroll title={'comment section:'} navigation={this.props.navigation} collection={"Comments"} what={"Under"} contain={[this.state.id]} card={"CommentCard"} sortBy={"Date"}/>
                     </View>

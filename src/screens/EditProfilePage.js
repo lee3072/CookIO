@@ -233,7 +233,7 @@ class EditProfilePage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-          <View style={styles.backButton}>
+          <View style={[styles.backButton,styles.iosButtonSetting,{marginTop:(Platform.OS === 'ios') ? 40 : 20, marginBottom: 10}]}>
             <Button
                 color= "#ffdb85"
                 title="back"
@@ -252,7 +252,7 @@ class EditProfilePage extends React.Component {
                         this.state.currentIcon
                             ? { uri: this.state.currentIcon }
                             : require("../assets/temp_icon.jpg")}/>
-                <View style={styles.photoButton}>
+                <View style={[styles.photoButton,styles.iosButtonSetting]}>
                     <Button color= "#ffb300"
                       title="Change Profile Photo" onPress={this.onChangePhotoPress} />
                 </View>
@@ -282,8 +282,10 @@ class EditProfilePage extends React.Component {
                         placeholder="Password" autoCapitalize="none" secureTextEntry={true}
                         onChangeText={(text) => {this.setState({currentPassword: text}) }}
                     />
-                    <Button color= "#ffb300"
-                        title="Change Email" onPress={this.onChangeEmailPress} />
+                    <View style={styles.iosButtonSetting}>
+                        <Button color= "#ffb300"
+                            title="Change Email" onPress={this.onChangeEmailPress} />
+                    </View>
 
                 </View>
 
@@ -306,8 +308,10 @@ class EditProfilePage extends React.Component {
                         placeholder="New Username" autoCapitalize="none"
                         onChangeText={(text) => {this.setState({newUsername: text}) }}
                     />
-                    <Button color= "#ffb300"
-                        title="Change Username" onPress={this.onChangeUsernamePress} />
+                    <View style={styles.iosButtonSetting}>
+                        <Button color= "#ffb300"
+                            title="Change Username" onPress={this.onChangeUsernamePress} />
+                    </View>
                 </View>
                 
             </View>
@@ -328,7 +332,7 @@ class EditProfilePage extends React.Component {
                 placeholder="New Interest" autoCapitalize="none"
                 onChangeText={(text) => {this.setState({newInterest: text}) }}
                 />
-                <View style={styles.photoButton}>
+                <View style={[styles.photoButton,styles.iosButtonSetting]}>
                     <Button color= "#ffb300"
                     title="Change Interest" onPress={this.onChangeInterestPress} />
                 </View>
@@ -347,7 +351,7 @@ class EditProfilePage extends React.Component {
             />
             <View style={{justifyContent: "space-between", flexDirection: 'row'}}>
                 <Text style={styles.textStyle}>DM From</Text>
-                <View style={{width: 147}}>
+                <View style={[styles.iosButtonSetting,{width: 147}]}>
                     <Button
                         color= "#ffb300"
                         title={this.state.DirectMessageMod}
@@ -365,9 +369,11 @@ class EditProfilePage extends React.Component {
                     marginBottom: 20,
                 }}
             />
-            <Button color= "#ffb300"
-                title="Change Password" onPress={() => this.props.navigation.navigate('ChangePasswordPage')} />
-            <View style={styles.buttonStyle}>
+            <View style={styles.iosButtonSetting}>
+                <Button color= "#ffb300"
+                    title="Change Password" onPress={() => this.props.navigation.navigate('ChangePasswordPage')} />
+            </View>
+            <View style={[styles.buttonStyle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Delete Account" onPress={() => this.props.navigation.navigate('DeleteAccountPage')} />
             </View>
@@ -403,8 +409,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
     }, 
     photoButton: {
-        padding: 10,
+        margin: 10,
         alignItems: "center",
+        alignSelf: "center"
     },
     textStyle: {
         color: "#363636",
@@ -453,13 +460,19 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     backButton: {
-        paddingTop: 20,
+        marginTop: 20,
+        alignSelf: 'flex-start',
         flexDirection: "row",
         justifyContent: "flex-start",
     },
     buttonStyle: {
         marginTop: 5,
     },
+    iosButtonSetting: {
+        borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+        marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+        borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+    }
 });
 
 export default EditProfilePage;

@@ -101,14 +101,21 @@ class DirectMessageUserPage extends React.Component {
     render() {
         return (<KeyboardAvoidingView style={[styles.container,{backgroundColor:"#000", alignItems: 'stretch'}]}>
             <View style={{paddingTop: (Platform.OS === 'ios') ? 40: 0}}>
-              <Button color= "#ffb300"
-                  title="DM User List"
-                  onPress={() => {
-                    firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
-                      this.props.navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
-                    })
-                  }}
-              />
+              <View style={{
+                borderTopWidth: (Platform.OS === 'ios') ? 2 : 0,
+                borderBottomWidth: (Platform.OS === 'ios') ? 2 : 0,
+                marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+                borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+              }}>
+                <Button color= "#ffb300"
+                    title="DM User List"
+                    onPress={() => {
+                      firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                        this.props.navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
+                      })
+                    }}
+                />
+              </View>
             </View>
             <GiftedChat messages={this.state.messages} onSend={this.send} user={this.user}/>
         </KeyboardAvoidingView>)

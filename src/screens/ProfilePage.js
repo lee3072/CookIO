@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Button, Image, Text, View } from 'react-native';
+import { StyleSheet, Button, Image, Text, View, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -96,27 +96,31 @@ const ProfilePage = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.logoutButton}>
-                <Button
-                    color= "#ffdb85"
-                    title="Direct Messaging"
-                    onPress={() => {
-                            firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
-                                navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
-                            })
-                        }}
-                />
-                <Button
-                    color= "#ffdb85"
-                    title="Logout"
-                    onPress={() => {
-                            firebase.auth().signOut()
-                            firebase.database().ref(firebase.auth().currentUser.uid)
-                            .limitToLast(20)
-                            .off()
-                            navigation.navigate('SignInPage')
-                        }}
-                />
+            <View style={[styles.logoutButton,{marginTop:(Platform.OS === 'ios') ? 20 : 0}]}>
+                <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
+                    <Button
+                        color= "#ffdb85"
+                        title="Direct Messaging"
+                        onPress={() => {
+                                firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                                    navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
+                                })
+                            }}
+                    />
+                </View>
+                <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
+                    <Button
+                        color= "#ffdb85"
+                        title="Logout"
+                        onPress={() => {
+                                firebase.auth().signOut()
+                                firebase.database().ref(firebase.auth().currentUser.uid)
+                                .limitToLast(20)
+                                .off()
+                                navigation.navigate('SignInPage')
+                            }}
+                    />
+                </View>
             </View>
 
 
@@ -146,46 +150,52 @@ const ProfilePage = ({navigation}) => {
                     <Text>Following</Text>
                     <Text>{followings}</Text>
                 </View>
-                <Button color= "#ffb300"
-                    title="Change Profile"
-                    onPress={() => navigation.navigate('EditProfilePage')}
-                />
+                <View style={styles.iosButtonSetting}>
+                    <Button color= "#ffb300"
+                        title="Change Profile"
+                        onPress={() => navigation.navigate('EditProfilePage')}
+                    />
+                </View>
             </View>
             
-            <View style={styles.buttonMiddle}>
+            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="See Followings"
                     onPress={() => navigation.navigate('FollowingPage')}
                 />
             </View>
 
-            <View style={styles.buttonMiddle}>
+            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Make Post"
                     onPress={() => navigation.navigate('MakePostPage')}
                 />
             </View>
-            <View style={styles.buttonMiddle}>
+            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Topic Page"
                     onPress={() => navigation.navigate('ListTopicPage')}
                 />
             </View>
-            <View style={styles.buttonMiddle}>
+            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Other Profile Page 1"
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'N78GForfcuTflORGKfdCZM69YhQ2'})}
                 />
+            </View>
+            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Other Profile Page 2"
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'wswsec6LmQZ7khqT1rk60pMvwx33'})}
                 />
+            </View>
+            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Other Profile Page for DM"
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'uaJmKzOh8JP82fY3uWTNApA35E63'})}
                 />
             </View>
-            <View style={styles.buttonMiddle}>
+            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="My Posts"
                     onPress={() => navigation.navigate('UserFeedPage', {userid: uid })}
@@ -247,7 +257,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     buttonMiddle: {
-        paddingHorizontal: 10,
+        marginHorizontal: 10,
+    },
+    iosButtonSetting: {
+        borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+        marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+        borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
     },
     followerFollowing: {
         padding: 20,
