@@ -172,8 +172,8 @@ const UsersProfilePage = ({route, navigation}) => {
 
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
-                    title="Feed Page"
-                    onPress={() => navigation.navigate('FeedPage')}
+                    title="Topic Page"
+                    onPress={() => navigation.navigate('ListTopicPage')}
                 />
                 <Button color= "#ffb300"
                     title="Profile Page"
