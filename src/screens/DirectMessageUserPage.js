@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Button, YellowBox, Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { Button, YellowBox, Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 import * as Font from 'expo-font';
 
 import { GiftedChat } from "react-native-gifted-chat"
@@ -53,15 +53,32 @@ class DirectMessageUserPage extends React.Component {
       };
 
       send = messages => {
-        for (let i = 0; i < messages.length; i++) {
-          const { text, user } = messages[i];
-          const message = {
-            text,
-            user,
-            timestamp: this.timestamp,
-          };
-          this.append(message);
-        }
+        firebase.firestore().collection('Users')
+        .doc(this.props.route.params.otheruser)
+        .get()
+        .then(document => {
+          if (!document.data().followingOnlyMod || document.data().followingUsers.indexOf(firebase.auth().currentUser.uid) != -1) {
+            if (document.data().blockedUsers.indexOf(firebase.auth().currentUser.uid) == -1) {
+              for (let i = 0; i < messages.length; i++) {
+                const { text, user } = messages[i];
+                const message = {
+                  text,
+                  user,
+                  timestamp: this.timestamp,
+                };
+                this.append(message);
+              }
+            } else {
+              firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                Alert.alert("You Are Blocked by The User","",[{ text: "Exit", onPress: () => this.props.navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})}])  
+              })
+            }
+          } else {
+            firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+              Alert.alert("The User Only Accepts Messages from Following Users","",[{ text: "Exit", onPress: () => this.props.navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})}])  
+            })
+          }
+        })
       };
     
       append = message => {
@@ -89,7 +106,6 @@ class DirectMessageUserPage extends React.Component {
                   onPress={() => {
                     firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
                       this.props.navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
-                        
                     })
                   }}
               />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
 const UserCard = ({ navigation, item }) => {
@@ -9,12 +9,25 @@ function getUserName(documentSnapshot) {
   return (
     <TouchableOpacity
       onPress={() =>{
-          firebase.firestore().collection('Users')
-          .doc(firebase.auth().currentUser.uid)
-          .get()
-          .then(doc => {
-            navigation.navigate('DirectMessageUserPage', { otheruser: item.id, username: doc.data().userName, icon: doc.data().userIcon != null ? doc.data().userIcon : require("../assets/favicon.png") })
-          })
+        firebase.firestore().collection('Users')
+        .doc(item.id)
+        .get()
+        .then(document => {
+          if (!document.data().followingOnlyMod || document.data().followingUsers.indexOf(firebase.auth().currentUser.uid) != -1) {
+            if (document.data().blockedUsers.indexOf(firebase.auth().currentUser.uid) == -1) {
+              firebase.firestore().collection('Users')
+              .doc(firebase.auth().currentUser.uid)
+              .get()
+              .then(doc => {
+                navigation.navigate('DirectMessageUserPage', { otheruser: item.id, username: doc.data().userName, icon: doc.data().userIcon != null ? doc.data().userIcon : require("../assets/favicon.png") })
+              })
+            } else {
+              Alert.alert("You Are Blocked by The User")
+            }
+          } else {
+            Alert.alert("The User Only Accepts Messages from Following Users")
+          }
+        })
       }}
       style={[styles.container]}
     >

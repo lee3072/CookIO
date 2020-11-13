@@ -180,6 +180,10 @@ const ProfilePage = ({navigation}) => {
                     title="Other Profile Page 2"
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'wswsec6LmQZ7khqT1rk60pMvwx33'})}
                 />
+                <Button color= "#ffb300"
+                    title="Other Profile Page for DM"
+                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'uaJmKzOh8JP82fY3uWTNApA35E63'})}
+                />
             </View>
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
