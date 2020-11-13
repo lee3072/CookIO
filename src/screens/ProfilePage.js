@@ -21,7 +21,7 @@ const ProfilePage = ({navigation}) => {
         const currentUser = firebase.auth().currentUser;
 
         if (currentUser) {
-            console.log('Success');
+            console.log('Profile Page: Update Success');
             setUid(currentUser.uid)
             setEmail(currentUser.email)
 

@@ -3,7 +3,6 @@ import { Image, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
 const UserCard = ({ navigation, item }) => {
-//   console.log("in post card " + item.ID);
 function getUserName(documentSnapshot) {
   return documentSnapshot.get('userName');
 }
@@ -14,7 +13,6 @@ function getUserName(documentSnapshot) {
           .doc(firebase.auth().currentUser.uid)
           .get()
           .then(doc => {
-            console.log(doc.data().userIcon  == null)
             navigation.navigate('DirectMessageUserPage', { otheruser: item.id, username: doc.data().userName, icon: doc.data().userIcon != null ? doc.data().userIcon : require("../assets/favicon.png") })
           })
       }}

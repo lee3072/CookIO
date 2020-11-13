@@ -41,7 +41,7 @@ const FollowingPage = ({navigation}) => {
         setUsernameList([])
         setfollowingUsers([])
         const currentUser = firebase.auth().currentUser;
-        console.log('hey')
+        console.log('Following Page: updateData')
         if (currentUser) {
 
             setUid(currentUser.uid)

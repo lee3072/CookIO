@@ -12,7 +12,6 @@ const SignUpPage = ({ navigation }) => {
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
     const signUpWithEmail = () => {
-      console.log("email: "+emailAddress+"; pass: "+password)
       firebase.auth().createUserWithEmailAndPassword(emailAddress.trim(),password)
       .then(user => {
         if (user) {
@@ -41,7 +40,6 @@ const SignUpPage = ({ navigation }) => {
         }
       })
       .catch(error => {
-        console.log(error.message)
         if (error.code == 'auth/weak-password') {
           setWarning('Weak Password')
         } else {
