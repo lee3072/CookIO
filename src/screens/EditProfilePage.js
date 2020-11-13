@@ -23,6 +23,7 @@ class EditProfilePage extends React.Component {
             username: "",
             currentIcon: '',
             newInterest: '',
+            DirectMessageMod: "Follower Only"
         };
     }
     componentDidMount() {
@@ -70,6 +71,23 @@ class EditProfilePage extends React.Component {
             .then(documentSnapshot => getIcon(documentSnapshot))
             .then(userIcon => {
                 this.setState({currentIcon: userIcon})
+            });
+
+            //get and set DM mod
+            function getDirectMessageMod(documentSnapshot) {
+                return documentSnapshot.get('followingOnlyMod');
+            }
+              
+            db.collection('Users')
+            .doc(currentUser.uid)
+            .get()
+            .then(documentSnapshot => getDirectMessageMod(documentSnapshot))
+            .then(mod => {
+                if (mod) {
+                    this.setState({DirectMessageMod: "Follower Only"})
+                } else {
+                    this.setState({DirectMessageMod: "All Users"})
+                }
             });
         }
     }
@@ -192,7 +210,24 @@ class EditProfilePage extends React.Component {
         })
     }
 
-
+    onDirectMessageModChangePress = () => {
+        if (this.state.DirectMessageMod == "Follower Only") {
+            this.setState({DirectMessageMod: "All Users"})
+            db.collection('Users')
+            .doc(firebase.auth().currentUser.uid)
+            .update({
+                followingOnlyMod: false
+            })
+        }
+        else {
+            this.setState({DirectMessageMod: "Follower Only"})
+            db.collection('Users')
+            .doc(firebase.auth().currentUser.uid)
+            .update({
+                followingOnlyMod: true
+            })
+        }
+    }
 
 
   render() {
@@ -310,7 +345,26 @@ class EditProfilePage extends React.Component {
                     marginBottom: 20,
                 }}
             />
-
+            <View style={{justifyContent: "space-between", flexDirection: 'row'}}>
+                <Text style={styles.textStyle}>DM From</Text>
+                <View style={{width: 147}}>
+                    <Button
+                        color= "#ffb300"
+                        title={this.state.DirectMessageMod}
+                        onPress={this.onDirectMessageModChangePress}
+                    />
+                </View>
+            </View>
+            <Text style={styles.subTextStyle}>* This is Current DM Setting</Text>
+            <View
+                style={{
+                    borderBottomColor: '#bdbdbd',
+                    borderBottomWidth: 1,
+                    paddingVertical: 5,
+                    marginVertical: 15,
+                    marginBottom: 20,
+                }}
+            />
             <Button color= "#ffb300"
                 title="Change Password" onPress={() => this.props.navigation.navigate('ChangePasswordPage')} />
             <View style={styles.buttonStyle}>

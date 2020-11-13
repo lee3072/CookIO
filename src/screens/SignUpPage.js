@@ -34,6 +34,7 @@ const SignUpPage = ({ navigation }) => {
             postedComments: [],
             blockedUsers: [], // for DM
             dmUsers: [], // for DM
+            followingOnlyMod: false,
             followers: [],
           })
           firebase.database().ref(firebase.auth().currentUser.uid).push("initialization")
