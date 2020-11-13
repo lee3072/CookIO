@@ -13,13 +13,17 @@ const SignInPage = ({ navigation }) => {
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
 
+    const clearStates = () => {
+        setWarning('')
+        setEmailAddress('')
+        setPassword('')
+    }
+
     const signInWithAccount = (account) => {
         firebase.auth().signInWithEmailAndPassword(account,password)
         .then(user => {
         if (user) {
-            setWarning('')
-            setEmailAddress('')
-            setPassword('')
+            clearStates()
             var i = 0
             firebase.database().ref(firebase.auth().currentUser.uid)
             .endAt()
@@ -29,7 +33,7 @@ const SignInPage = ({ navigation }) => {
                     Notifications.presentLocalNotificationAsync({
                         title: "from: "+snapshot.child("user/_id").val(),
                         body: snapshot.child("text").val(),
-                      });
+                    });
                 }
                 i++
             });
@@ -62,9 +66,7 @@ const SignInPage = ({ navigation }) => {
         signInWithAccount(emailAddress.trim());
     }
     const changeMod = () => {
-        setWarning('')
-        setEmailAddress('')
-        setPassword('')
+        clearStates()
         navigation.navigate('SignUpPage')
     }
     return (<View style={styles.container}>
