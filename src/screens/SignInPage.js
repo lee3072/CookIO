@@ -13,11 +13,8 @@ const SignInPage = ({ navigation }) => {
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
 
-
-    
-    const signInWithEmail = () => {
-        console.log("email: "+emailAddress+"; pass: "+password)
-        firebase.auth().signInWithEmailAndPassword(emailAddress.trim(),password)
+    const signInWithAccount = (account) => {
+        firebase.auth().signInWithEmailAndPassword(account,password)
         .then(user => {
         if (user) {
             setWarning('')
@@ -33,7 +30,6 @@ const SignInPage = ({ navigation }) => {
                         title: "from: "+snapshot.child("user/_id").val(),
                         body: snapshot.child("text").val(),
                       });
-                    //   console.log(snapshot)
                 }
                 i++
             });
@@ -41,13 +37,29 @@ const SignInPage = ({ navigation }) => {
         }
         })
         .catch(error => {
-        console.log(error.message)
-        if (error.code == 'auth/weak-password') {
-            setWarning('Weak Password')
-        } else {
-            setWarning(error.message)
-        }
+            if (error.code == 'auth/invalid-email') {
+                firebase.firestore().collection("Users").where('userName', '==', emailAddress.trim())
+                .get()
+                .then(function(querySnapshot) {
+                    if (querySnapshot.empty) {
+                        setWarning("Email or Username is invalid")
+                    }
+                    querySnapshot.forEach(function(doc) {
+                        signInWithAccount(doc.data().userEmail)
+                    });
+                })
+            }
+            else if (error.code == 'auth/weak-password') {
+                setWarning('Weak Password')
+            } 
+            else {
+                setWarning(error.message)
+            }
         })
+    }
+    
+    const signInWithEmail = () => {
+        signInWithAccount(emailAddress.trim());
     }
     const changeMod = () => {
         setWarning('')
