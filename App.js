@@ -14,7 +14,6 @@ import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 
 import DirectMessageMainPage from './src/screens/DirectMessageMainPage'
-import DirectMessageMainAllUserPage from './src/screens/DirectMessageMainAllUserPage'
 import DirectMessageUserPage from './src/screens/DirectMessageUserPage'
 import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
@@ -26,15 +25,11 @@ import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
 import DeleteAccountPage from './src/screens/DeleteAccountPage';
 import MakePostPage from './src/screens/MakePostPage'
-// import EditPost from './src/screens/EditPost';
 import ListTopicPage from './src/screens/ListTopicPage'
 import ListPostPage from './src/screens/ListPostPage'
 import PostView from './src/screens/PostView'
 import UsersProfilePage from './src/screens/UsersProfilePage';
 import EditPostPage from './src/screens/EditPostPage';
-
-// import FeedPage from './src/screens/FeedPage';
-// import PostView from './src/screens/PostView';
 import UserPostView from './src/screens/UserPostView';
 import UserFeedPage from './src/screens/UserFeedPage';
 import firebase from './firebase_setup';
@@ -84,7 +79,6 @@ export default class App extends React.Component {
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
-            <Stack.Screen name="DirectMessageMainAllUserPage" component={DirectMessageMainAllUserPage}/>
             <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
@@ -97,8 +91,6 @@ export default class App extends React.Component {
             <Stack.Screen name="MakePostPage" component={MakePostPage}/>
             <Stack.Screen name="ListPostPage" component={ListPostPage}/>
             <Stack.Screen name="ListTopicPage" component={ListTopicPage}/>
-            {/* <Stack.Screen name="EditPost" component={EditPost}/> */}
-            {/* <Stack.Screen name="FeedPage" component={FeedPage}/> */}
             <Stack.Screen name="UserPostView" component={UserPostView}/>
             <Stack.Screen name="UserFeedPage" component={UserFeedPage}/>
             <Stack.Screen name="EditPostPage" component={EditPostPage}/> 
