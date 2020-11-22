@@ -14,7 +14,7 @@ class SavedPostPage extends React.Component {
         // this.getEverthing();
     }
     render(){
-        return(<SavedPostInfiniteScroll navigation={this.props.navigation} collection={"Posts"} card={"PostCard"} sortBy={"ID"} where={this.state.userid}/>);
+        return(<SavedPostInfiniteScroll navigation={this.props.navigation} collection={"Posts"} card={"PostCard"} sortBy={"PostedDate"} where={this.state.userid}/>);
     }
 }
 

@@ -2,6 +2,9 @@ import React from "react";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
 import FollowpostInfiniteScroll from "../components/FollowpostInfiniteScroll";
+import InfiniteScroll from "../components/InfiniteScroll"
+
+
 
 
 class FollowPostPage extends React.Component {
@@ -13,7 +16,7 @@ class FollowPostPage extends React.Component {
         // this.getEverthing();
     }
     render(){
-        return(<FollowpostInfiniteScroll navigation={this.props.navigation} collection={"Posts"} card={"PostCard"} sortBy={"ID"} where={this.state.userid}/>);
+        return(<FollowpostInfiniteScroll navigation={this.props.navigation} collection={"Posts"} card={"PostCard"} what={"PostedUser"} sortBy={"PostedDate"} where={this.state.userid}/>);
     }
 }
 

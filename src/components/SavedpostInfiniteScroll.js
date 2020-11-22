@@ -58,8 +58,8 @@ class SavedpostInfiniteScroll extends React.Component {
       
             let savedPostArray = (await db.doc(`Users/${currentUserRef}`).get()).data().savedPost;
           
-            let getuser = await postref.where('ID', 'in', savedPostArray).get();
-            let postData = getuser.docs.map(post => post.data());
+            let getuser = await postref.where('ID', 'in', savedPostArray).orderBy(this.props.sortBy).get();
+            let postData = getuser.docs.map(post => post.data()).reverse();
             console.log('post Data');
             console.log(postData);
 

@@ -56,10 +56,12 @@ class FollowpostInfiniteScroll extends React.Component {
             let postref = db.collection('Posts');
             let docRef = db.collection('Users').doc(currentUserRef);
       
+
             let savedPostArray = (await db.doc(`Users/${currentUserRef}`).get()).data().followingUsers;
-          
-            let getuser = await postref.where('PostedUser', 'in', savedPostArray).get();
-            let postData = getuser.docs.map(post => post.data());
+
+            let getuser = await postref.where(this.props.what, 'in', savedPostArray).orderBy(this.props.sortBy).get();
+
+            let postData = getuser.docs.map(post => post.data()).reverse();
             console.log('post Data');
             console.log(postData);
 
