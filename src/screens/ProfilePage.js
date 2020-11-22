@@ -174,11 +174,11 @@ const ProfilePage = ({navigation}) => {
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="Other Profile Page 1"
-                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'N78GForfcuTflORGKfdCZM69YhQ2'})}
+                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'uaJmKzOh8JP82fY3uWTNApA35E63'})}
                 />
                 <Button color= "#ffb300"
                     title="Other Profile Page 2"
-                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'wswsec6LmQZ7khqT1rk60pMvwx33'})}
+                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'zQEVkyxs4cVu8IznPMmsfUzrTQp2'})}
                 />
             </View>
             <View style={styles.buttonMiddle}>
@@ -196,7 +196,7 @@ const ProfilePage = ({navigation}) => {
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="Following"
-                    onPress={() => navigation.navigate('InterestPostPage', {userid: uid })}
+                    onPress={() => navigation.navigate('FollowPostPage', {userid: uid })}
                 />
             </View>
             {/* <View style={styles.buttonMiddle}>

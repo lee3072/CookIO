@@ -33,7 +33,7 @@ import PostView from './src/screens/PostView'
 import UsersProfilePage from './src/screens/UsersProfilePage';
 import EditPostPage from './src/screens/EditPostPage';
 import GuestViewPage from './src/screens/GuestViewPage';
-import InterestPostPage from './src/screens/InterestPostPage';
+import FollowPostPage from './src/screens/FollowPostPage';
 import SavedPostPage from './src/screens/SavedPostPage';
 // import FeedPage from './src/screens/FeedPage';
 // import PostView from './src/screens/PostView';
@@ -105,7 +105,7 @@ export default class App extends React.Component {
             <Stack.Screen name="UserPostView" component={UserPostView}/>
             <Stack.Screen name="EditPostPage" component={EditPostPage}/> 
             <Stack.Screen name="UserFeedPage" component={UserFeedPage}/>
-            <Stack.Screen name="InterestPostPage" component={InterestPostPage}/>
+            <Stack.Screen name="FollowPostPage" component={FollowPostPage}/>
             <Stack.Screen name="SavedPostPage" component={SavedPostPage}/>
             <Stack.Screen name="PostView" component={PostView}/>
 
