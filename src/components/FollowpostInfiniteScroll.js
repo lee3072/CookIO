@@ -7,6 +7,7 @@ import firebase from '../../firebase_setup';
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Dimensions.get('screen').height;
 
+
 //import cards use for render here
 import PostCard from "../components/PostCard";
 import { ThemeProvider } from "@react-navigation/native";
@@ -27,8 +28,12 @@ class FollowpostInfiniteScroll extends React.Component {
 
     componentDidMount = async () => {
         try {
+            //let db = firebase.firestore.collection('Posts');
+
             // Cloud Firestore: Initial Query (Infinite Scroll)
-            this.retrieveData()
+            this.retrieveData();
+            
+            
         }
         catch (error) {
             console.log(error);
@@ -50,18 +55,45 @@ class FollowpostInfiniteScroll extends React.Component {
 
             const currentUserRef = firebase.auth().currentUser.uid.toString();
 
-            //let docRef = await firebase.firestore().collection('Users').doc(currentUserRef);
-
             let db = firebase.firestore();
             let postref = db.collection('Posts');
-            let docRef = db.collection('Users').doc(currentUserRef);
-      
 
             let savedPostArray = (await db.doc(`Users/${currentUserRef}`).get()).data().followingUsers;
+            let IDList = [];
+            let finalIDList = [];
+            let savePostID;
+            let i = 0;
+            for (i = 0; i < savedPostArray.length; i++) {
+                savePostID = (await db.doc(`Users/${savedPostArray[i]}`).get()).data().postedPosts;
+                if (savePostID.length > 0) {
+                    for (let k = 0; k < savePostID.length; k++) {
+                        IDList.push(savePostID[k]);
+                    }
+                    for (let j = 0; j < IDList.length; j++) {
+                        let insert = IDList[j];
+                        let saveID = (await db.doc(`Posts/${insert}`).get()).data().ID;
+                        let posteduser = (await db.doc(`Posts/${insert}`).get()).data().PostedUser;                        
+                        if (posteduser != 'anonymous' && !finalIDList.includes(saveID)) {
+                            finalIDList.push(saveID);                           
+                        }   
+                        saveID=[];
+                    }
+                    IDList = [];
+                }
+                
+            }
 
-            let getuser = await postref.where(this.props.what, 'in', savedPostArray).orderBy(this.props.sortBy).get();
-
-            let postData = getuser.docs.map(post => post.data()).reverse();
+            let followPostArray = (await db.doc(`Users/${currentUserRef}`).get()).data().followingTags;
+            for (i = 0; i < followPostArray.length; i++) {
+                let postID = (await db.doc(`Tags/${followPostArray[i]}`).get()).data().list;
+                for (let j = 0; j < postID.length; j++) {                
+                    finalIDList.push(postID[j]);
+                }
+            } 
+        
+           let getuser = await postref.where('ID', 'in', finalIDList).orderBy(this.props.sortBy).get(); 
+            let postData = getuser.docs.map(post => post.data());
+            //let postData = toarray;
             console.log('post Data');
             console.log(postData);
 
@@ -73,59 +105,7 @@ class FollowpostInfiniteScroll extends React.Component {
                 postData: postData,
                 lastVisible: lastVisible,
                 loading: false,
-            });
-    
-            //this.setState({haveMore: false});
-                
-
-/*
-            db.doc(`Users/${currentUserRef}`)
-                .get()
-                .then(doc => {
-                    console.log("DO IT:::::: " , doc.data().savedPost);
-                    //postData = doc.data.savedPost;
-                    return doc.data().savedPost;
-                })
-                .then(savedPost => {
-                    console.log("?????????????:::::    ", savedPost);
-                    db.collection('Posts')
-                        .get()
-                        .then(eventsSnapshot => {
-                            let postData = [];
-                            for (let i = 0; i < eventsSnapshot.size; i++) {
-                                if (savedPost.includes(eventsSnapshot.docs[i].data().ID)) {
-                                    //console.log("FINAL CHECK:: ", eventsSnapshot.docs[i].data());
-                                    //eventsSnapshot.docs[i].map(post => post.data());
-                                    postData.push(eventsSnapshot.docs[i].data());
-                                }
-                            }
-                            return postData;
-                          
-                        })
-                        .then (postData => {
-                            console.log("-----------------------------------------");
-                            console.log(postData);
-                            let lastVisible = postData[postData.length - 1].ID;
-                            console.log("last visible: " + lastVisible);
-
-                            // set states
-                            this.setState({
-                                postData: postData,
-                                lastVisible: lastVisible,
-                                loading: false,
-                            });
-                            //return postData;
-                            this.setState({haveMore: false});
-
-                        })
-                        .catch(e => {console.error(e)})
-                })
-                .catch(e => {console.error(e)})
-
-                this.setState({haveMore: false});
-*/
-
-   
+            });  
         } catch (error) {
             console.log(error);
         }
