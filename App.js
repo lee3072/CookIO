@@ -32,6 +32,9 @@ import ListPostPage from './src/screens/ListPostPage'
 import PostView from './src/screens/PostView'
 import UsersProfilePage from './src/screens/UsersProfilePage';
 import EditPostPage from './src/screens/EditPostPage';
+import UserLinePage from './src/screens/UserLinePage'
+import ShowUserActivityPage from './src/screens/ShowUserActivityPage'
+import ShowUserPostsPage from './src/screens/ShowUserPostsPage'
 
 // import FeedPage from './src/screens/FeedPage';
 // import PostView from './src/screens/PostView';
@@ -101,6 +104,9 @@ export default class App extends React.Component {
             <Stack.Screen name="UserFeedPage" component={UserFeedPage}/>
             <Stack.Screen name="EditPostPage" component={EditPostPage}/> 
             <Stack.Screen name="PostView" component={PostView}/>
+            <Stack.Screen name="UserLinePage" component={UserLinePage}/>
+            <Stack.Screen name="ShowUserActivityPage" component={ShowUserActivityPage}/>
+            <Stack.Screen name="ShowUserPostsPage" component={ShowUserPostsPage}/>
 
           </Stack.Navigator>
         </NavigationContainer>

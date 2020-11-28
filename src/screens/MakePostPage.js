@@ -39,6 +39,7 @@ const EditPost = ({ navigation }) => {
       return;
     }
     //create post
+    let currentTime = firebase.firestore.Timestamp.now()
     ref = await postRef.add({
       ID: "temp",
       Title: title,
@@ -46,7 +47,8 @@ const EditPost = ({ navigation }) => {
       Tag: tags,
       Image: image,
       PostedUser: "anonymous",
-      PostedDate: Date(),
+      Date: currentTime.seconds.toString() + currentTime.nanoseconds.toString(),
+      DisplayPostedDate: Date(),
       DownVote: 0,
       UpVote: 0,
       VotedUser: [],
@@ -66,7 +68,8 @@ const EditPost = ({ navigation }) => {
       topicRef = db.collection("Tags").doc(tags).set({
         ID: tags,
         list: [ref.id],
-        date: Date(),
+        date: currentTime.seconds.toString() + currentTime.nanoseconds.toString(),
+        DisplayDate: Date(),
       });
     }
     //if there is a image attached

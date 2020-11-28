@@ -171,14 +171,19 @@ const UsersProfilePage = ({route, navigation}) => {
             </View>
 
             <View style={styles.buttonMiddle}>
-                <Button color= "#ffb300"
+                {/* <Button color= "#ffb300"
                     title="Feed Page"
                     onPress={() => navigation.navigate('FeedPage')}
                 />
                 <Button color= "#ffb300"
                     title="Profile Page"
                     onPress={() => navigation.navigate('ProfilePage')}
+                /> */}
+                <Button color= "#ffb300"
+                    title="User Time Line"
+                    onPress={() => navigation.navigate('UserLinePage', {userid: uid})}
                 />
+                
             </View>
 
         

@@ -4,8 +4,8 @@ import 'firebase/firestore';
 
 
 const PostCard = ({ navigation, item }) => {
-  console.log("in post card " + item.ID);
-  console.log("see userid: " + item.PostedUser);
+  // console.log("in post card " + item.ID);
+  // console.log("see userid: " + item.PostedUser);
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
