@@ -190,7 +190,6 @@ class ShowUserActivityPage extends React.Component {
     render() {
         return (
             <View>
-                {/* <Text>{"\n\n\n\n\n\n\n"}</Text> */}
                 <FlatList
                     data={this.state.data}
                     keyExtractor={(item, index) => String(index)}
@@ -205,8 +204,6 @@ class ShowUserActivityPage extends React.Component {
                             onRefresh={this.showMore}
                         />
                     }
-
-
 
                     ListHeaderComponent={this.header}
                 />

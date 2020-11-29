@@ -13,7 +13,7 @@ import { colors } from 'react-native-elements';
 
 
 const EditPost = ({ navigation }) => {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState("https://firebasestorage.googleapis.com/v0/b/cookio-b4eaa.appspot.com/o/post%2Fdefault-image.jpg?alt=media&token=ada2e596-e877-4912-9038-1f1bf2d89f94");
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("default");
@@ -126,10 +126,6 @@ const EditPost = ({ navigation }) => {
   };
 
   const pickImage = async () => {
-    // let permission = await ImagePicker.requestCameraRollPermissionsAsync();
-    // if (permission.granted == false) {
-    //     return;
-    // }   
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
@@ -137,6 +133,7 @@ const EditPost = ({ navigation }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      console.log(result.uri);
     }
   }
 

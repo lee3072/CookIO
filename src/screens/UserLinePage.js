@@ -30,7 +30,6 @@ class UserLinePage extends React.Component {
                     onPress={() => this.props.navigation.navigate('ShowUserActivityPage', {userid: this.state.userid})}
                 />
             </View>
-            // <InfiniteScroll title={'list topic page'} navigation={navigation} collection={"Tags"} card={"TagCard"} sortBy={"ID"}/>
         );
     }
 }
