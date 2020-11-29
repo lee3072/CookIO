@@ -7,7 +7,7 @@ const CommentCard = ({ navigation, item }) => {
   // console.log("in comment card " + item.Content);
   let timeStemp = new Date(item.Date / 1000000)
   let displayTime = timeStemp.toLocaleString()
-  let name = "" + item.By + ":";
+  
   return (
     // <TouchableOpacity
     //   onPress={() =>
@@ -16,7 +16,7 @@ const CommentCard = ({ navigation, item }) => {
     //   style={[styles.container]}
     // >
     <View style={styles.container}>
-      <Text style={styles.userName}>{name}: </Text>
+      <Text style={styles.userName}>{item.ByUserID}</Text>
       <Text style={styles.content}>{item.Content}</Text>
       <Text style={styles.date}>{displayTime}</Text>
     </View>

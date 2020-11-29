@@ -6,6 +6,8 @@ import 'firebase/firestore';
 const PostCard = ({ navigation, item }) => {
   // console.log("in post card " + item.ID);
   // console.log("see userid: " + item.PostedUser);
+  let timeStemp = new Date(item.Date / 1000000)
+  let displayTime = timeStemp.toLocaleString()
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -19,7 +21,7 @@ const PostCard = ({ navigation, item }) => {
       style={[styles.container]}
     >
       <Text style={styles.title}>{item.Title}</Text>
-      <Text style={styles.tages3}>tages</Text>
+      <Text style={styles.tages3}>{displayTime}</Text>
       <Text style={styles.tages1}>
         content:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
       </Text>

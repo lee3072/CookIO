@@ -26,7 +26,7 @@ class ShowUserActivityPage extends React.Component {
         };
     }
 
-    compare(a, b) {
+    compare(a, b) {//TODO
         const dateA = a.obj.date;
         const dateB = b.obj.date;
         let re = 0;
@@ -87,7 +87,7 @@ class ShowUserActivityPage extends React.Component {
         }
         ThemeProvider.onEndReachedCalled = true;
     }
-    renderCard = (item) => {        //TODO TODO
+    renderCard = (item) => {      
         return(
             <View>
                 <Text>{item.title}</Text>

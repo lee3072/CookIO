@@ -48,7 +48,6 @@ const EditPost = ({ navigation }) => {
       Image: image,
       PostedUser: "anonymous",
       Date: currentTime.seconds.toString() + currentTime.nanoseconds.toString(),
-      DisplayPostedDate: Date(),
       DownVote: 0,
       UpVote: 0,
       VotedUser: [],

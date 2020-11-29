@@ -151,11 +151,12 @@ class PostView extends React.Component {
     }
     comment = async () => {
         // console.log("commenting");
-        let db = firebase.firestore();
-        let comRef = db.collection('Comments');
-        let postRef = db.collection('Posts').doc(this.state.id);
-        let userRef = db.collection('Users').doc(this.state.uid);
-
+        let db =await firebase.firestore();
+        let comRef =await db.collection('Comments');
+        let postRef =await db.collection('Posts').doc(this.state.id);
+        let userRef = await db.collection('Users').doc(this.state.uid);
+        let temp = await (await (userRef.get())).data()
+        
         // console.log("timestemp: ")
         // console.log(firebase.firestore.Timestamp.now().seconds)
         let currentTime = firebase.firestore.Timestamp.now()
@@ -166,6 +167,7 @@ class PostView extends React.Component {
             Date: timeStemp,
             DisplayDate: Date(),
             By: this.state.uid,
+            ByUserID: temp.userName,
             Content: this.state.comment,
         });
         comment.update({
