@@ -23,6 +23,7 @@ const SignUpPage = ({ navigation }) => {
           db.collection("Users")
           .doc(firebase.auth().currentUser.uid.toString()).set({
             ID: firebase.auth().currentUser.uid, // for DM
+            id: firebase.auth().currentUser.uid, // for DM
             userEmail: emailAddress,
             userIcon: null,
             userName: "",

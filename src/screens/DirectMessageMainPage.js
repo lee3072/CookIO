@@ -26,7 +26,7 @@ class DirectMessageMainPage extends React.Component {
             />
           </View>
           <ScrollView>
-            <InfiniteScroll title={'DM User'} navigation={this.props.navigation} collection={"Users"} card={"UserCard"} what={"ID"} contain={this.props.route.params.dm} sortBy={"ID"}/>
+            <InfiniteScroll title={'DM User'} navigation={this.props.navigation} collection={"Users"} card={"UserCard"} what={"id"} contain={this.props.route.params.dm} sortBy={"ID"}/>
             <InfiniteScroll title={'All User'} navigation={this.props.navigation} collection={"Users"} card={"UserCard"} sortBy={"ID"}/>
           </ScrollView>
         </View>
