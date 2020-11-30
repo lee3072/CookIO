@@ -147,16 +147,16 @@ class PostView extends React.Component {
         } else {
             console.log("post aready saved")
         }
-    
+
     }
     comment = async () => {
         // console.log("commenting");
-        let db =await firebase.firestore();
-        let comRef =await db.collection('Comments');
-        let postRef =await db.collection('Posts').doc(this.state.id);
+        let db = await firebase.firestore();
+        let comRef = await db.collection('Comments');
+        let postRef = await db.collection('Posts').doc(this.state.id);
         let userRef = await db.collection('Users').doc(this.state.uid);
         let temp = await (await (userRef.get())).data()
-        
+ 
         // console.log("timestemp: ")
         // console.log(firebase.firestore.Timestamp.now().seconds)
         let currentTime = firebase.firestore.Timestamp.now()
@@ -179,8 +179,10 @@ class PostView extends React.Component {
         })
 
         userRef.update({
-            postedComments: firebase.firestore.FieldValue.arrayUnion({commentID: comment.id.toString(), date: timeStemp})
+            postedComments: firebase.firestore.FieldValue.arrayUnion({ commentID: comment.id.toString(), date: timeStemp })
         })
+        this.setState({comment: ""})
+        this.retrieveMore();
         this.forceUpdate();
     }
     onDeletePress = async () => {
@@ -330,6 +332,14 @@ class PostView extends React.Component {
                 // the view post section
                 ListHeaderComponent={
                     <>
+                        <View style={{
+                            borderTopWidth: (Platform.OS === 'ios') ? 2 : 0,
+                            borderBottomWidth: (Platform.OS === 'ios') ? 2 : 0,
+                            marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+                            borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+                        }}>
+                            <Button color="#ffb300" title="Back" onPress={() => this.props.navigation.goBack()} />
+                        </View>
                         <View style={styles.titleContainer}>
                             <Text style={{ fontWeight: "500" }}>{this.state.title}</Text>
                         </View>
@@ -337,30 +347,30 @@ class PostView extends React.Component {
                             <Text style={{ fontWeight: "500" }}>{this.state.tag}</Text>
                         </View>
                         <View style={styles.voteContainer}>
-                            <TouchableOpacity >
-                                <Text onPress={this.upVote} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>Up</Text>
+                            <TouchableOpacity onPress={this.upVote} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>
+                                <Text>Up</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity >
-                                <Text onPress={this.downVote} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>Down</Text>
+                            <TouchableOpacity onPress={this.downVote} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>
+                                <Text>Down</Text>
                             </TouchableOpacity>
                             <Text style={{ fontWeight: "500" }}>up vote: {this.state.up}</Text>
                             <Text style={{ fontWeight: "500" }}>down vote: {this.state.down}</Text>
                         </View>
                         <View style={{ marginHorizontal: 32, marginTop: 32, height: 400, resizeMode: "contain" }}>
-                            <Image source={{ uri: this.state.image }} style={{ width: "100%", height: "100%" }}></Image>
+                            <Image source={this.state.image ? { uri: this.state.image } : require("../assets/temp_icon.jpg")} style={{ width: "100%", height: "100%" }}></Image>
                         </View>
                         <View style={styles.showContentContainer}>
                             <Text style={{ fontWeight: "500" }}>{this.state.content}</Text>
                         </View>
-                        <TouchableOpacity >
-                            <Text onPress={this.savePost} style={{ width: 100, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>save this post</Text>
+                        <TouchableOpacity onPress={this.savePost} style={{ width: 100, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>
+                            <Text>save this post</Text>
                         </TouchableOpacity>
                         <View style={{ flexDirection: "column", flex: 1 }}>
                             <View style={styles.inputContainer}>
                                 <TextInput multiline={true} numberOfLines={10} style={{ flex: 1 }} placeholder="Want to say something?" textAlignVertical='top' onChangeText={text => this.setState({ comment: text })} value={this.state.comment}></TextInput>
                             </View>
-                            <TouchableOpacity>
-                                <Text onPress={this.comment} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>comment</Text>
+                            <TouchableOpacity onPress={this.comment} style={{ width: 75, padding: 5, borderRadius: 1, borderWidth: 1, borderColor: "#000000" }}>
+                                <Text>comment</Text>
                             </TouchableOpacity>
                         </View>
                         <Button color="#ffb300" title="Edit Post" onPress={this.onEditPress} />
