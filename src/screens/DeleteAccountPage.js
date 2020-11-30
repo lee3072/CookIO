@@ -76,7 +76,7 @@ class DeleteAccountPage extends React.Component {
   render() {
     return (
         <View style={styles.container}>
-            <View style={styles.backButton}>
+            <View style={[styles.backButton,styles.iosButtonSetting, {marginTop:(Platform.OS === 'ios') ? 40 : 20, marginBottom: 10}]}>
                 <Button
                     color= "#ffdb85"
                     title="back"
@@ -107,7 +107,7 @@ class DeleteAccountPage extends React.Component {
                     <View style={styles.textContainer}>
                         <Text style={styles.textStyle}>You cannot recover you account after you proceed to delete it.</Text>
                     </View>
-                    <View style={styles.buttonStyle}>
+                    <View style={[styles.buttonStyle,styles.iosButtonSetting]}>
                         <Button color= "#ffb300"
                         title="Delete Account" onPress={this.onDeletePress} />
                     </View>
@@ -150,9 +150,10 @@ const styles = StyleSheet.create({
         fontSize: 22,
     },
     backButton: {
-        paddingTop: 20,
+        marginTop: 20,
         flexDirection: "row",
         justifyContent: "flex-start",
+        alignSelf: "flex-start"
     },
     subInputContainer: {
         borderBottomWidth: 1,
@@ -163,7 +164,12 @@ const styles = StyleSheet.create({
         width: 250,
     },
     buttonStyle: {
-        paddingVertical: 25,
+        marginVertical: 25,
+    },
+    iosButtonSetting: {
+        borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+        marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+        borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
     }
 });
 

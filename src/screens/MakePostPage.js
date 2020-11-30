@@ -81,9 +81,12 @@ const EditPost = ({ navigation }) => {
 
   const handlePost = async () => {
     await initPost();
-    ref.update({
-      ID: ref.id.toString(),
-      PostedUser: currentUserRef,
+    firebase.firestore().collection("Users").doc(currentUserRef).get().then(doc => {
+      ref.update({
+        ID: ref.id.toString(),
+        PostedUser: currentUserRef,
+        PostedUserName: doc.data().userName
+      })
     })
     db.collection("Users").doc(currentUserRef).update({
       postedPosts: firebase.firestore.FieldValue.arrayUnion(ref.id)

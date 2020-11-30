@@ -185,7 +185,7 @@ const UsersProfilePage = ({route, navigation}) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.logoutButton}>
+            <View style={[styles.logoutButton,styles.iosButtonSetting]}>
                 <Button
                     color= "#ffdb85"
                     title="Block"
@@ -218,21 +218,27 @@ const UsersProfilePage = ({route, navigation}) => {
                     <Text>Following</Text>
                     <Text>{followings}</Text>
                 </View>
-                <Button color= "#ffb300"
-                    title={followingStat}
-                    onPress={onFollowPressed}
-                />
+                <View style={styles.iosButtonSetting}>
+                    <Button color= "#ffb300"
+                        title={followingStat}
+                        onPress={onFollowPressed}
+                    />
+                </View>
             </View>
 
             <View style={styles.buttonMiddle}>
-                <Button color= "#ffb300"
-                    title="Topic Page"
-                    onPress={() => navigation.navigate('ListTopicPage')}
-                />
-                <Button color= "#ffb300"
-                    title="Profile Page"
-                    onPress={() => navigation.navigate('ProfilePage')}
-                />
+                <View style={styles.iosButtonSetting}>
+                    <Button color= "#ffb300"
+                        title="Topic Page"
+                        onPress={() => navigation.navigate('ListTopicPage')}
+                    />
+                </View>
+                <View style={styles.iosButtonSetting}>
+                    <Button color= "#ffb300"
+                        title="Profile Page"
+                        onPress={() => navigation.navigate('ProfilePage')}
+                    />
+                </View>
             </View>
 
         
@@ -287,16 +293,22 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     logoutButton: {
-        paddingTop: 20,
+        marginTop: 20,
         flexDirection: "row",
         justifyContent: "flex-end",
+        alignSelf: "flex-end"
     },
     refreshButton: {
-        paddingTop: 20,
+        marginTop: 20,
         flexDirection: "row",
         justifyContent: "flex-start",
+        alignSelf: "flex-start"
     },
-
+    iosButtonSetting: {
+        borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+        marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+        borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+    }
 });
 
 export default UsersProfilePage;

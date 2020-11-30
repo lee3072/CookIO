@@ -192,11 +192,18 @@ class UserInfiniteScroll extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Button color="#ffb300"
-                    title="My Profile"
-                    onPress={() => this.props.navigation.navigate('ProfilePage')}
-                />
+            <View style={[styles.container,{paddingTop: (Platform.OS === 'ios') ? 40: 0}]}>
+                <View style={{
+                    borderTopWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    borderBottomWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+                    borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+                }}>
+                    <Button color="#ffb300"
+                        title="My Profile"
+                        onPress={() => this.props.navigation.navigate('ProfilePage')}
+                    />
+                </View>
 
                 <CupertinoSearchBarBasic
                     style={styles.cupertinoSearchBarBasic}
@@ -321,6 +328,11 @@ const styles = StyleSheet.create({
     ml: {
         marginLeft: 10,
     },
+    iosButtonSetting: {
+        borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+        marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+        borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+    }
 });
 
 export default UserInfiniteScroll;

@@ -13,16 +13,17 @@ const SignInPage = ({ navigation }) => {
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
 
+    const clearStates = () => {
+        setWarning('')
+        setEmailAddress('')
+        setPassword('')
+    }
 
-    
-    const signInWithEmail = () => {
-        console.log("email: "+emailAddress+"; pass: "+password)
-        firebase.auth().signInWithEmailAndPassword(emailAddress.trim(),password)
+    const signInWithAccount = (account) => {
+        firebase.auth().signInWithEmailAndPassword(account,password)
         .then(user => {
         if (user) {
-            setWarning('')
-            setEmailAddress('')
-            setPassword('')
+            clearStates()
             var i = 0
             firebase.database().ref(firebase.auth().currentUser.uid)
             .endAt()
@@ -32,8 +33,7 @@ const SignInPage = ({ navigation }) => {
                     Notifications.presentLocalNotificationAsync({
                         title: "from: "+snapshot.child("user/_id").val(),
                         body: snapshot.child("text").val(),
-                      });
-                    //   console.log(snapshot)
+                    });
                 }
                 i++
             });
@@ -41,18 +41,35 @@ const SignInPage = ({ navigation }) => {
         }
         })
         .catch(error => {
-        console.log(error.message)
-        if (error.code == 'auth/weak-password') {
-            setWarning('Weak Password')
-        } else {
-            setWarning(error.message)
-        }
+            if (error.code == 'auth/invalid-email') {
+                firebase.firestore().collection("Users").where('userName', '==', emailAddress.trim())
+                .get()
+                .then(function(querySnapshot) {
+                    if (querySnapshot.empty) {
+                        setWarning("Email or Username is Invalid")
+                    }
+                    querySnapshot.forEach(function(doc) {
+                        signInWithAccount(doc.data().userEmail)
+                    });
+                })
+            }
+            else if (error.code == 'auth/weak-password') {
+                setWarning('Weak Password')
+            }
+            else if (error.code == 'auth/wrong-password') {
+                setWarning('Password is Invalid')
+            }
+            else {
+                setWarning(error.message)
+            }
         })
     }
+    
+    const signInWithEmail = () => {
+        signInWithAccount(emailAddress.trim());
+    }
     const changeMod = () => {
-        setWarning('')
-        setEmailAddress('')
-        setPassword('')
+        clearStates()
         navigation.navigate('SignUpPage')
     }
     return (<View style={styles.container}>

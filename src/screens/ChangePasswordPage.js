@@ -45,7 +45,7 @@ class ChangePasswordPage extends React.Component {
   render() {
     return (
         <View style={styles.container}>
-            <View style={styles.backButton}>
+            <View style={[styles.backButton,styles.iosButtonSetting,{marginTop:(Platform.OS === 'ios') ? 40 : 20, marginBottom: 10}]}>
                 <Button
                     color= "#ffdb85"
                     title="back"
@@ -80,7 +80,7 @@ class ChangePasswordPage extends React.Component {
                             onChangeText={(text) => {this.setState({newPassword: text}) }}
                         />
                     </View>
-                    <View style={styles.buttonStyle}>
+                    <View style={[styles.buttonStyle,styles.iosButtonSetting]}>
                         <Button color= "#ffb300"
                         title="Change Password" onPress={this.onChangePasswordPress} />
                     </View>
@@ -119,9 +119,10 @@ const styles = StyleSheet.create({
         fontSize: 22,
     },
     backButton: {
-        paddingTop: 20,
+        marginTop: 20,
         flexDirection: "row",
         justifyContent: "flex-start",
+        alignSelf: "flex-start"
     },
     subInputContainer: {
         borderBottomWidth: 1,
@@ -132,7 +133,12 @@ const styles = StyleSheet.create({
         width: 250,
     },
     buttonStyle: {
-        paddingVertical: 25,
+        marginVertical: 25,
+    },
+    iosButtonSetting: {
+        borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+        marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+        borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
     }
 });
 

@@ -54,7 +54,12 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: "row",
     flex: 1
-  }
+  },
+  iosButtonSetting: {
+    borderWidth: (Platform.OS === 'ios') ? 2 : 0,
+    marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+    borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+},
 
 
     

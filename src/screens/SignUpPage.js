@@ -12,7 +12,6 @@ const SignUpPage = ({ navigation }) => {
     const [password,setPassword] = useState('');
     const [warning,setWarning] = useState('')
     const signUpWithEmail = () => {
-      console.log("email: "+emailAddress+"; pass: "+password)
       firebase.auth().createUserWithEmailAndPassword(emailAddress.trim(),password)
       .then(user => {
         if (user) {
@@ -35,13 +34,13 @@ const SignUpPage = ({ navigation }) => {
             postedComments: [],
             blockedUsers: [], // for DM
             dmUsers: [], // for DM
+            followingOnlyMod: false,
             followers: [],
           })
           firebase.database().ref(firebase.auth().currentUser.uid).push("initialization")
         }
       })
       .catch(error => {
-        console.log(error.message)
         if (error.code == 'auth/weak-password') {
           setWarning('Weak Password')
         } else {
