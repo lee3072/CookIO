@@ -18,7 +18,7 @@ class PostView extends React.Component {
             title: "default title",
             up: 0,
             down: 0,
-            uid: firebase.auth().currentUser.uid.toString(),
+            uid: firebase.auth().currentUser ? firebase.auth().currentUser.uid.toString() : "guest",
 
             content: null,
             image: null,

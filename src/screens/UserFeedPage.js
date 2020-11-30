@@ -12,7 +12,7 @@ class UserFeedPage extends React.Component {
         this.state={
             userid: this.props.route.params.userid,
         }
-        // this.getEverthing();
+        console.log("this.state.userid: "+this.state.userid)
     }
     render(){
         return(
