@@ -14,15 +14,6 @@ class UserFeedPage extends React.Component {
         }
         // this.getEverthing();
     }
-
-    // getEverthing = async () => {
-    //     let db = firebase.firestore();
-    //     let postRef = db.collection('Posts').doc(this.state.id);
-    //     const post = await postRef.get();
-    //     this.setState({
-    //         userid: post.get('PostedUser'),
-    //     })
-    // }
     render(){
         return(
             <View>
