@@ -10,7 +10,7 @@ function getUserName(documentSnapshot) {
     <TouchableOpacity
       onPress={() =>{
         firebase.firestore().collection('Users')
-        .doc(item.id)
+        .doc(item.ID)
         .get()
         .then(document => {
           if (!document.data().followingOnlyMod || document.data().followingUsers.indexOf(firebase.auth().currentUser.uid) != -1) {
@@ -19,7 +19,7 @@ function getUserName(documentSnapshot) {
               .doc(firebase.auth().currentUser.uid)
               .get()
               .then(doc => {
-                navigation.navigate('DirectMessageUserPage', { otheruser: item.id, username: doc.data().userName, icon: doc.data().userIcon != null ? doc.data().userIcon : require("../assets/favicon.png") })
+                navigation.navigate('DirectMessageUserPage', { otheruser: item.ID, username: doc.data().userName, icon: doc.data().userIcon != null ? doc.data().userIcon : require("../assets/favicon.png") })
               })
             } else {
               Alert.alert("You Are Blocked by The User")
