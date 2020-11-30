@@ -12,9 +12,22 @@ var db = firebase.firestore(); //firestore
 class ListPostPage extends React.Component {
   constructor(props){
     super (props);
+    this.state = {
+      followingState: "Follow this topic"
+    }
     console.log("in post page");
     let document = this.props.route.params.document;
     console.log("doc: " + document);
+    const currentUser = firebase.auth().currentUser;
+    db.collection('Users')
+    .doc(currentUser.uid)
+    .get()
+    .then(documentSnapshot => this.getTags(documentSnapshot))
+    .then(tags => {
+        if (tags.includes(this.props.route.params.document)) {
+          this.setState({followingState: "Topic is Followed"})
+        }
+    })
   }
 
   getTags = (documentSnapshot) => {
@@ -41,6 +54,7 @@ class ListPostPage extends React.Component {
                     .update({
                       followingTags: firebase.firestore.FieldValue.arrayRemove(this.props.route.params.document),
                     })
+                    this.setState({followingState: "Follow this topic"})
                 }},
                 {text: 'Cancel', style: 'cancel'}
             ]
@@ -52,6 +66,7 @@ class ListPostPage extends React.Component {
             followingTags: firebase.firestore.FieldValue.arrayUnion(this.props.route.params.document),
           })
           Alert.alert("Following Successfully");
+          this.setState({followingState: "Topic is Followed"})
         }
     });
     // db.collection('Users')
@@ -76,7 +91,7 @@ class ListPostPage extends React.Component {
         />
       </View>
       <Button color="#ffb300"
-          title="Follow this topic"
+          title={this.state.followingState}
           onPress={this.onFollowPressed}
       />
       <ScrollView>

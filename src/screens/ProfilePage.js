@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import firebase from '../../firebase_setup';
 import 'firebase/firestore';
+import { ScrollView } from 'react-native-gesture-handler';
 
 var db = firebase.firestore(); //firestore
 
@@ -99,7 +100,7 @@ const ProfilePage = ({navigation}) => {
     }, [navigation]);
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.logoutButton}>
                 <Button
                     color= "#ffdb85"
@@ -220,19 +221,9 @@ const ProfilePage = ({navigation}) => {
                 />
             </View>
             
-            {/* <View style={styles.buttonMiddle}>
-                <Button color= "#ffb300"
-                    title="DM All User"
-                    onPress={() => {
-                        firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
-                            navigation.navigate('DirectMessageMainAllUserPage',{dm: doc.data().dmUsers})
-                        })
-                    }}
-                />
-            </View> */}
 
         
-        </View>
+        </ScrollView>
     );
     
 }
