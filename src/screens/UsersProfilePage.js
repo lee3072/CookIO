@@ -23,7 +23,7 @@ const UsersProfilePage = ({route, navigation}) => {
 
         if (!currentUser) {
             navigation.navigate('GuestErrorPage')
-        }
+        } else {
 
         function getBlocked(documentSnapshot) {
             return documentSnapshot.get('blockedUsers');
@@ -119,7 +119,7 @@ const UsersProfilePage = ({route, navigation}) => {
             setFollowings(followingUsers.length);
         });
 
-
+    }
     };
 
     useEffect(() => {
