@@ -181,7 +181,7 @@ const ProfilePage = ({navigation}) => {
             <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Other Profile Page 1"
-                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'uaJmKzOh8JP82fY3uWTNApA35E63'})}
+                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'LJEpbvWCvcMnRQCRJfwZ9z3Ko203'})}
                 />
             </View>
             <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
@@ -190,16 +190,16 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'zQEVkyxs4cVu8IznPMmsfUzrTQp2'})}
                 />
             </View>
-            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
-                <Button color= "#ffb300"
-                    title="Other Profile Page for DM"
-                    onPress={() => navigation.navigate('UsersProfilePage', {uid: 'uaJmKzOh8JP82fY3uWTNApA35E63'})}
-                />
-            </View>
-            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
+            {/* <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="My Posts"
                     onPress={() => navigation.navigate('UserFeedPage', {userid: uid })}
+                />
+            </View> */}
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="My Userline"
+                    onPress={() => navigation.navigate('UserLinePage', {userid: uid })}
                 />
             </View>
             <View style={styles.buttonMiddle}>

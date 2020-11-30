@@ -7,9 +7,10 @@ import 'firebase/firestore';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 const PostCard = ({ navigation, item }) => {
-  
-  console.log("in post card " + item.ID);
-  console.log("see userid: " + item.PostedUser);
+  // console.log("in post card " + item.ID);
+  // console.log("see userid: " + item.PostedUser);
+  let timeStemp = new Date(item.Date / 1000000)
+  let displayTime = timeStemp.toLocaleString()
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity

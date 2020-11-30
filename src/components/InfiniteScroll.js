@@ -1,8 +1,6 @@
-import { database } from "firebase";
-import React, { Component, useState } from "react";
-import { StyleSheet, View, ActivityIndicator, Text, RefreshControl, Button, Dimensions } from "react-native";
+import React from "react";
+import { StyleSheet, View, ActivityIndicator, Text, RefreshControl, Dimensions } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import CupertinoSearchBarBasic from "../components/CupertinoSearchBarBasic";
 import 'firebase/firestore';
 import firebase from '../../firebase_setup';
 import { ThemeProvider } from "@react-navigation/native";
@@ -13,9 +11,7 @@ var screenHeight = Dimensions.get('screen').height;
 import PostCard from "../components/PostCard";
 import TagCard from "../components/TagCard";
 import CommentCard from "../components/CommentCard";
-
 import UserCard from "../components/UserCard";
-
 
 class InfiniteScroll extends React.Component {
     constructor(props) {
@@ -30,7 +26,7 @@ class InfiniteScroll extends React.Component {
             haveMore: true,
             list: [],
             count: 3,
-            limit: 10,
+            limit: 3,
         };
     }
 
@@ -48,7 +44,7 @@ class InfiniteScroll extends React.Component {
     //retrieve initial data
     retrieveData = async () => {
         try {
-            console.log('retrieving initial data');
+            // console.log('retrieving initial data');
             // set state loading
             this.setState({ loading: true });
 
@@ -61,17 +57,16 @@ class InfiniteScroll extends React.Component {
             
             initialQuery = initialQuery
                 .orderBy(this.props.sortBy)
-                // .orderBy("date")
                 .limit(this.state.limit);
             
             let postSnapshots = await initialQuery.get();
 
             let data = postSnapshots.docs.map(post => post.data());
-            console.log('post Data');
-            console.log(data);
+            // console.log('post Data');
+            // console.log(data);
 
             let lastVisible = data[data.length - 1].ID;
-            console.log("last visible: " + lastVisible);
+            // console.log("last visible: " + lastVisible);
 
             // set states
             this.setState({
@@ -86,8 +81,8 @@ class InfiniteScroll extends React.Component {
     //retrieve more data form firebse
     retrieveMore = async () => {
         try {
-            console.log('Retrieving additional post Data');
-            console.log("last visible: " + this.state.lastVisible);
+            // console.log('Retrieving additional post Data');
+            // console.log("last visible: " + this.state.lastVisible);
             this.setState({ refreshing: true });
 
             let additionalQuery = await firebase.firestore()
@@ -98,14 +93,13 @@ class InfiniteScroll extends React.Component {
             
             additionalQuery = additionalQuery
                 .orderBy(this.props.sortBy)
-                // .orderBy("date")
                 .startAfter(this.state.lastVisible)
                 .limit(this.state.limit);
 
             let postSnapshots = await additionalQuery.get();
             let data = postSnapshots.docs.map(post => post.data());
-            console.log('post Data');
-            console.log(data);
+            // console.log('post Data');
+            // console.log(data);
 
             if (data.length == 0) {
                 this.setState({
@@ -114,7 +108,7 @@ class InfiniteScroll extends React.Component {
                 });
             } else {
                 let lastVisible = data[data.length - 1].ID;
-                console.log('Last Visible ID: ' + lastVisible);
+                // console.log('Last Visible ID: ' + lastVisible);
 
                 this.setState({
                     data: [...this.state.data, ...data],
@@ -205,7 +199,6 @@ class InfiniteScroll extends React.Component {
                 return (<TagCard style={styles.postCard} item={item} navigation={this.props.navigation} />);
             case "CommentCard":
                 return (<CommentCard style={styles.postCard} item={item} navigation={this.props.navigation} />);
-
             case "UserCard":
                 return (<UserCard style={styles.userCard} item={item} navigation={this.props.navigation} />);
             default:
@@ -222,37 +215,12 @@ class InfiniteScroll extends React.Component {
     }
 
     showMore = async () => {
-        // if(this.props.document == 'NULL'){
         this.retrieveMore();
-        // } else {
-        //     this.setState({
-        //         data: this.state.list.slice(0, this.state.count + this.state.limit),
-        //         count: this.state.count + 1,//this.state.limit,
-        //     });
-        // }
-
     }
 
     render() {
         return (
             <View style={styles.container}>
-                {/* <Button color="#ffb300"
-                    title="My Profile"
-                    onPress={() => this.props.navigation.navigate('ProfilePage')}
-                /> */}
-
-                {/* <CupertinoSearchBarBasic
-                <View style={{paddingTop: (Platform.OS === 'ios') ? 40: 0}}>
-                <Button color="#ffb300"
-                    title="My Profile"
-                    onPress={() => this.props.navigation.navigate('ProfilePage')}
-                />
-                </View>
-                
-                <CupertinoSearchBarBasic
-                    style={styles.cupertinoSearchBarBasic}
-                ></CupertinoSearchBarBasic> */}
-
                 <FlatList
                     data={this.state.data}
                     // Element Key

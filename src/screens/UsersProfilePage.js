@@ -243,6 +243,11 @@ const UsersProfilePage = ({route, navigation}) => {
                         onPress={() => navigation.navigate('ProfilePage')}
                     />
                 </View>
+                <Button color= "#ffb300"
+                    title="User Time Line"
+                    onPress={() => navigation.navigate('UserLinePage', {userid: uid})}
+                />
+                
             </View>
 
         

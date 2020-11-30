@@ -36,6 +36,10 @@ import GuestErrorPage from './src/screens/GuestErrorPage';
 import FollowPostPage from './src/screens/FollowPostPage';
 import GuestViewPage from './src/screens/GuestViewPage';
 import SavedPostPage from './src/screens/SavedPostPage';
+import UserLinePage from './src/screens/UserLinePage'
+import ShowUserActivityPage from './src/screens/ShowUserActivityPage'
+import ShowUserPostsPage from './src/screens/ShowUserPostsPage'
+
 // import FeedPage from './src/screens/FeedPage';
 // import PostView from './src/screens/PostView';
 import UserFeedPage from './src/screens/UserFeedPage';
@@ -109,6 +113,9 @@ export default class App extends React.Component {
             <Stack.Screen name="FollowPostPage" component={FollowPostPage}/>
             <Stack.Screen name="SavedPostPage" component={SavedPostPage}/>
             <Stack.Screen name="PostView" component={PostView}/>
+            <Stack.Screen name="UserLinePage" component={UserLinePage}/>
+            <Stack.Screen name="ShowUserActivityPage" component={ShowUserActivityPage}/>
+            <Stack.Screen name="ShowUserPostsPage" component={ShowUserPostsPage}/>
 
           </Stack.Navigator>
         </NavigationContainer>
