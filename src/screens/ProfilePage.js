@@ -117,7 +117,7 @@ const ProfilePage = ({navigation}) => {
                                 firebase.database().ref(firebase.auth().currentUser.uid)
                                 .limitToLast(20)
                                 .off()
-                                navigation.navigate('SignInPage')
+                                navigation.navigate('GuestViewPage')
                             }}
                     />
                 </View>
