@@ -20,6 +20,10 @@ const ProfilePage = ({navigation}) => {
     const updateData = () => {
         const currentUser = firebase.auth().currentUser;
 
+        if (!currentUser) {
+            navigation.navigate('GuestErrorPage')
+        }
+
         if (currentUser) {
             console.log('Success');
             setUid(currentUser.uid)
@@ -114,7 +118,7 @@ const ProfilePage = ({navigation}) => {
                             firebase.database().ref(firebase.auth().currentUser.uid)
                             .limitToLast(20)
                             .off()
-                            navigation.navigate('SignInPage')
+                            navigation.navigate('GuestViewPage')
                         }}
                 />
             </View>

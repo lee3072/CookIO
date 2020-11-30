@@ -21,6 +21,10 @@ const UsersProfilePage = ({route, navigation}) => {
 
         const currentUser = firebase.auth().currentUser;
 
+        if (!currentUser) {
+            navigation.navigate('GuestErrorPage')
+        }
+
         function getBlocked(documentSnapshot) {
             return documentSnapshot.get('blockedUsers');
         }
