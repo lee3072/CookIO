@@ -187,6 +187,12 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('UserFeedPage', {userid: uid })}
                 />
             </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Blocked Users"
+                    onPress={() => navigation.navigate('BlockListPage', {userid: uid })}
+                />
+            </View>
             {/* <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="DM All User"

@@ -10,27 +10,53 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 var db = firebase.firestore(); //firestore
 
-const FollowingTagPage = ({navigation}) => {
+const BlockListPage = ({navigation}) => {
     
     const [uid,setUid] = useState('');
-    const [followingTags,setfollowingTags] = useState([])
+    const [blockedUsers,setBlockedUsers] = useState([])
+    const [usernameList,setUsernameList] = useState([])
 
+
+    const uidToName = async (uid) => {
+        function getUserName(documentSnapshot) {
+            return documentSnapshot.get('userName');
+        }
+
+        db.collection('Users')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => getUserName(documentSnapshot))
+        .then(userName => {
+            setUsernameList(prevArray => [...prevArray, userName])
+        });
+    }
+
+    const uidToNameList = (uidList) => {
+        var i;
+        for(i = 0; i < uidList.length; i++) {
+            uidToName(uidList[i])
+        }
+    }
     const updateData = () => {
-        setfollowingTags([])
+        setUsernameList([])
+        setBlockedUsers([])
         const currentUser = firebase.auth().currentUser;
+        console.log('hey')
         if (currentUser) {
+
             setUid(currentUser.uid)
 
-            function getTags(documentSnapshot) {
-                return documentSnapshot.get('followingTags');
+            function getBlockedUsers(documentSnapshot) {
+                return documentSnapshot.get('blockedUsers');
             }
                   
             db.collection('Users')
             .doc(currentUser.uid)
             .get()
-            .then(documentSnapshot => getTags(documentSnapshot))
-            .then(following => {
-                setfollowingTags(following);
+            .then(documentSnapshot => getBlockedUsers(documentSnapshot))
+            .then(blocked => {
+                setBlockedUsers(blocked);
+                uidToNameList(blocked)
             });
         }
         
@@ -55,32 +81,32 @@ const FollowingTagPage = ({navigation}) => {
             />
             </View>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Following Tags</Text>
-                <View style={styles.buttonStyle}>
-                    <Button color= "#ffb300"
-                        title="Following Users"
-                        onPress={() => navigation.navigate('FollowingPage')}
-                    />
-                </View>
+                <Text style={styles.title}>Blocked Users</Text>
             </View>
             <ScrollView>
             {
-            followingTags.map((l, i) => (
+            usernameList.map((l, i) => (
                 <ListItem key={i} bottomDivider onPress={() =>
                     Alert.alert(
                         l,
                         "",
                         [
-                            {text: 'Unfollow', onPress: () => {
-                                const currentUser = firebase.auth().currentUser;
 
+                            {text: 'Unblock', onPress: () => {
+                                const currentUser = firebase.auth().currentUser;
+                                var index = usernameList.indexOf(l)
+                                var uidFound = blockedUsers[index]
+
+                                
                                 db.collection('Users')
                                 .doc(currentUser.uid)
                                 .update({
-                                    followingTags: firebase.firestore.FieldValue.arrayRemove(l),
+                                    blockedUsers: firebase.firestore.FieldValue.arrayRemove(uidFound),
                                 })
-                                var newTags = followingTags.filter((u) => u != l)
-                                setfollowingTags(newTags)
+                                var newList = blockedUsers.filter((u) => u != uidFound)
+                                setBlockedUsers(newList)
+                                var newNames = usernameList.filter((u) => u != l)
+                                setUsernameList(newNames)
                             }
                             },
                             {text: 'Cancel', style: 'cancel'}
@@ -128,6 +154,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "flex-start",
     },
+
 });
 
-export default FollowingTagPage;
+export default BlockListPage;
