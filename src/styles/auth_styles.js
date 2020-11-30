@@ -54,6 +54,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // backgroundColor: '#888',
     },
+    GuestView: {
+        position: "absolute",
+        left: 130/360*screenWidth,
+        top: 424/720*screenHeight*1.125,
+    },
     appNameModifier: {
         width: 300/360*screenWidth,
     }, 

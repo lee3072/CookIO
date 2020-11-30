@@ -119,7 +119,7 @@ const ProfilePage = ({navigation}) => {
                             firebase.database().ref(firebase.auth().currentUser.uid)
                             .limitToLast(20)
                             .off()
-                            navigation.navigate('GuestViewPage')
+                            navigation.navigate('SignInPage')
                         }}
                 />
             </View>
@@ -178,7 +178,7 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('ListTopicPage')}
                 />
             </View>
-            <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
+            {/* <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
                 <Button color= "#ffb300"
                     title="Other Profile Page 1"
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'LJEpbvWCvcMnRQCRJfwZ9z3Ko203'})}
@@ -189,7 +189,7 @@ const ProfilePage = ({navigation}) => {
                     title="Other Profile Page 2"
                     onPress={() => navigation.navigate('UsersProfilePage', {uid: 'zQEVkyxs4cVu8IznPMmsfUzrTQp2'})}
                 />
-            </View>
+            </View> */}
             {/* <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="My Posts"

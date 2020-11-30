@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { YellowBox, Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity } from 'react-native';
+import { Button, YellowBox, Platform, Dimension, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import * as Font from 'expo-font';
 import firebase from '../../firebase_setup';
 import 'firebase/firestore';
@@ -56,6 +56,12 @@ const SignUpPage = ({ navigation }) => {
     }
   
     return (<View style={styles.container}>
+      <View style={styles.GuestView}>
+        <Button color="#ffb300"
+            title="Guest View"
+            onPress={() => navigation.navigate('GuestViewPage')}
+        />
+      </View>
       <View style={styles.header}>
         <Text style={styles.purpose}>Sign Up For</Text>
         <Text style={styles.appName}>Cook I/O</Text>

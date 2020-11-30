@@ -20,7 +20,7 @@ const GuestViewPage = ({ navigation }) => {
         />
       </View>
       <ScrollView>
-        <InfiniteScroll title={'list post page'} navigation={navigation} collection={"Posts"} card={"PostCard"} sortBy={"PostedDate"}/>
+        <InfiniteScroll title={'list post page'} navigation={navigation} collection={"Posts"} card={"PostCard"} sortBy={"Date"}/>
       </ScrollView>
     </View>
   );

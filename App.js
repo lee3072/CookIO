@@ -88,8 +88,8 @@ export default class App extends React.Component {
         <NavigationContainer>
           <StatusBar style="light"></StatusBar>
           <Stack.Navigator screenOptions={{headerShown: false}} >
-            <Stack.Screen name="GuestViewPage" component={GuestViewPage}/>
             <Stack.Screen name="SignInPage" component={SignInPage}/>
+            <Stack.Screen name="GuestViewPage" component={GuestViewPage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
             <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>
