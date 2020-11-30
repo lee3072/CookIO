@@ -32,8 +32,9 @@ import ListPostPage from './src/screens/ListPostPage'
 import PostView from './src/screens/PostView'
 import UsersProfilePage from './src/screens/UsersProfilePage';
 import EditPostPage from './src/screens/EditPostPage';
-import GuestViewPage from './src/screens/GuestViewPage';
+import GuestErrorPage from './src/screens/GuestErrorPage';
 import FollowPostPage from './src/screens/FollowPostPage';
+import GuestViewPage from './src/screens/GuestViewPage';
 import SavedPostPage from './src/screens/SavedPostPage';
 // import FeedPage from './src/screens/FeedPage';
 // import PostView from './src/screens/PostView';
@@ -89,6 +90,7 @@ export default class App extends React.Component {
             <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
             <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
+            <Stack.Screen name="GuestErrorPage" component={GuestErrorPage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
             <Stack.Screen name="EmptyProfilePage" component={EmptyProfilePage}/>
             <Stack.Screen name="BlockListPage" component={BlockListPage}/>

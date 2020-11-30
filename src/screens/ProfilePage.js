@@ -20,6 +20,10 @@ const ProfilePage = ({navigation}) => {
     const updateData = () => {
         const currentUser = firebase.auth().currentUser;
 
+        if (!currentUser) {
+            navigation.navigate('GuestErrorPage')
+        }
+
         if (currentUser) {
             console.log('Profile Page: Update Success');
             setUid(currentUser.uid)
@@ -96,31 +100,27 @@ const ProfilePage = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.logoutButton,{marginTop:(Platform.OS === 'ios') ? 20 : 0}]}>
-                <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
-                    <Button
-                        color= "#ffdb85"
-                        title="Direct Messaging"
-                        onPress={() => {
-                                firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
-                                    navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
-                                })
-                            }}
-                    />
-                </View>
-                <View style={[styles.buttonMiddle,styles.iosButtonSetting]}>
-                    <Button
-                        color= "#ffdb85"
-                        title="Logout"
-                        onPress={() => {
-                                firebase.auth().signOut()
-                                firebase.database().ref(firebase.auth().currentUser.uid)
-                                .limitToLast(20)
-                                .off()
-                                navigation.navigate('GuestViewPage')
-                            }}
-                    />
-                </View>
+            <View style={styles.logoutButton}>
+                <Button
+                    color= "#ffdb85"
+                    title="Direct Messaging"
+                    onPress={() => {
+                            firebase.firestore().collection("Users").doc(firebase.auth().currentUser.uid).get().then(doc => {
+                                navigation.navigate('DirectMessageMainPage',{dm: doc.data().dmUsers})
+                            })
+                        }}
+                />
+                <Button
+                    color= "#ffdb85"
+                    title="Logout"
+                    onPress={() => {
+                            firebase.auth().signOut()
+                            firebase.database().ref(firebase.auth().currentUser.uid)
+                            .limitToLast(20)
+                            .off()
+                            navigation.navigate('GuestViewPage')
+                        }}
+                />
             </View>
 
 
@@ -203,6 +203,12 @@ const ProfilePage = ({navigation}) => {
             </View>
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
+                    title="Blocked Users"
+                    onPress={() => navigation.navigate('BlockListPage', {userid: uid })}
+                />
+            </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
                     title="Saved Posts"
                     onPress={() => navigation.navigate('SavedPostPage', {userid: uid })}
                 />
@@ -211,12 +217,6 @@ const ProfilePage = ({navigation}) => {
                 <Button color= "#ffb300"
                     title="Following"
                     onPress={() => navigation.navigate('FollowPostPage', {userid: uid })}
-                />
-            </View>
-            <View style={styles.buttonMiddle}>
-                <Button color= "#ffb300"
-                    title="Blocked Users"
-                    onPress={() => navigation.navigate('BlockListPage', {userid: uid })}
                 />
             </View>
             
