@@ -75,6 +75,10 @@ class ListPostPage extends React.Component {
             onPress={() => this.props.navigation.navigate('ListTopicPage')}
         />
       </View>
+      <Button color="#ffb300"
+          title="Follow this topic"
+          onPress={this.onFollowPressed}
+      />
       <ScrollView>
         <InfiniteScroll title={'list post page'} navigation={this.props.navigation} collection={"Posts"} what={"Tag"} contain={[this.props.route.params.document]} card={"PostCard"} sortBy={"ID"}/>
       </ScrollView>
