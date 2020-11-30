@@ -1,6 +1,8 @@
 import React from "react";
 import 'firebase/firestore';
 import UserInfiniteScroll from "../components/UserInfiniteScroll";
+import { StyleSheet, View, Button, ScrollView } from 'react-native';
+
 import firebase from '../../firebase_setup';
 
 
@@ -13,7 +15,17 @@ class UserFeedPage extends React.Component {
         // this.getEverthing();
     }
     render(){
-        return(<UserInfiniteScroll navigation={this.props.navigation} collection={"Posts"} card={"PostCard"} sortBy={"ID"} where={this.state.userid}/>);
+        return(
+            <View>
+                <Button color="#ffb300"
+                    title="Go to this user's profile"
+                    onPress={() => this.props.navigation.navigate('UsersProfilePage', {uid: this.state.userid })}
+                />
+                <ScrollView>
+                <UserInfiniteScroll navigation={this.props.navigation} collection={"Posts"} card={"PostCard"} sortBy={"ID"} where={this.state.userid}/>
+                </ScrollView>
+            </View>
+        );
     }
 }
 

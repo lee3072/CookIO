@@ -71,6 +71,15 @@ const FollowingPage = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.backButton}>
+            <Button
+                color= "#ffdb85"
+                title="back"
+                onPress={() => {
+                    navigation.navigate('ProfilePage')
+                }}
+            />
+            </View>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>Following Users</Text>
                 <View style={styles.buttonStyle}>
@@ -145,7 +154,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     titleContainer: {
-        marginTop: 30,
+        marginTop: 10,
         marginLeft: 5,
         marginBottom: 20,
         flexDirection: "row",
@@ -154,6 +163,11 @@ const styles = StyleSheet.create({
     buttonStyle: {
         marginTop: 10,
         justifyContent: "flex-end",
+    },
+    backButton: {
+        paddingTop: 20,
+        flexDirection: "row",
+        justifyContent: "flex-start",
     },
 
 });

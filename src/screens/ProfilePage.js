@@ -167,7 +167,7 @@ const ProfilePage = ({navigation}) => {
             </View>
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
-                    title="Feed Page"
+                    title="Topic Page"
                     onPress={() => navigation.navigate('ListTopicPage')}
                 />
             </View>
@@ -199,6 +199,13 @@ const ProfilePage = ({navigation}) => {
                     onPress={() => navigation.navigate('FollowPostPage', {userid: uid })}
                 />
             </View>
+            <View style={styles.buttonMiddle}>
+                <Button color= "#ffb300"
+                    title="Blocked Users"
+                    onPress={() => navigation.navigate('BlockListPage', {userid: uid })}
+                />
+            </View>
+            
             {/* <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
                     title="DM All User"

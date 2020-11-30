@@ -18,6 +18,39 @@ const UsersProfilePage = ({route, navigation}) => {
     const [icon,setIcon] = useState('')
 
     const updateData = () => {
+
+        const currentUser = firebase.auth().currentUser;
+
+        function getBlocked(documentSnapshot) {
+            return documentSnapshot.get('blockedUsers');
+        }
+
+        db.collection('Users')
+        .doc(currentUser.uid)
+        .get()
+        .then(documentSnapshot => getBlocked(documentSnapshot))
+        .then(blocked => {
+            if (blocked.includes(uid)) {
+                navigation.navigate('EmptyProfilePage')
+            }
+        });
+
+        db.collection('Users')
+        .doc(uid)
+        .get()
+        .then(documentSnapshot => getBlocked(documentSnapshot))
+        .then(blocked => {
+            if (blocked.includes(currentUser.uid)) {
+                navigation.navigate('EmptyProfilePage')
+            }
+        });
+
+        db.collection("Users").doc(uid).get().then(doc => {
+            if (!doc.exists){
+                navigation.navigate('EmptyProfilePage')
+            }
+        })
+
         function getUserName(documentSnapshot) {
             return documentSnapshot.get('userName');
         }
@@ -33,8 +66,6 @@ const UsersProfilePage = ({route, navigation}) => {
             return documentSnapshot.get('followers');
         }
         
-        const currentUser = firebase.auth().currentUser;
-
         db.collection('Users')
         .doc(uid)
         .get()
@@ -127,15 +158,38 @@ const UsersProfilePage = ({route, navigation}) => {
         }
     }
 
+    const onBlockPressed = () => {
+        const currentUser = firebase.auth().currentUser;
+        if(followingStat == 'Unfollow') {
+            setFollowingStat('Follow')
+            db.collection('Users')
+                .doc(uid)
+                .update({
+                    followers: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
+                    numberOfFollowers: firebase.firestore.FieldValue.increment(-1),
+                })
+                setFollowers(followers - 1)
+            db.collection('Users')
+                .doc(currentUser.uid)
+                .update({
+                    followingUsers: firebase.firestore.FieldValue.arrayRemove(uid),
+                })
+        }
+        db.collection('Users')
+        .doc(currentUser.uid)
+        .update({
+            blockedUsers: firebase.firestore.FieldValue.arrayUnion(uid),
+        })
+        navigation.navigate('ProfilePage')
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.logoutButton}>
                 <Button
                     color= "#ffdb85"
                     title="Block"
-                    onPress={() => {
-                            console.log('This will be implemented later!')
-                        }}
+                    onPress={onBlockPressed}
                 />
             </View>
             <View style={{ margineTop: 60}}>
@@ -172,8 +226,8 @@ const UsersProfilePage = ({route, navigation}) => {
 
             <View style={styles.buttonMiddle}>
                 <Button color= "#ffb300"
-                    title="Feed Page"
-                    onPress={() => navigation.navigate('FeedPage')}
+                    title="Topic Page"
+                    onPress={() => navigation.navigate('ListTopicPage')}
                 />
                 <Button color= "#ffb300"
                     title="Profile Page"

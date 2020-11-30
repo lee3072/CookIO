@@ -20,8 +20,10 @@ import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
+import EmptyProfilePage from './src/screens/EmptyProfilePage';
 import FollowingPage from './src/screens/FollowingPage';
 import FollowingTagPage from './src/screens/FollowingTagPage';
+import BlockListPage from './src/screens/BlockListPage';
 import EditProfilePage from './src/screens/EditProfilePage';
 import ChangePasswordPage from './src/screens/ChangePasswordPage';
 import DeleteAccountPage from './src/screens/DeleteAccountPage';
@@ -91,6 +93,8 @@ export default class App extends React.Component {
             <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>
             <Stack.Screen name="CreateProfilePage" component={CreateProfilePage}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage}/>
+            <Stack.Screen name="EmptyProfilePage" component={EmptyProfilePage}/>
+            <Stack.Screen name="BlockListPage" component={BlockListPage}/>
             <Stack.Screen name="FollowingPage" component={FollowingPage}/>
             <Stack.Screen name="FollowingTagPage" component={FollowingTagPage}/>
             <Stack.Screen name="UsersProfilePage" component={UsersProfilePage}/>
