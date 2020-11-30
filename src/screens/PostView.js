@@ -137,7 +137,10 @@ class PostView extends React.Component {
         let db = firebase.firestore();
         let userRef = db.collection('Users').doc(this.state.uid);
         let currentTime = firebase.firestore.Timestamp.now();
-        let contains = (await userRef.get()).data()["savedPost"].includes(this.state.id);
+        let savedPost =(await userRef.get()).data()["savedPost"];
+        let contains = false;
+        if(savedPost)
+            contains = savedPost.includes(this.state.id);
         if (!contains) { //check if post is aready saved
             userRef.update({    //if not save the post
                 savedPost: firebase.firestore.FieldValue.arrayUnion(this.state.id),
