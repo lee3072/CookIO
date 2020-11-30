@@ -51,21 +51,34 @@ class ShowUserActivityPage extends React.Component {
         let savedPosts = userRef.get("savedPostWithTime");
         let comments = userRef.get("postedComments");
         let tempInteraction = [];
-        
+
         //put all data in an array and sort it accroding to time
         let i = 0;
-        for (i = 0; i < upVotes.length; i++)
-            tempInteraction.push({ type: "upVotes", obj: upVotes[i] })
-        for (i = 0; i < downVotes.length; i++)
-            tempInteraction.push({ type: "downVotes", obj: downVotes[i] })
-        for (i = 0; i < savedPosts.length; i++)
-            tempInteraction.push({ type: "savedPosts", obj: savedPosts[i] })
-        for (i = 0; i < comments.length; i++)
-            tempInteraction.push({ type: "comments", obj: comments[i] })
+        if (upVotes != null) {
+            for (i = 0; i < upVotes.length; i++)
+                tempInteraction.push({ type: "upVotes", obj: upVotes[i] })
+        }
+        if (downVotes != null) {
+            for (i = 0; i < downVotes.length; i++)
+                tempInteraction.push({ type: "downVotes", obj: downVotes[i] })
+        }
+        if (savedPosts != null) {
+            for (i = 0; i < savedPosts.length; i++)
+                tempInteraction.push({ type: "savedPosts", obj: savedPosts[i] })
+        }
+        if (comments != null) {
+            for (i = 0; i < comments.length; i++)
+                tempInteraction.push({ type: "comments", obj: comments[i] })
+        }
+        if( tempInteraction == null){
+            this.setState({haveMore: false});
+            return;
+        }
         tempInteraction = tempInteraction.sort(this.compare)
+        console.log(tempInteraction);
 
         //convert the second pass 1970/1/1 to date
-        for(i = 0; i < tempInteraction.length; i++)
+        for (i = 0; i < tempInteraction.length; i++)
             tempInteraction[i].obj.date = this.secToDate(tempInteraction[i].obj.date)
 
         //update global variables. 
@@ -87,14 +100,14 @@ class ShowUserActivityPage extends React.Component {
         }
         ThemeProvider.onEndReachedCalled = true;
     }
-    renderCard = (item) => {      
-        return(
+    renderCard = (item) => {
+        return (
             <View>
                 <Text>{item.title}</Text>
                 <Text>{item.comment}</Text>
                 <PostCard item={item.postObj} navigation={this.props.navigation} />
             </View>
-        
+
         )
     }
     showMore = async () => {
@@ -114,41 +127,41 @@ class ShowUserActivityPage extends React.Component {
         this.setState({ refreshing: false });
         // console.log(this.state.data)
     }
-    getInfo = async (obj)=>{
+    getInfo = async (obj) => {
         let title = "on " + obj.obj.date.toLocaleString() + " "
         let comment = null;
         let postObj = null;
         let commentObj = null;
         let db = await firebase.firestore();
-        
+
         switch (obj.type) {
             case "upVotes":
                 title += "up voted";
-                postObj = await(await (await db.collection("Posts").doc(obj.obj.postID)).get()).data()
+                postObj = await (await (await db.collection("Posts").doc(obj.obj.postID)).get()).data()
                 break;
-                // return (<Text>{"up Vote:"}</Text>)
+            // return (<Text>{"up Vote:"}</Text>)
             case "downVotes":
                 title += "down voted";
-                postObj = await(await (await db.collection("Posts").doc(obj.obj.postID)).get()).data()
+                postObj = await (await (await db.collection("Posts").doc(obj.obj.postID)).get()).data()
                 break;
-                // return (<Text>{"down Vote:"}</Text>)
+            // return (<Text>{"down Vote:"}</Text>)
             case "savedPosts":
                 title += "saved post";
-                postObj = await(await (await db.collection("Posts").doc(obj.obj.postID)).get()).data()
+                postObj = await (await (await db.collection("Posts").doc(obj.obj.postID)).get()).data()
                 break;
-                // return (<Text>{"saved Post:"}</Text>)
+            // return (<Text>{"saved Post:"}</Text>)
             case "comments":
-                commentObj = await(await (await db.collection("Comments").doc(obj.obj.commentID)).get()).data()
+                commentObj = await (await (await db.collection("Comments").doc(obj.obj.commentID)).get()).data()
                 title += "commented:";
                 comment = commentObj.Content
-                postObj = await(await (await db.collection("Posts").doc(commentObj.Under)).get()).data()
+                postObj = await (await (await db.collection("Posts").doc(commentObj.Under)).get()).data()
                 break;
-                // return (<Text>{"comment"}</Text>)
+            // return (<Text>{"comment"}</Text>)
             default:
                 throw "error!!!!!!!!!!!!!!!!!!!!"
         }
 
-        return({title: title, comment: comment, postObj: postObj})
+        return ({ title: title, comment: comment, postObj: postObj })
     }
     header = () => {
         return (
