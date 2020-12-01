@@ -57,12 +57,13 @@ class FollowpostInfiniteScroll extends React.Component {
 
             let db = firebase.firestore();
             let postref = db.collection('Posts');
-
+            
             let savedPostArray = (await db.doc(`Users/${currentUserRef}`).get()).data().followingUsers;
             let IDList = [];
             let finalIDList = [];
             let savePostID;
             let i = 0;
+
             for (i = 0; i < savedPostArray.length; i++) {
                 savePostID = (await db.doc(`Users/${savedPostArray[i]}`).get()).data().postedPosts;
                 if (savePostID.length > 0) {
@@ -84,21 +85,28 @@ class FollowpostInfiniteScroll extends React.Component {
             }
 
             let followPostArray = (await db.doc(`Users/${currentUserRef}`).get()).data().followingTags;
+
             for (i = 0; i < followPostArray.length; i++) {
                 let postID = (await db.doc(`Tags/${followPostArray[i]}`).get()).data().list;
                 for (let j = 0; j < postID.length; j++) {                
                     finalIDList.push(postID[j]);
                 }
             } 
-        
-           let getuser = await postref.where('ID', 'in', finalIDList).orderBy(this.props.sortBy).get(); 
-            let postData = getuser.docs.map(post => post.data());
-            //let postData = toarray;
-            console.log('post Data');
-            console.log(postData);
+
+            //Remove post ID from finalIDList of blocked users
+            let blockedUserArray = (await db.doc(`Users/${currentUserRef}`).get()).data().blockedUsers;
+            for (i = 0; i < blockedUserArray.length; i++) {
+                savePostID = (await db.doc(`Users/${blockedUserArray[i]}`).get()).data().postedPosts;
+                for (let j = 0; j < savePostID.length; j++) {
+                    let index = finalIDList.indexOf(savePostID[j]);
+                    finalIDList.splice(index,1);    
+                }
+            }
+            
+            let getuser = await postref.where('ID', 'in', finalIDList).orderBy(this.props.sortBy).get(); 
+            let postData = getuser.docs.map(post => post.data()).reverse();
 
             let lastVisible = postData[postData.length - 1].ID;
-            console.log("last visible: " + lastVisible);
 
             // set states
             this.setState({
