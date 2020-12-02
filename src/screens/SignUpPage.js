@@ -35,6 +35,9 @@ const SignUpPage = ({ navigation }) => {
             postedComments: [],
             blockedUsers: [], // for DM
             dmUsers: [], // for DM
+            upVotes: [{}],
+            downVotes: [{}],
+            savedPostWithTime: [{}],
             followingOnlyMod: false,
             followers: [],
           })

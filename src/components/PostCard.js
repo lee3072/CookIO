@@ -11,7 +11,7 @@ const PostCard = ({ navigation, item }) => {
   // console.log("see userid: " + item.PostedUser);
   var time = parseFloat(item.Date);
   
-  let timeStemp = new Date(item.Date)
+  let timeStemp = new Date(item.Date*1000)
   let displayTime = timeStemp.toLocaleString()
   return (
     <SafeAreaView style={styles.container}>

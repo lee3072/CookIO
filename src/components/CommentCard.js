@@ -5,7 +5,7 @@ import firebase from '../../firebase_setup';
 
 const CommentCard = ({ navigation, item }) => {
   // console.log("in comment card " + item.Content);
-  let timeStemp = new Date(item.Date)
+  let timeStemp = new Date(item.Date*1000)
   let displayTime = timeStemp.toLocaleString()
   
   return (

@@ -34,7 +34,7 @@ class ShowUserActivityPage extends React.Component {
             re = 1;
         else if (dateA < dateB)
             re = -1;
-        return re;
+        return -re;
     }
 
     componentDidMount = async () => {
@@ -90,7 +90,7 @@ class ShowUserActivityPage extends React.Component {
         console.log(tempInteraction)
     }
     secToDate(sec_nanoSec) {
-        return new Date(sec_nanoSec)
+        return new Date(sec_nanoSec*1000)
     }
 
     // scroll stuff

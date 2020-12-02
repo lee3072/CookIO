@@ -1,6 +1,7 @@
 
 import React from "react";
 import 'firebase/firestore';
+import InfiniteScrollDesc from "../components/InfiniteScrollDesc";
 import InfiniteScroll from "../components/InfiniteScroll";
 import firebase from '../../firebase_setup';
 import { Button,  View, } from 'react-native';
@@ -33,7 +34,7 @@ class ShowUserPostsPage extends React.Component {
                         }}
                     />
                 </View>
-                <InfiniteScroll
+                <InfiniteScrollDesc
                     title={"Created Posts"}
                     navigation={this.props.navigation}
                     collection={"Posts"}

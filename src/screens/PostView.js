@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SafeAreaView, ActivityIndicator, StyleSheet, FlatList, RefreshControl, TextInput, Text, View, Image, TouchableOpacity, Button, Alert } from 'react-native';
 import * as Font from 'expo-font';
@@ -137,7 +136,7 @@ class PostView extends React.Component {
         let db = firebase.firestore();
         let userRef = db.collection('Users').doc(this.state.uid);
         let currentTime = firebase.firestore.Timestamp.now();
-        let savedPost =(await userRef.get()).data()["savedPost"];
+        let savedPost = (await userRef.get()).data()["savedPost"];
         let contains = false;
         if(savedPost)
             contains = savedPost.includes(this.state.id);
