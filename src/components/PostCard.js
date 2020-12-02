@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   container: {
     borderColor: "#000000",
     borderTopWidth: 2.5,
+    // borderBottomWidth: 2.5,
     marginBottom: 10,
   },
   title: {

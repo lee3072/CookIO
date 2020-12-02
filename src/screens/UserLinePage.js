@@ -19,6 +19,19 @@ class UserLinePage extends React.Component {
     render(){
         return (
             <View>
+                <View style={{
+                    borderTopWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    borderBottomWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+                    borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+                }}>
+                    <Button color= "#ffb300"
+                        title="Profile"
+                        onPress={() => {
+                            this.props.navigation.navigate('ProfilePage')
+                        }}
+                    />
+                </View>
                 <Text>{"\n\n\n\n\n"}</Text>
                 <Button color="#ffb300"
                     title="Created Posts"

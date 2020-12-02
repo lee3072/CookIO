@@ -103,9 +103,9 @@ class ShowUserActivityPage extends React.Component {
     renderCard = (item) => {
         return (
             <View>
+                <PostCard item={item.postObj} navigation={this.props.navigation} />
                 <Text>{item.title}</Text>
                 <Text>{item.comment}</Text>
-                <PostCard item={item.postObj} navigation={this.props.navigation} />
             </View>
 
         )
@@ -166,7 +166,20 @@ class ShowUserActivityPage extends React.Component {
     header = () => {
         return (
             <View >
-                <Text >User Activitys</Text>
+                <View style={{
+                    borderTopWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    borderBottomWidth: (Platform.OS === 'ios') ? 2 : 0,
+                    marginVertical: (Platform.OS === 'ios') ? 2 : 0,
+                    borderColor: (Platform.OS === 'ios') ? "#ffb300" : "white"
+                }}>
+                    <Button color= "#ffb300"
+                        title="User Line"
+                        onPress={() => {
+                            this.props.navigation.navigate('UserLinePage')
+                        }}
+                    />
+                </View>
+                {/* <Text >User Activitys</Text> */}
             </View>
         );
     }
