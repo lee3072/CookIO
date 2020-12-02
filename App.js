@@ -19,6 +19,7 @@ import SignInPage from './src/screens/SignInPage';
 import SignUpPage from './src/screens/SignUpPage';
 import CreateProfilePage from './src/screens/CreateProfilePage';
 import ProfilePage from './src/screens/ProfilePage';
+import GuestProfilePage from './src/screens/GuestProfilePage';
 import EmptyProfilePage from './src/screens/EmptyProfilePage';
 import FollowingPage from './src/screens/FollowingPage';
 import FollowingTagPage from './src/screens/FollowingTagPage';
@@ -90,6 +91,7 @@ export default class App extends React.Component {
           <Stack.Navigator screenOptions={{headerShown: false}} >
             <Stack.Screen name="SignInPage" component={SignInPage}/>
             <Stack.Screen name="GuestViewPage" component={GuestViewPage}/>
+            <Stack.Screen name="GuestProfilePage" component={GuestProfilePage}/>
             <Stack.Screen name="SignUpPage" component={SignUpPage}/>
             <Stack.Screen name="DirectMessageMainPage" component={DirectMessageMainPage}/>
             <Stack.Screen name="DirectMessageUserPage" component={DirectMessageUserPage}/>

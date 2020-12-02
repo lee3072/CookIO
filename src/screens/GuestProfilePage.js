@@ -8,9 +8,8 @@ import 'firebase/firestore';
 
 var db = firebase.firestore(); //firestore
 
-const UsersProfilePage = ({route, navigation}) => {
+const GuestProfilePage = ({route, navigation}) => {
     const { uid } = route.params;
-    const [followingStat,setFollowingStat] = useState('')
     const [username,setUsername] = useState('')
     const [followers,setFollowers] = useState('')
     const [followings,setFollowings] = useState('')
@@ -18,42 +17,6 @@ const UsersProfilePage = ({route, navigation}) => {
     const [icon,setIcon] = useState('')
 
     const updateData = () => {
-
-        const currentUser = firebase.auth().currentUser;
-
-        if (!currentUser) {
-            navigation.navigate('GuestProfilePage', {uid: uid })
-        } else {
-
-        function getBlocked(documentSnapshot) {
-            return documentSnapshot.get('blockedUsers');
-        }
-
-        db.collection('Users')
-        .doc(currentUser.uid)
-        .get()
-        .then(documentSnapshot => getBlocked(documentSnapshot))
-        .then(blocked => {
-            if (blocked.includes(uid)) {
-                navigation.navigate('EmptyProfilePage')
-            }
-        });
-
-        db.collection('Users')
-        .doc(uid)
-        .get()
-        .then(documentSnapshot => getBlocked(documentSnapshot))
-        .then(blocked => {
-            if (blocked.includes(currentUser.uid)) {
-                navigation.navigate('EmptyProfilePage')
-            }
-        });
-
-        db.collection("Users").doc(uid).get().then(doc => {
-            if (!doc.exists){
-                navigation.navigate('EmptyProfilePage')
-            }
-        })
 
         function getUserName(documentSnapshot) {
             return documentSnapshot.get('userName');
@@ -69,18 +32,12 @@ const UsersProfilePage = ({route, navigation}) => {
         function getFollowers(documentSnapshot) {
             return documentSnapshot.get('followers');
         }
-        
         db.collection('Users')
         .doc(uid)
         .get()
         .then(documentSnapshot => getFollowers(documentSnapshot))
         .then(followers => {
             setFollowers(followers.length)
-            if (followers.includes(currentUser.uid)) {
-                setFollowingStat('Unfollow')
-            } else {
-                setFollowingStat('Follow')
-            }
         });
 
         function getInterest(documentSnapshot) {
@@ -118,8 +75,6 @@ const UsersProfilePage = ({route, navigation}) => {
         .then(followingUsers => {
             setFollowings(followingUsers.length);
         });
-
-    }
     };
 
     useEffect(() => {
@@ -129,71 +84,13 @@ const UsersProfilePage = ({route, navigation}) => {
         return cleanup;
     }, [navigation]);
 
-    const onFollowPressed = () => {
-        const currentUser = firebase.auth().currentUser;
-        if(followingStat == 'Follow') {
-            setFollowingStat('Unfollow')
-            db.collection('Users')
-                .doc(uid)
-                .update({
-                    followers: firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
-                    numberOfFollowers: firebase.firestore.FieldValue.increment(1),
-                })
-            setFollowers(followers + 1)
-            db.collection('Users')
-                .doc(currentUser.uid)
-                .update({
-                    followingUsers: firebase.firestore.FieldValue.arrayUnion(uid),
-                })
-        } else {
-            setFollowingStat('Follow')
-            db.collection('Users')
-                .doc(uid)
-                .update({
-                    followers: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
-                    numberOfFollowers: firebase.firestore.FieldValue.increment(-1),
-                })
-                setFollowers(followers - 1)
-            db.collection('Users')
-                .doc(currentUser.uid)
-                .update({
-                    followingUsers: firebase.firestore.FieldValue.arrayRemove(uid),
-                })
-        }
-    }
-
-    const onBlockPressed = () => {
-        const currentUser = firebase.auth().currentUser;
-        if(followingStat == 'Unfollow') {
-            setFollowingStat('Follow')
-            db.collection('Users')
-                .doc(uid)
-                .update({
-                    followers: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
-                    numberOfFollowers: firebase.firestore.FieldValue.increment(-1),
-                })
-                setFollowers(followers - 1)
-            db.collection('Users')
-                .doc(currentUser.uid)
-                .update({
-                    followingUsers: firebase.firestore.FieldValue.arrayRemove(uid),
-                })
-        }
-        db.collection('Users')
-        .doc(currentUser.uid)
-        .update({
-            blockedUsers: firebase.firestore.FieldValue.arrayUnion(uid),
-        })
-        navigation.navigate('ProfilePage')
-    }
-
     return (
         <View style={styles.container}>
             <View style={[styles.logoutButton,styles.iosButtonSetting]}>
                 <Button
                     color= "#ffdb85"
-                    title="Block"
-                    onPress={onBlockPressed}
+                    title="Back to main guest page"
+                    onPress={() => navigation.navigate('GuestViewPage')}
                 />
             </View>
             <View style={{ margineTop: 60}}>
@@ -222,34 +119,7 @@ const UsersProfilePage = ({route, navigation}) => {
                     <Text>Following</Text>
                     <Text>{followings}</Text>
                 </View>
-                <View style={styles.iosButtonSetting}>
-                    <Button color= "#ffb300"
-                        title={followingStat}
-                        onPress={onFollowPressed}
-                    />
-                </View>
             </View>
-
-            <View style={styles.buttonMiddle}>
-                <View style={styles.iosButtonSetting}>
-                    <Button color= "#ffb300"
-                        title="Topic Page"
-                        onPress={() => navigation.navigate('ListTopicPage')}
-                    />
-                </View>
-                <View style={styles.iosButtonSetting}>
-                    <Button color= "#ffb300"
-                        title="Profile Page"
-                        onPress={() => navigation.navigate('ProfilePage')}
-                    />
-                </View>
-                <Button color= "#ffb300"
-                    title="User Time Line"
-                    onPress={() => navigation.navigate('UserLinePage', {userid: uid})}
-                />
-                
-            </View>
-
         
         </View>
     );
@@ -304,8 +174,7 @@ const styles = StyleSheet.create({
     logoutButton: {
         marginTop: 20,
         flexDirection: "row",
-        justifyContent: "flex-end",
-        alignSelf: "flex-end"
+        justifyContent: "flex-start",
     },
     refreshButton: {
         marginTop: 20,
@@ -320,4 +189,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default UsersProfilePage;
+export default GuestProfilePage;

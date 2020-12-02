@@ -11,20 +11,19 @@ class GuestErrorPage extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-          <View style={styles.backButton}>
-            <Button
-                color= "#ffdb85"
-                title="Go to main page"
-                onPress={() => {
-                    this.props.navigation.navigate('GuestViewPage')
-                }}
-            />
-            </View>
-            <Text style={styles.warn}>You need to login to view this profile.</Text>
-      </View>
-
-      
+        <View style={styles.container}>
+            <View style={styles.backButton}>
+                <Button
+                    color= "#ffdb85"
+                    title="Go to main page"
+                    onPress={() => {
+                        this.props.navigation.navigate('GuestViewPage')
+                    }}
+                />
+                </View>
+                <Text style={styles.warn}>You need to login to view this profile.</Text>
+        </View>
+  
     )
   }
 }
