@@ -124,11 +124,11 @@ class PostView extends React.Component {
         let currentTime = firebase.firestore.Timestamp.now()
         if (ifUP) {
             userRef.update({
-                upVotes: firebase.firestore.FieldValue.arrayUnion({ postID: this.state.id, date: currentTime.seconds.toString() + currentTime.nanoseconds.toString() })
+                upVotes: firebase.firestore.FieldValue.arrayUnion({ postID: this.state.id, date: currentTime.seconds.toString() })
             })
         } else {
             userRef.update({
-                downVotes: firebase.firestore.FieldValue.arrayUnion({ postID: this.state.id, date: currentTime.seconds.toString() + currentTime.nanoseconds.toString() })
+                downVotes: firebase.firestore.FieldValue.arrayUnion({ postID: this.state.id, date: currentTime.seconds.toString() })
             })
         }
 
@@ -144,7 +144,7 @@ class PostView extends React.Component {
         if (!contains) { //check if post is aready saved
             userRef.update({    //if not save the post
                 savedPost: firebase.firestore.FieldValue.arrayUnion(this.state.id),
-                savedPostWithTime: firebase.firestore.FieldValue.arrayUnion({ postID: this.state.id, date: currentTime.seconds.toString() + currentTime.nanoseconds.toString() })
+                savedPostWithTime: firebase.firestore.FieldValue.arrayUnion({ postID: this.state.id, date: currentTime.seconds.toString() })
             })
             console.log('post saved')
         } else {
@@ -163,7 +163,7 @@ class PostView extends React.Component {
         // console.log("timestemp: ")
         // console.log(firebase.firestore.Timestamp.now().seconds)
         let currentTime = firebase.firestore.Timestamp.now()
-        let timeStemp = currentTime.seconds.toString() + currentTime.nanoseconds.toString()
+        let timeStemp = currentTime.seconds.toString()
         var comment = await comRef.add({
             ID: "default",
             Under: postRef.id.toString(),
