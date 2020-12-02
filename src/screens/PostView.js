@@ -146,8 +146,10 @@ class PostView extends React.Component {
                 savedPostWithTime: firebase.firestore.FieldValue.arrayUnion({ postID: this.state.id, date: currentTime.seconds.toString() })
             })
             console.log('post saved')
+            Alert.alert('post saved')
         } else {
             console.log("post aready saved")
+            Alert.alert('post aready saved')
         }
 
     }
