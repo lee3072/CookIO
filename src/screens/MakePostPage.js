@@ -49,7 +49,7 @@ const EditPost = ({ navigation }) => {
       PostedUser: "anonymous",
       PostedUserName: "anonymous",
       PostedDate: Date(),
-      Date: currentTime.seconds.toString() + currentTime.nanoseconds.toString(),
+      Date: currentTime.seconds.toString(),
       DownVote: 0,
       UpVote: 0,
       VotedUser: [],
@@ -69,7 +69,7 @@ const EditPost = ({ navigation }) => {
       topicRef = db.collection("Tags").doc(tags).set({
         ID: tags,
         list: [ref.id],
-        date: currentTime.seconds.toString() + currentTime.nanoseconds.toString(),
+        date: currentTime.seconds.toString(),
         DisplayDate: Date(),
       });
     }
