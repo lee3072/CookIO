@@ -15,7 +15,7 @@ const PostCard = ({ navigation, item }) => {
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
         onPress={() => navigation.navigate('UserFeedPage', {userid: item.PostedUser })}
-        ><Text style={styles.tages3}>{item.PostedUserName}</Text>
+        ><Text style={styles.tages3}>{"Posted User: "+item.PostedUserName +" ("+displayTime+")"}</Text>
     </TouchableOpacity>
     <TouchableOpacity
       onPress={() =>
@@ -37,6 +37,7 @@ const PostCard = ({ navigation, item }) => {
     </View>
     <Text style={styles.tages3}>{"tag:"+item.Tag}</Text>
     </TouchableOpacity>
+    
     </SafeAreaView>
   );
 }
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     fontFamily: "Merriweather",
     color: "#121212",
     height: 20,
-    width: 300,
+    // width: 300,
     fontSize: 15
   },
   tages1: {
