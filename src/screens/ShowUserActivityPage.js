@@ -90,7 +90,7 @@ class ShowUserActivityPage extends React.Component {
         console.log(tempInteraction)
     }
     secToDate(sec_nanoSec) {
-        return new Date(sec_nanoSec.toFixed(13))
+        return new Date(sec_nanoSec)
     }
 
     // scroll stuff
