@@ -1,13 +1,6 @@
-# CookIO
-# npm install expo-cli --global
-# cd into CookIO
-# expo start
-# ----------
-# npm install @react-navigation/stack
-# expo install react-native-elements
+CS 307 Project - CookIO
 
-
-
-# ---------- Direct Message Part -----------
-# expo install react-native-gifted-chat
-# expo install expo-notifications
+With the rise of the pandemic, more and more people are cooking at home and they all are 
+desperate for human connection. And currently, there aren’t any dedicated platforms for sharing 
+cooking recipes. So we decided to make a format that is dedicated to sharing cooking recipes 
+online while giving people a platform to connect with people who also love cooking.
